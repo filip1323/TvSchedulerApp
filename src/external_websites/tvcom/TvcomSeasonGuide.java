@@ -27,6 +27,7 @@ public class TvcomSeasonGuide {
     private final Document document;
 
     public TvcomSeasonGuide(String url) throws WrongUrlException {
+	url = Utils.Web.normalizeUrl(url);
 	if (!isUrlCorrect(url)) {
 	    throw new WrongUrlException("`" + url + "` is not matching episode guide or season guide pattern");
 	}

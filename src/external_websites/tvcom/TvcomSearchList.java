@@ -7,6 +7,7 @@ package external_websites.tvcom;
 
 import external_websites.WebsiteRepository;
 import local_data.Settings;
+import misc.Utils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,6 +24,7 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
     private final Elements resultElements;
 
     public TvcomSearchList(String url) throws WrongUrlException {
+	url = Utils.Web.normalizeUrl(url);
 	if (!isUrlCorrect(url)) {
 	    throw new WrongUrlException("`" + url + "` is not matching Settings.SEARCH_TVCOM_URL: `" + Settings.SEARCH_TVCOM_URL + "`");
 	}
@@ -51,7 +53,7 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 
 	title = resultElement.select("div.info h4").first().text();
 
-	showUrl = Settings.BASIC_TVCOM_URL + resultElement.select("div.info h4 a").attr("href");
+	showUrl = Settings.BASIC_TVCOM_URL.substring(0, Settings.BASIC_TVCOM_URL.length() - 1) + resultElement.select("div.info h4 a").attr("href");
 
 	imageUrl = resultElement.select(">a._image_container img").first().attr("src");
 

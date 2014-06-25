@@ -23,6 +23,7 @@ public class TvcomShowHomepage { //e.g `http://www.tv.com/shows/lost/`
     private final Document document;
 
     public TvcomShowHomepage(String url) throws WrongUrlException {
+	url = Utils.Web.normalizeUrl(url);
 	if (!isUrlCorrect(url)) {
 	    throw new WrongUrlException("`" + url + "` is not matching Settings.SHOW_TVCOM_URL: `" + Settings.SHOW_TVCOM_URL + "`");
 	}
@@ -31,7 +32,6 @@ public class TvcomShowHomepage { //e.g `http://www.tv.com/shows/lost/`
     }
 
     private boolean isUrlCorrect(String url) {
-	url = url.replace("//", "/").replace("http:/", "http://"); //not elegant but works
 	return url.contains(Settings.SHOW_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL);
     }
 
