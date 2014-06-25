@@ -11,4 +11,12 @@ package external_websites;
  */
 public interface ExternalSource {
 
+    public void assignTitle(String title);
+
+    public String getEpisodeLink(int seasonOrdinal, int episodeOrdinal);
+
+    public String getSeasonLink(int seasonOrdinal);
+
+    public String getHomepageShowLink();
+
 }

@@ -9,6 +9,26 @@ package external_websites;
  *
  * @author Filip
  */
-public class Ekino {
+public class Ekino implements ExternalSource {
+
+    @Override
+    public void assignTitle(String title) {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getEpisodeLink(int seasonOrdinal, int episodeOrdinal) {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getHomepageShowLink() {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSeasonLink(int seasonOrdinal) {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

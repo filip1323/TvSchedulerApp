@@ -5,31 +5,29 @@
  */
 package external_websites.tvcom;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Filip
  */
-public class ShowHomepageTvcom { //e.g `http://www.tv.com/shows/lost/`
+public class SeasonGuideTvcom {
 
     private final String url;
 
-    public ShowHomepageTvcom(String url) {
+    public SeasonGuideTvcom(String url) {
 	this.url = url;
     }
 
-    public boolean isNextEpisodeAnnouncementAvailable() {
+    public int getSeasonsNumber() {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getNextEpisodeSeasonOrdinal() {
+    public int getEpisodesNumber() {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getNextEpisodeOrdinal() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String getShowDescription() {
+    public HashMap<String, String> getEpisodeInfo(int ordinal) { //<season ordinal, episode ordinal, title, date>
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
