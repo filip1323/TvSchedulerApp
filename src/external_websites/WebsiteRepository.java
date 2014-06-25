@@ -6,12 +6,11 @@
 package external_websites;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Hashtable;
 import misc.Bundles;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import user_exceptions.EmptyDocumentException;
 import user_exceptions.WrongUrlException;
 
 /**
@@ -37,7 +36,15 @@ public class WebsiteRepository {
 	documents = new Hashtable<>();
     }
 
-    public boolean addDocument(String url) throws WrongUrlException {
+    public Document getDocument(String url) throws WrongUrlException {
+	url = Bundles.prepareUrl(url);
+	if (!documents.containsKey(url)) {
+	    addDocument(url);
+	}
+	return documents.get(url);
+    }
+
+    public boolean addDocument(String url) throws WrongUrlException, EmptyDocumentException {
 	try {
 	    if (!isUrlValid(url)) {
 		throw new WrongUrlException(url + " is not valid url");
@@ -48,17 +55,14 @@ public class WebsiteRepository {
 		documents.put(url, doc);
 		return true;
 	    } else { //fail
-		return false;
+		throw new EmptyDocumentException(url);
 	    }
-	} catch (HttpStatusException ex) { //fail
-	    ex.printStackTrace();
-	} catch (UnknownHostException ex) { //fail
-	    ex.printStackTrace();
-	} catch (IOException | NullPointerException ex) { //fail
+	} catch (IOException ex) {
 	    ex.printStackTrace();
 	} finally {
 	    return false;
 	}
+
     }
 
     public void checkInternetConnection(boolean reconnectMode) {
@@ -84,14 +88,6 @@ public class WebsiteRepository {
 	    //impossibru, ignore
 	    ex.printStackTrace();
 	}
-    }
-
-    public Document getDocument(String url) throws WrongUrlException {
-	url = Bundles.prepareUrl(url);
-	if (!documents.containsKey(url)) {
-	    addDocument(url);
-	}
-	return documents.get(url);
     }
 
     public boolean isUrlEkino(String url) {
