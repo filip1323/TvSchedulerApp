@@ -28,7 +28,7 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 	}
 	this.url = url;
 	this.document = WebsiteRepository.getInstance().getDocument(url);
-	this.resultElements = document.select("ul.results._standard_list > li.result.show");
+	this.resultElements = document.select("li.result.show");
     }
 
     public int getResultsNumber() {
@@ -95,6 +95,11 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 	public String toString() {
 	    return "Title: " + showTitle + "\tImage URL: " + imageUrl + "\tShow URL: " + showUrl;
 	}
+    }
+
+    @Override
+    public String toString() {
+	return "`" + url + "` (" + getResultsNumber() + ")";
     }
 
 }
