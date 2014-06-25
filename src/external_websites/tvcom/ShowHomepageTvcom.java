@@ -5,6 +5,14 @@
  */
 package external_websites.tvcom;
 
+import external_websites.WebsiteRepository;
+import local_data.Settings;
+import misc.Utils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import user_exceptions.DebugError;
+import user_exceptions.WrongUrlException;
+
 /**
  *
  * @author Filip
@@ -12,25 +20,59 @@ package external_websites.tvcom;
 public class ShowHomepageTvcom { //e.g `http://www.tv.com/shows/lost/`
 
     private final String url;
+    private final Document document;
 
-    public ShowHomepageTvcom(String url) {
+    public ShowHomepageTvcom(String url) throws WrongUrlException {
+	if (!isUrlCorrect(url)) {
+	    throw new WrongUrlException("`" + url + "` is not matching Settings.SHOW_TVCOM_URL: `" + Settings.SHOW_TVCOM_URL + "`");
+	}
 	this.url = url;
+	this.document = WebsiteRepository.getInstance().getDocument(url);
+    }
+
+    private boolean isUrlCorrect(String url) {
+	return url.contains(Settings.SHOW_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL);
     }
 
     public boolean isNextEpisodeAnnouncementAvailable() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	int announcementDivsNumber = document.select("div.next_episode").size();
+	return (announcementDivsNumber != 0);
     }
 
     public int getNextEpisodeSeasonOrdinal() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	if (!isNextEpisodeAnnouncementAvailable()) {
+	    throw new DebugError("Check if next episode announcement is on screen first.");
+	}
+	Element annElement = document.select("div.next_episode").first();
+	String label = annElement.select("div.highlight_info > p.highlight_season").text();
+	return Utils.Readers.getSeasonOrdinal(label);
     }
 
     public int getNextEpisodeOrdinal() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	if (!isNextEpisodeAnnouncementAvailable()) {
+	    throw new DebugError("Check if next episode announcement is on screen first.");
+	}
+	Element annElement = document.select("div.next_episode").first();
+	String label = annElement.select("div.highlight_info > p.highlight_season").text();
+	return Utils.Readers.getEpisodeOrdinal(label);
     }
 
     public String getShowDescription() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	Element descElement = document.select("div.description p").first();
+	return descElement.text();
+    }
+
+    @Override
+    public String toString() {
+	String result = "`" + url + "`\t"
+		+ "\tNext ep announcement: " + isNextEpisodeAnnouncementAvailable()
+		+ "\tshowDescription: " + getShowDescription();
+
+	if (isNextEpisodeAnnouncementAvailable()) {
+	    result += "\tnextEpisodeSeasonOrdinal: " + getNextEpisodeSeasonOrdinal()
+		    + "\tnextEpisodeOrdinal: " + getNextEpisodeOrdinal();
+	}
+	return result;
     }
 
 }
