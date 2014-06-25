@@ -16,6 +16,10 @@ public class Settings {
 
     private HashMap<String, String> configCollection = null;
 
+    public static final String BASIC_TVCOM_URL = "http://www.tv.com/";
+    public static final String SEARCH_TVCOM_URL = "http://www.tv.com/search?q=";
+    public static final String SHOW_TVCOM_URL = "http://www.tv.com/shows/";
+
     private static Settings instance = null;
 
     public static Settings getInstance() {
