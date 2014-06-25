@@ -5,10 +5,26 @@
  */
 package show_components.episode;
 
+import show_components.season.Season;
+
 /**
  *
  * @author Filip
  */
 public interface Editable {
+
+    public void setOrdinal(int ordinal);
+
+    public void setAbsoluteOrdinal(int ordinal);
+
+    public void setTitle(String title);
+
+    public void setTvcomUrl(String title);
+
+    public void setReleaseDate(long date);
+
+    public void setViewedState(boolean state);
+
+    public void setSeason(Season season);
 
 }

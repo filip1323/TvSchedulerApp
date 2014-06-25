@@ -5,10 +5,22 @@
  */
 package show_components.season;
 
+import show_components.episode.Episode;
+import show_components.show.Show;
+
 /**
  *
  * @author Filip
  */
 public interface Editable {
 
+    public void setOrdinal(int ordinal);
+
+    public void setEpisodesNumber(int number);
+
+    public void setViewedState(boolean state);
+
+    public void setShow(Show show);
+
+    public void addEpisode(Episode episode);
 }
