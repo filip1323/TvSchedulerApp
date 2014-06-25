@@ -60,7 +60,7 @@ public class SearchListTvcom { //e.g `http://www.tv.com/search?q=lost`
     }
 
     private boolean isUrlCorrect(String url) {
-	return url.contains(Settings.SEARCH_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL);
+	return url.contains(Settings.SEARCH_TVCOM_URL) && !url.equals(Settings.SEARCH_TVCOM_URL);
     }
 
     public Result getFirstResult() {
