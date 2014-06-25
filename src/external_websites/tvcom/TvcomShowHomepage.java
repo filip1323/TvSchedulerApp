@@ -31,6 +31,7 @@ public class TvcomShowHomepage { //e.g `http://www.tv.com/shows/lost/`
     }
 
     private boolean isUrlCorrect(String url) {
+	url = url.replace("//", "/").replace("http:/", "http://"); //not elegant but works
 	return url.contains(Settings.SHOW_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL);
     }
 
