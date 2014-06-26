@@ -5,98 +5,86 @@
  */
 package show_components;
 
-import external_websites.tvcom.TvcomSearchList;
-import external_websites.tvcom.TvcomSearchList.Result;
-import external_websites.tvcom.TvcomSeasonGuide;
-import external_websites.tvcom.TvcomShowHomepage;
-import external_websites.tvcom.TvcomUtils;
-import local_data.Settings;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import misc.Utils;
 import show_components.episode.Episode;
-import show_components.episode.EpisodeBuilder;
-import show_components.episode.EpisodeTvcomInfo;
 import show_components.season.Season;
-import show_components.season.SeasonBuilder;
-import show_components.season.SeasonTvcomInfo;
 import show_components.show.Show;
-import show_components.show.ShowBuilder;
-import show_components.show.ShowTvcomInfo;
-import user_exceptions.DataNotAssignedException;
-import user_exceptions.DebugError;
-import user_exceptions.WrongUrlException;
 
 /**
  *
  * @author Filip
  */
-public class ShowOnlineEngineer {
+public class ShowLocalDataHUB {
 
-    private String title;
-    private Show show;
-
-    public void assignTitle(String title) {
-	this.title = title;
+    private String getPathForShow(String title) {
+	return "shows/" + title.replace(" ", "-") + ".ser";
     }
 
-    public void constructShow() throws DataNotAssignedException, WrongUrlException {
-	if (title == null) {
-	    throw new DataNotAssignedException("title");
-	}
-	//creating search list link
-	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
-	TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
+    public void save(Show show) {
+	try {
+	    String path = getPathForShow(show.getTitle());
 
-	//getting first result
-	Result firstResult = searchList.getFirstResult();
-	//make sure its right
-	//getting homepage
-	String homepageUrl = firstResult.getShowHomepageUrl();
-	TvcomShowHomepage homepage = new TvcomShowHomepage(homepageUrl);
-
-	//getting first season guide
-	TvcomSeasonGuide currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(homepageUrl, 1));
-
-	//getting seasons number
-	int seasonsNumber = currentSeasonGuide.getSeasonsNumber();
-
-	//creating show
-	ShowBuilder showBuilder = new ShowBuilder();
-	ShowTvcomInfo showInfoProvider = new ShowTvcomInfo(firstResult, homepage, currentSeasonGuide);
-	Show show = showBuilder.getShow(showInfoProvider);
-
-	//listing through all seasons and episodes
-	for (int currentSeasonOrdinal = 1; currentSeasonOrdinal <= seasonsNumber; currentSeasonOrdinal++) {
-
-	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(homepageUrl, currentSeasonOrdinal));
-
-	    //creating season
-	    SeasonBuilder seasonBuilder = new SeasonBuilder();
-	    SeasonTvcomInfo seasonInfoProvider = new SeasonTvcomInfo(currentSeasonGuide);
-	    Season season = seasonBuilder.getSeason(seasonInfoProvider);
-
-	    //assigning season
-	    show.edit().addSeason(season);
-
-	    for (int ordinal = 1; ordinal <= currentSeasonGuide.getEpisodesNumber(); ordinal++) {
-		//creating episode
-		EpisodeBuilder episodeBuilder = new EpisodeBuilder();
-		EpisodeTvcomInfo episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, ordinal);
-		Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
-
-		//assigning episode
-		season.edit().addEpisode(episode);
+	    File file = new File(path);
+	    if (!file.exists()) {
+		file.createNewFile();
 	    }
+	    FileOutputStream fileOut
+		    = new FileOutputStream(path);
 
+	    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	    out.writeObject(show);
+	    out.close();
+	    fileOut.close();
+	} catch (IOException i) {
+	    i.printStackTrace();
 	}
-
-	this.show = show;
-
-	//System.out.println(season_1);
     }
 
-    public Show getShow() {
-	if (show == null) {
-	    throw new DebugError("Create show first");
+    public Show load(String title) {
+	String path = getPathForShow(title);
+	Show show = null;
+	try {
+	    FileInputStream fileIn = new FileInputStream(path);
+	    ObjectInputStream in = new ObjectInputStream(fileIn);
+	    show = (Show) in.readObject();
+	    in.close();
+	    fileIn.close();
+	} catch (IOException i) {
+	    i.printStackTrace();
+	} catch (ClassNotFoundException c) {
+	    c.printStackTrace();
 	}
+
+	for (int seasonOrdinal = 1; seasonOrdinal < show.getSeasonsNumber(); seasonOrdinal++) {
+	    Season season = show.getSeason(seasonOrdinal);
+	    season.edit().setShow(show);
+	    for (int episodeOrdinal = 1; episodeOrdinal < season.getEpisodesNumber(); episodeOrdinal++) {
+		Episode episode = season.getEpisode(episodeOrdinal);
+		episode.edit().setSeason(season);
+	    }
+	}
+
 	return show;
+    }
+
+    public ArrayList<String> getLoadedTitles() {
+	ArrayList<String> titles = Utils.Files.getDirectoryListingRelative("shows");
+	for (int i = 0; i < titles.size(); i++) {
+	    String title = titles.get(i);
+	    title = title.replace(".ser", "").replace("shows", "").replace("\\", "");
+	    titles.set(i, title);
+	}
+	return titles;
+    }
+
+    public void remove(String title) {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
