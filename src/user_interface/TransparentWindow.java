@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 /**
@@ -19,22 +20,31 @@ import javax.swing.JWindow;
 public class TransparentWindow extends JWindow {
 
     public TransparentWindow() {
-	//getting windows size
+//	//getting windows size
 	Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
-	int width = (int) scrnSize.getWidth();
-	int height = (int) scrnSize.getHeight();
 
+//	//getting windows size
+//	Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
+//	int width = (int) scrnSize.getWidth();
+//	int height = (int) scrnSize.getHeight();
+//
+//	//getting taksbar size
+//	Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+//	int taskBarHeight = scrnSize.height - winSize.height;
 	//creating transparent jwindow
 	setAlwaysOnTop(true);
-	setSize(width, height);
+	setSize(scrnSize);
+//	setSize(width, height - taskBarHeight);
 	setBackground(new Color(0, 0, 0, 0));
 	setLayout(null);
 
+//	JPanel absoluteContainer = new JPanel();
+//	absoluteContainer.setSize(scrnSize);
+//	absoluteContainer.setLayout(null);
+//	setContentPane(absoluteContainer);
     }
 
-    public void setContentPane(ContentPane contentPanel) {
-
-	contentPanel.setBounds(new Rectangle(contentPanel.getPreferredSize()));
+    public void addPanel(JPanel panel) {
 
 	//getting windows size
 	Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -46,26 +56,11 @@ public class TransparentWindow extends JWindow {
 	int taskBarHeight = scrnSize.height - winSize.height;
 
 	//setting ui location on screen
-	int xLocation = width - (int) contentPanel.getPreferredSize().getWidth();
-	int yLocation = height - (int) contentPanel.getPreferredSize().getHeight() - taskBarHeight;
-	contentPanel.setLocation(xLocation, yLocation);
-
-	//adding ui to windowContainer
-	add(contentPanel);
-
-    }
-
-    @Override
-    public void show() {
-	//showing ui
-	setVisible(true);
-
-    }
-
-    @Override
-    public void hide() {
-	//hiding ui
-	setVisible(false);
+	int xLocation = width - (int) panel.getPreferredSize().getWidth();
+	int yLocation = height - (int) panel.getPreferredSize().getHeight() - taskBarHeight;
+	panel.setBounds(new Rectangle(panel.getPreferredSize()));
+	panel.setLocation(xLocation, yLocation);
+	add(panel);
 
     }
 }
