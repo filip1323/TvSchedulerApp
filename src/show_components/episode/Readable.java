@@ -14,9 +14,11 @@ import show_components.season.Season;
 public interface Readable {
 
     //solid data
-    public int getOrdinal();
-
     public int getAbsoluteOrdinal();
+
+    public int getSeasonOrdinal();
+
+    public int getOrdinal();
 
     public String getTitle();
 

@@ -11,4 +11,21 @@ package show_components.episode;
  */
 public class EpisodeBuilder {
 
+    private EpisodeFrame episodeFrame;
+
+    public Episode getEpisode(InfoProvider provider) {
+	buildEpisode(provider);
+	return (Episode) episodeFrame;
+    }
+
+    private void buildEpisode(InfoProvider provider) {
+	episodeFrame = new EpisodeFrame();
+	episodeFrame.setOrdinal(provider.getOrdinal());
+	episodeFrame.setReleaseDate(provider.getReleaseDate());
+	episodeFrame.setSeasonOrdinal(provider.getSeasonOrdinal());
+	episodeFrame.setTitle(provider.getTitle());
+	episodeFrame.setTvcomUrl(provider.getTvcomUrl());
+	episodeFrame.setViewedState(false);
+
+    }
 }

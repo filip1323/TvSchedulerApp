@@ -5,6 +5,7 @@
  */
 package show_components.show;
 
+import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.season.Season;
 
@@ -14,9 +15,20 @@ import show_components.season.Season;
  */
 public class Show implements Readable {
 
+    protected String title;
+    protected String tvcomUrl;
+    protected String ekinoUrl;
+    protected long updateTime;
+    protected int seasonsNumber;
+    protected boolean nextEpisodeAnnouncementAvailableState;
+    protected int nextEpisodeOrdinal;
+    protected int nextEpisodeSeasonOrdinal;
+
+    protected HashMap<Integer, Season> seasons;
+
     @Override
     public String getEkinoUrl() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return ekinoUrl;
     }
 
     @Override
@@ -30,33 +42,63 @@ public class Show implements Readable {
     }
 
     @Override
+    public boolean getNextEpisodeAnnouncementAvailableState() {
+	return nextEpisodeAnnouncementAvailableState;
+    }
+
+    @Override
     public Episode getNextEpisodeForMe() {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Season getSeason() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int getNextEpisodeOrdinal() {
+	return nextEpisodeOrdinal;
+    }
+
+    @Override
+    public int getNextEpisodeSeasonOrdinal() {
+	return nextEpisodeSeasonOrdinal;
+    }
+
+    @Override
+    public Season getSeason(int ordinal) {
+	return seasons.get(ordinal);
     }
 
     @Override
     public int getSeasonsNumber() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return seasonsNumber;
     }
 
     @Override
     public String getTitle() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return title;
     }
 
     @Override
     public String getTvcomUrl() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return tvcomUrl;
     }
 
     @Override
     public long getUpdateDayTime() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return updateTime;
+
+    }
+
+    @Override
+    public String toString() {
+	return this.hashCode() + "\n"
+		+ "Title " + getTitle() + "\n"
+		+ "TvcomUrl " + getTvcomUrl() + "\n"
+		+ "SeasonsNumber " + getSeasonsNumber() + "\n"
+		+ "Next ep announcement " + getNextEpisodeAnnouncementAvailableState() + "\n"
+		+ "Next ep summary " + getNextEpisodeSeasonOrdinal() + "x" + getNextEpisodeOrdinal();
+    }
+
+    public ShowFrame edit() {
+	return (ShowFrame) this;
     }
 
 }

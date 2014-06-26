@@ -11,4 +11,15 @@ package show_components.episode;
  */
 public interface InfoProvider {
 
+    public int getSeasonOrdinal();
+
+    public int getOrdinal();
+
+    public String getTitle();
+
+    public String getTvcomUrl();
+
+    public long getReleaseDate();
+
+    public boolean getViewedState();
 }

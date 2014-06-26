@@ -11,4 +11,9 @@ package show_components.season;
  */
 public interface InfoProvider {
 
+    public int getOrdinal();
+
+    public int getEpisodesNumber();
+
+    public boolean getViewedState();
 }

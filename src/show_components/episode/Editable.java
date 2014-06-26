@@ -13,13 +13,15 @@ import show_components.season.Season;
  */
 public interface Editable {
 
-    public void setOrdinal(int ordinal);
-
     public void setAbsoluteOrdinal(int ordinal);
+
+    public void setSeasonOrdinal(int ordinal);
+
+    public void setOrdinal(int ordinal);
 
     public void setTitle(String title);
 
-    public void setTvcomUrl(String title);
+    public void setTvcomUrl(String url);
 
     public void setReleaseDate(long date);
 

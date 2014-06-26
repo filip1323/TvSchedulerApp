@@ -11,4 +11,18 @@ package show_components.show;
  */
 public interface InfoProvider {
 
+    public String getTitle();
+
+    public String getImgUrl();
+
+    public String getHomepageUrl();
+
+    public boolean isNextEpisodeAnnounced();
+
+    public int getNextEpisodeOrdinal();
+
+    public int getNextEpisodeSeasonOrdinal();
+
+    public int getSeasonsNumber();
+
 }

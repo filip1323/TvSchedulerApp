@@ -15,37 +15,46 @@ public class EpisodeFrame extends Episode implements Editable {
 
     @Override
     public void setAbsoluteOrdinal(int ordinal) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	absoluteOrdinal = ordinal;
     }
 
     @Override
     public void setOrdinal(int ordinal) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	this.ordinal = ordinal;
     }
 
     @Override
     public void setReleaseDate(long date) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	releaseDate = date;
     }
 
     @Override
     public void setSeason(Season season) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	this.season = season;
+    }
+
+    @Override
+    public void setSeasonOrdinal(int ordinal) {
+	seasonOrdinal = ordinal;
     }
 
     @Override
     public void setTitle(String title) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	this.title = title;
     }
 
     @Override
-    public void setTvcomUrl(String title) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setTvcomUrl(String url) {
+	tvcomUrl = url;
     }
 
     @Override
     public void setViewedState(boolean state) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	viewedState = state;
+    }
+
+    public Episode readOnly() {
+	return (Episode) this;
     }
 
 }

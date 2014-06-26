@@ -5,6 +5,7 @@
  */
 package show_components.season;
 
+import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.show.Show;
 
@@ -14,29 +15,37 @@ import show_components.show.Show;
  */
 public class SeasonFrame extends Season implements Editable {
 
+    {
+	episodes = new HashMap<>();
+    }
+
     @Override
     public void addEpisode(Episode episode) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	episodes.put(episode.getOrdinal(), episode);
     }
 
     @Override
     public void setEpisodesNumber(int number) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	episodesNumber = number;
     }
 
     @Override
     public void setOrdinal(int ordinal) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	this.ordinal = ordinal;
     }
 
     @Override
     public void setShow(Show show) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	this.show = show;
     }
 
     @Override
     public void setViewedState(boolean state) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	viewedState = state;
+    }
+
+    public Season readOnly() {
+	return (Season) this;
     }
 
 }

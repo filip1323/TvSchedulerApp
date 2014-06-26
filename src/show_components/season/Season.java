@@ -5,6 +5,7 @@
  */
 package show_components.season;
 
+import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.show.Show;
 
@@ -14,39 +15,58 @@ import show_components.show.Show;
  */
 public class Season implements Readable {
 
+    protected HashMap<Integer, Episode> episodes;
+
+    protected int episodesNumber;
+    protected int ordinal;
+    protected boolean viewedState;
+    protected Show show;
+
     @Override
     public Episode getEpisode(int ordinal) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return episodes.get(ordinal);
     }
 
     @Override
     public int getEpisodesNumber() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return episodesNumber;
     }
 
     @Override
     public Episode getFirstEpisode(int ordinal) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return episodes.get(1);
     }
 
     @Override
     public Episode getLastEpisode(int ordinal) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return episodes.get(episodesNumber);
     }
 
     @Override
     public int getOrdinal() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return ordinal;
     }
 
     @Override
     public Show getShow() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return show;
     }
 
     @Override
     public boolean isViewed() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return viewedState;
+    }
+
+    @Override
+    public String toString() {
+	return this.hashCode() + "\n"
+		+ "Ordinal " + ordinal + "\n"
+		+ "Episodes number " + episodesNumber + "\n"
+		+ "Viewed state " + viewedState;
+    }
+
+    public SeasonFrame edit() {
+	return (SeasonFrame) this;
     }
 
 }

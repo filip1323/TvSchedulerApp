@@ -25,8 +25,14 @@ public interface Readable {
 
     public long getUpdateDayTime();
 
+    public boolean getNextEpisodeAnnouncementAvailableState();
+
+    public int getNextEpisodeOrdinal();
+
+    public int getNextEpisodeSeasonOrdinal();
+
     //complex getters
-    public Season getSeason();
+    public Season getSeason(int ordinal);
 
     public Season getLastSeason();
 

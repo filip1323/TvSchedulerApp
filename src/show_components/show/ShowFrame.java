@@ -5,6 +5,7 @@
  */
 package show_components.show;
 
+import java.util.HashMap;
 import show_components.season.Season;
 
 /**
@@ -13,34 +14,57 @@ import show_components.season.Season;
  */
 public class ShowFrame extends Show implements Editable {
 
+    {
+	seasons = new HashMap<>();
+    }
+
     @Override
     public void addSeason(Season season) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	seasons.put(season.getOrdinal(), season);
     }
 
     @Override
     public void setEkinoUrl(String url) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	ekinoUrl = url;
+    }
+
+    @Override
+    public void setNextEpisodeAnnouncementAvailableState(boolean state) {
+	nextEpisodeAnnouncementAvailableState = state;
+    }
+
+    @Override
+    public void setNextEpisodeOrdinal(int ordinal) {
+	nextEpisodeOrdinal = ordinal;
+    }
+
+    @Override
+    public void setNextEpisodeSeasonOrdinal(int ordinal) {
+	nextEpisodeSeasonOrdinal = ordinal;
     }
 
     @Override
     public void setSeasonsNumber(int number) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	seasonsNumber = number;
     }
 
     @Override
     public void setTitle(String title) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	this.title = title;
     }
 
     @Override
     public void setTvcomUrl(String url) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	tvcomUrl = url;
     }
 
     @Override
     public void setUpdateDayTime(long date) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	updateTime = date;
+    }
+
+    public Show readOnly() {
+	return (Show) this;
     }
 
 }

@@ -23,5 +23,11 @@ public interface Editable {
 
     public void setUpdateDayTime(long date);
 
+    public void setNextEpisodeAnnouncementAvailableState(boolean state);
+
+    public void setNextEpisodeOrdinal(int ordinal);
+
+    public void setNextEpisodeSeasonOrdinal(int ordinal);
+
     public void addSeason(Season season);
 }

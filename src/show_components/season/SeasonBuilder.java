@@ -11,4 +11,17 @@ package show_components.season;
  */
 public class SeasonBuilder {
 
+    private SeasonFrame seasonFrame;
+
+    public Season getSeason(InfoProvider provider) {
+	buildSeason(provider);
+	return (Season) seasonFrame;
+    }
+
+    private void buildSeason(InfoProvider provider) {
+	seasonFrame = new SeasonFrame();
+	seasonFrame.setEpisodesNumber(provider.getEpisodesNumber());
+	seasonFrame.setOrdinal(provider.getOrdinal());
+	seasonFrame.setViewedState(provider.getViewedState());
+    }
 }
