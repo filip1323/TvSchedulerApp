@@ -28,7 +28,7 @@ import user_exceptions.WrongUrlException;
  *
  * @author Filip
  */
-public class ShowOnlineEngineer {
+class ShowOnlineEngineer {
 
     private String title;
     private Show show;
@@ -42,7 +42,7 @@ public class ShowOnlineEngineer {
 	    throw new DataNotAssignedException("title");
 	}
 	//creating search list link
-	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
+	String searchListUrl = Settings.getInstance().SEARCH_TVCOM_URL + title;
 	TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
 
 	//getting first result
