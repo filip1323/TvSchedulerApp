@@ -5,6 +5,7 @@
  */
 package local_data;
 
+import com.alee.extended.image.WebImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -54,6 +56,14 @@ public class Resources {
      */
     public static URL getUrl(String name) {
 	return ClassLoader.getSystemResource("resources/" + name);
+    }
+
+    public static WebImage getWebImage(String name) {
+	return new WebImage(getUrl(name));
+    }
+
+    public static ImageIcon getImageIcon(String name) {
+	return new ImageIcon(getUrl(name));
     }
 
 }
