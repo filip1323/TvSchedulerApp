@@ -36,10 +36,12 @@ public class WebsiteRepository {
 	documents = new Hashtable<>();
     }
 
-    public Document getDocument(String url) throws WrongUrlException {
+    synchronized public Document getDocument(String url) throws WrongUrlException {
 	url = Bundles.prepareUrl(url);
 	if (!documents.containsKey(url)) {
-	    addDocument(url);
+	    if (!addDocument(url)) {
+		//debug
+	    }
 	}
 	return documents.get(url);
     }
@@ -59,9 +61,8 @@ public class WebsiteRepository {
 	    }
 	} catch (IOException ex) {
 	    ex.printStackTrace();
-	} finally {
-	    return false;
 	}
+	return false;
 
     }
 
