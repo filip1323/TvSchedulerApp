@@ -12,7 +12,7 @@ import show_components.show.Show;
  *
  * @author Filip
  */
-public interface Editable {
+interface Editable {
 
     public void setOrdinal(int ordinal);
 

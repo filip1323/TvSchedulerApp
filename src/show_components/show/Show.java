@@ -5,6 +5,7 @@
  */
 package show_components.show;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.season.Season;
@@ -13,7 +14,7 @@ import show_components.season.Season;
  *
  * @author Filip
  */
-public class Show implements Readable {
+public class Show implements Readable, Serializable {
 
     protected String title;
     protected String tvcomUrl;

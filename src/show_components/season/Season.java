@@ -5,6 +5,7 @@
  */
 package show_components.season;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.show.Show;
@@ -13,14 +14,14 @@ import show_components.show.Show;
  *
  * @author Filip
  */
-public class Season implements Readable {
+public class Season implements Readable, Serializable {
 
     protected HashMap<Integer, Episode> episodes;
 
     protected int episodesNumber;
     protected int ordinal;
     protected boolean viewedState;
-    protected Show show;
+    protected transient Show show;
 
     @Override
     public Episode getEpisode(int ordinal) {

@@ -12,7 +12,7 @@ import show_components.show.Show;
  *
  * @author Filip
  */
-public interface Readable {
+interface Readable {
 
     //solid data
     public int getOrdinal();

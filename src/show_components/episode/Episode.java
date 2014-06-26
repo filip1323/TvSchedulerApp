@@ -5,6 +5,7 @@
  */
 package show_components.episode;
 
+import java.io.Serializable;
 import misc.Utils;
 import show_components.season.Season;
 
@@ -12,7 +13,7 @@ import show_components.season.Season;
  *
  * @author Filip
  */
-public class Episode implements Readable {
+public class Episode implements Readable, Serializable {
 
     protected int absoluteOrdinal;
     protected int seasonOrdinal;
@@ -21,7 +22,7 @@ public class Episode implements Readable {
     protected String title;
     protected String tvcomUrl;
     protected boolean viewedState;
-    protected Season season;
+    protected transient Season season;
 
     @Override
     public int getAbsoluteOrdinal() {

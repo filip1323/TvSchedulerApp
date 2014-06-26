@@ -12,7 +12,7 @@ import show_components.season.Season;
  *
  * @author Filip
  */
-public interface Readable {
+interface Readable {
 
     //solid data
     public String getTitle();

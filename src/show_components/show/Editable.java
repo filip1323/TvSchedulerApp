@@ -11,7 +11,7 @@ import show_components.season.Season;
  *
  * @author Filip
  */
-public interface Editable {
+interface Editable {
 
     public void setTitle(String title);
 
