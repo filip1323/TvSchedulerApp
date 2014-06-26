@@ -9,7 +9,7 @@ package external_websites;
  *
  * @author Filip
  */
-public interface ExternalSource {
+interface ExternalSource {
 
     public void assignTitle(String title);
 
