@@ -5,15 +5,18 @@
  */
 package external_websites;
 
+import show_components.show.Show;
+
 /**
  *
  * @author Filip
  */
 public class Ekino implements ExternalSource {
 
-    @Override
-    public void assignTitle(String title) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private Show show;
+
+    public void assignShow(Show show) {
+	this.show = show;
     }
 
     @Override

@@ -11,8 +11,6 @@ package external_websites;
  */
 interface ExternalSource {
 
-    public void assignTitle(String title);
-
     public String getEpisodeLink(int seasonOrdinal, int episodeOrdinal);
 
     public String getSeasonLink(int seasonOrdinal);
