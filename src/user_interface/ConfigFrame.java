@@ -5,11 +5,13 @@
  */
 package user_interface;
 
+import action_responders.UserActionResponder;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.painter.TitledBorderPainter;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
@@ -122,6 +124,9 @@ public class ConfigFrame extends WebFrame {
 	    //setting layout
 	    this.setLayout(new VerticalFlowLayout(10, 10));
 
+	    WebLabel label1 = new WebLabel("Główne");
+	    this.add(label1);
+
 	    //autostart option
 	    OPTION_AUTOSTART_CHECKBOX = new WebCheckBox(Messages.OPTION_AUTOSTART);
 	    this.add(OPTION_AUTOSTART_CHECKBOX);
@@ -136,6 +141,9 @@ public class ConfigFrame extends WebFrame {
 
 	    this.add(new WebSeparator());
 
+	    WebLabel label2 = new WebLabel("W informacjach o serialu");
+	    this.add(label2);
+
 	    //autorefresh option
 	    OPTION_MENU_LAST_EP_CHECKBOX = new WebCheckBox(Messages.OPTION_MENU_LAST_EP);
 	    this.add(OPTION_MENU_LAST_EP_CHECKBOX);
@@ -145,6 +153,9 @@ public class ConfigFrame extends WebFrame {
 	    this.add(OPTION_MENU_NEXT_EP_FOR_ME);
 
 	    this.add(new WebSeparator());
+
+	    WebLabel label3 = new WebLabel("Zewnętrzne serwisy");
+	    this.add(label3);
 
 	    //thepiratebay
 	    OPTION_CONNECT_PIRATEBAY = new WebCheckBox(Messages.OPTION_CONNECT_PIRATEBAY);
@@ -199,9 +210,16 @@ public class ConfigFrame extends WebFrame {
 	    //setting layout
 	    this.setLayout(new VerticalFlowLayout(10, 10));
 
+	    WebLabel label1 = new WebLabel("W informacjach o serialu");
+	    this.add(label1);
+
 	    //counter option
 	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_EP_COUNTER);
 	    this.add(NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX);
+
+	    this.add(new WebSeparator());
+	    WebLabel label2 = new WebLabel("O serialu");
+	    this.add(label2);
 
 	    //annouce notification
 	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_EP_ANNOUNCEMENT);
@@ -214,6 +232,10 @@ public class ConfigFrame extends WebFrame {
 	    //season premiere notification
 	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_SEAS_RELEASED_TODAY);
 	    this.add(NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX);
+
+	    this.add(new WebSeparator());
+	    WebLabel label3 = new WebLabel("Pozostałe");
+	    this.add(label3);
 
 	    //new client version notification
 	    NOTIFICATION_UPDATE_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_UPDATE);
