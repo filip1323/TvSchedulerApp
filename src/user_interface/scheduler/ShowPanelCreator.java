@@ -87,7 +87,7 @@ public class ShowPanelCreator {
 	header.setFontSize(16);
 	//content.add(header);
 
-	for (int seasonOrdinal = 1; seasonOrdinal < show.getSeasonsNumber(); seasonOrdinal++) {
+	for (int seasonOrdinal = 1; seasonOrdinal <= show.getSeasonsNumber(); seasonOrdinal++) {
 	    WebButton episodesButton = getEpisodesList(seasonOrdinal);
 	    content.add(episodesButton);
 	}
@@ -128,7 +128,7 @@ public class ShowPanelCreator {
 
 	Season season = show.getSeason(seasonOrdinal);
 
-	for (int ordinal = 1; ordinal < season.getEpisodesNumber(); ordinal++) {
+	for (int ordinal = 1; ordinal <= season.getEpisodesNumber(); ordinal++) {
 	    WebButton episodeButton = getEpisodeDetailed(seasonOrdinal, ordinal);
 	    content.add(episodeButton);
 	}
