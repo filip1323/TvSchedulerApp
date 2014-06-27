@@ -48,6 +48,13 @@ public class UserActionResponder implements ActionListener, MouseListener {
 		    Settings.getInstance().OPTION_DEBUG = !Settings.getInstance().OPTION_DEBUG;
 		    break;
 
+		case Messages.OPTION_MENU_LAST_EP:
+		    Settings.getInstance().OPTION_MENU_LAST_EP = !Settings.getInstance().OPTION_MENU_LAST_EP;
+		    break;
+		case Messages.OPTION_MENU_NEXT_EP_FOR_ME:
+		    Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME = !Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME;
+		    break;
+
 		case Messages.OPTION_CONNECT_PIRATEBAY:
 		    Settings.getInstance().OPTION_CONNECT_PIRATEBAY = !Settings.getInstance().OPTION_CONNECT_PIRATEBAY;
 		    break;

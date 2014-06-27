@@ -39,7 +39,10 @@ public class ConfigFrameConstuctor {
     private void checkBoxes() {
 	frame.OPTION_AUTOREFRESH_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOREFRESH);
 	frame.OPTION_AUTOSTART_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOSTART);
-	frame.OPTION_AUTOREFRESH_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOREFRESH);
+	frame.OPTION_DEBUG_CHECKBOX.setSelected(Settings.getInstance().OPTION_DEBUG);
+
+	frame.OPTION_MENU_LAST_EP_CHECKBOX.setSelected(Settings.getInstance().OPTION_MENU_LAST_EP);
+	frame.OPTION_MENU_NEXT_EP_FOR_ME.setSelected(Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME);
 
 	frame.OPTION_CONNECT_EKINO.setSelected(Settings.getInstance().OPTION_CONNECT_EKINO);
 	frame.OPTION_CONNECT_PIRATEBAY.setSelected(Settings.getInstance().OPTION_CONNECT_PIRATEBAY);

@@ -17,6 +17,10 @@ public class Messages {
 
     public static final String OPTION_DEBUG = "Pomóż rozwijać aplikację, przez wysyłanie danych o błędach.";
 
+    public static final String OPTION_MENU_LAST_EP = "Pokaż ostatnio wydany odcinek.";
+
+    public static final String OPTION_MENU_NEXT_EP_FOR_ME = "Pokaż następny odcinek którego nie oglądałem";
+
     public static final String OPTION_CONNECT_PIRATEBAY = "Połącz z thepiratebay.";
 
     public static final String OPTION_CONNECT_EKINO = "Połącz z ekinem.tv";

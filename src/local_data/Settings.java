@@ -30,11 +30,12 @@ public class Settings implements Serializable {
     public boolean OPTION_AUTOREFRESH = false;
     public boolean OPTION_DEBUG = false;
 
+    public boolean OPTION_MENU_LAST_EP = false;
+    public boolean OPTION_MENU_NEXT_EP_FOR_ME = false;
+
     public boolean OPTION_CONNECT_PIRATEBAY = false;
     public boolean OPTION_CONNECT_EKINO = false;
 
-    //TODO option for displaying next ep for me
-    //TODO option for displaying next ep absolue
     public boolean NOTIFICATION_NEXT_EP_COUNTER = false;
     public boolean NOTIFICATION_NEXT_EP_ANNOUNCEMENT = false;
     public boolean NOTIFICATION_NEXT_EP_RELEASED_TODAY = false;

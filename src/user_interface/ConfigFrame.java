@@ -105,6 +105,9 @@ public class ConfigFrame extends WebFrame {
     public WebCheckBox OPTION_AUTOREFRESH_CHECKBOX;
     public WebCheckBox OPTION_DEBUG_CHECKBOX;
 
+    public WebCheckBox OPTION_MENU_LAST_EP_CHECKBOX;
+    public WebCheckBox OPTION_MENU_NEXT_EP_FOR_ME;
+
     public WebCheckBox OPTION_CONNECT_PIRATEBAY;
     public WebCheckBox OPTION_CONNECT_EKINO;
 
@@ -133,6 +136,16 @@ public class ConfigFrame extends WebFrame {
 
 	    this.add(new WebSeparator());
 
+	    //autorefresh option
+	    OPTION_MENU_LAST_EP_CHECKBOX = new WebCheckBox(Messages.OPTION_MENU_LAST_EP);
+	    this.add(OPTION_MENU_LAST_EP_CHECKBOX);
+
+	    //debug option
+	    OPTION_MENU_NEXT_EP_FOR_ME = new WebCheckBox(Messages.OPTION_MENU_NEXT_EP_FOR_ME);
+	    this.add(OPTION_MENU_NEXT_EP_FOR_ME);
+
+	    this.add(new WebSeparator());
+
 	    //thepiratebay
 	    OPTION_CONNECT_PIRATEBAY = new WebCheckBox(Messages.OPTION_CONNECT_PIRATEBAY);
 	    this.add(OPTION_CONNECT_PIRATEBAY);
@@ -144,6 +157,10 @@ public class ConfigFrame extends WebFrame {
 	    OPTION_AUTOSTART_CHECKBOX.addActionListener(userActionResponder);
 	    OPTION_AUTOREFRESH_CHECKBOX.addActionListener(userActionResponder);
 	    OPTION_DEBUG_CHECKBOX.addActionListener(userActionResponder);
+
+	    OPTION_MENU_LAST_EP_CHECKBOX.addActionListener(userActionResponder);
+	    OPTION_MENU_NEXT_EP_FOR_ME.addActionListener(userActionResponder);
+
 	    OPTION_CONNECT_PIRATEBAY.addActionListener(userActionResponder);
 	    OPTION_CONNECT_EKINO.addActionListener(userActionResponder);
 
