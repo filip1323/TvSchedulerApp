@@ -78,6 +78,7 @@ public class ShowPanelCreator {
 	    panel.add(ekinoButton);
 	}
 
+	//creating last ep button
 	if (Settings.getInstance().OPTION_MENU_LAST_EP) {
 	    Episode lastEpisode = show.getLastEpisode();
 	    WebButton lastEpButton = getEpisodeDetailed(lastEpisode.getSeasonOrdinal(), lastEpisode.getOrdinal());
@@ -97,7 +98,25 @@ public class ShowPanelCreator {
 	seasonsButton.setHorizontalAlignment(SwingConstants.LEFT);
 	seasonsButton.setDrawSides(false, false, false, false);
 
-	final GroupPanel content = new GroupPanel(0, false);
+	seasonsButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		final WebPopOver popOver = new WebPopOver();
+		popOver.setCloseOnFocusLoss(true);
+		popOver.setAlwaysOnTop(true);
+		popOver.add(getSeasonsListContent());
+		popOver.setShadeWidth(0);
+
+		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
+	    }
+	});
+
+	return seasonsButton;
+    }
+
+    private GroupPanel getSeasonsListContent() {
+
+	GroupPanel content = new GroupPanel(0, false);
 	content.setShadeTransparency(100);
 	WebLabel header = new WebLabel("Sezony");
 	header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,23 +129,11 @@ public class ShowPanelCreator {
 	    content.add(episodesButton);
 	}
 
-	seasonsButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		final WebPopOver popOver = new WebPopOver();
-		popOver.setCloseOnFocusLoss(true);
-		popOver.setAlwaysOnTop(true);
-		popOver.add(content);
-		popOver.setShadeWidth(0);
+	return content;
 
-		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
-	    }
-	});
-
-	return seasonsButton;
     }
 
-    private WebButton getEpisodesList(int seasonOrdinal) {
+    private WebButton getEpisodesList(final int seasonOrdinal) {
 	final WebButton episodesButton = new WebButton(seasonOrdinal + ". Sezon");
 	episodesButton.setDrawSides(false, false, true, false);
 	episodesButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -134,7 +141,23 @@ public class ShowPanelCreator {
 	if (seasonOrdinal == 1) {
 	    episodesButton.setDrawSides(true, false, true, false);
 	}
-	final GroupPanel content = new GroupPanel(0, false);
+	episodesButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		final WebPopOver popOver = new WebPopOver();
+		popOver.setCloseOnFocusLoss(true);
+		popOver.setAlwaysOnTop(true);
+		popOver.add(getEpisodesListContent(seasonOrdinal));
+		popOver.setShadeWidth(0);
+
+		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
+	    }
+	});
+	return episodesButton;
+    }
+
+    private GroupPanel getEpisodesListContent(int seasonOrdinal) {
+	GroupPanel content = new GroupPanel(0, false);
 	content.setShadeTransparency(100);
 	content.setShadeWidth(0);
 
@@ -151,22 +174,11 @@ public class ShowPanelCreator {
 	    content.add(episodeButton);
 	}
 
-	episodesButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		final WebPopOver popOver = new WebPopOver();
-		popOver.setCloseOnFocusLoss(true);
-		popOver.setAlwaysOnTop(true);
-		popOver.add(content);
-		popOver.setShadeWidth(0);
+	return content;
 
-		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
-	    }
-	});
-	return episodesButton;
     }
 
-    private WebButton getEpisodeDetailed(int seasonOrdinal, int ordinal) {
+    private WebButton getEpisodeDetailed(final int seasonOrdinal, final int ordinal) {
 	Episode episode = show.getSeason(seasonOrdinal).getEpisode(ordinal);
 	final WebButton episodeDetailedInfoButton = new WebButton(((ordinal < 10) ? "0" : "") + ordinal + ". " + episode.getTitle());
 	episodeDetailedInfoButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -174,6 +186,25 @@ public class ShowPanelCreator {
 	if (ordinal == 1) {
 	    episodeDetailedInfoButton.setDrawSides(true, false, true, false);
 	}
+
+	episodeDetailedInfoButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(final ActionEvent e) {
+		final WebPopOver popOver = new WebPopOver();
+		popOver.setCloseOnFocusLoss(true);
+		popOver.setAlwaysOnTop(true);
+		popOver.add(getEpisodeDetailedContent(seasonOrdinal, ordinal));
+		popOver.setShadeWidth(0);
+
+		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
+	    }
+	});
+	return episodeDetailedInfoButton;
+    }
+
+    private GroupPanel getEpisodeDetailedContent(int seasonOrdinal, int ordinal) {
+	Episode episode = show.getSeason(seasonOrdinal).getEpisode(ordinal);
+
 	final GroupPanel content = new GroupPanel(0, false);
 	content.setMargin(10);
 	content.setGap(3);
@@ -248,19 +279,6 @@ public class ShowPanelCreator {
 //	viewedCheckbox.setAction(new ButtonAction(TYPE.CHANGE_EPISODE_VIEWED_STATE, episode));
 	viewedCheckbox.setText("Obejrzany?");
 	content.add(viewedCheckbox);
-
-	episodeDetailedInfoButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(final ActionEvent e) {
-		final WebPopOver popOver = new WebPopOver();
-		popOver.setCloseOnFocusLoss(true);
-		popOver.setAlwaysOnTop(true);
-		popOver.add(content);
-		popOver.setShadeWidth(0);
-
-		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
-	    }
-	});
-	return episodeDetailedInfoButton;
+	return content;
     }
 }
