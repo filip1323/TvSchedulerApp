@@ -45,7 +45,7 @@ class ShowOnlineEngineer {
 	String searchListUrl = Settings.getInstance().SEARCH_TVCOM_URL + title;
 	TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
 
-	//getting first result
+//TODO its wrong	//getting first result
 	Result firstResult = searchList.getFirstResult();
 	//make sure its right
 	//getting homepage
@@ -89,8 +89,6 @@ class ShowOnlineEngineer {
 	}
 
 	this.show = show;
-
-	//System.out.println(season_1);
     }
 
     public Show getShow() {

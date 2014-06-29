@@ -34,5 +34,9 @@ public class Messages {
     public static final String NOTIFICATION_NEXT_SEAS_RELEASED_TODAY = "Powiadamiaj o premierze nowego sezonu.";
 
     public static final String NOTIFICATION_UPDATE = "Powiadamiaj o dostępności nowej wersji programu.";
-;
+
+    public static final String MANAGER_ADD_SHOW = "Dodaj serial";
+
+    public static final String MANAGER_REMOVE_SHOW = "Usuń serial";
+
 }

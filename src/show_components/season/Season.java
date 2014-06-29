@@ -34,12 +34,12 @@ public class Season implements Readable, Serializable {
     }
 
     @Override
-    public Episode getFirstEpisode(int ordinal) {
+    public Episode getFirstEpisode() {
 	return episodes.get(1);
     }
 
     @Override
-    public Episode getLastEpisode(int ordinal) {
+    public Episode getLastEpisode() {
 	return episodes.get(episodesNumber);
     }
 

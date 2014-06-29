@@ -81,6 +81,9 @@ public class ShowLocalDataHUB {
 	    title = title.replace(".ser", "").replace("shows", "").replace("\\", "");
 	    titles.set(i, title);
 	}
+	if (titles == null) {
+	    return new ArrayList<>();
+	}
 	return titles;
     }
 

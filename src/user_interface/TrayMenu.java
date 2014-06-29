@@ -11,16 +11,16 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import logic.Controller;
+import logic.MainController;
 
 /**
  *
  * @author Filip
  */
-public class MenuPanel extends PopupMenu {
+public class TrayMenu extends PopupMenu {
 
     private UserInterface userInterface;
-    private Controller controller;
+    private MainController controller;
     private WebButton exitButton;
     private GroupPanel contentGroupPanel;
 
@@ -28,13 +28,15 @@ public class MenuPanel extends PopupMenu {
 	this.userInterface = userInterface;
     }
 
-    public void assignController(Controller controller) {
+    public void assignController(MainController controller) {
 	this.controller = controller;
     }
 
     void initComponents() {
 	MenuItem exitButton = new MenuItem("Wyjście");
 	MenuItem settingsButton = new MenuItem("Ustawienia");
+	MenuItem managerButton = new MenuItem("Zarządzaj serialami");
+
 	exitButton.addActionListener(new ActionListener() {
 
 	    @Override
@@ -51,6 +53,14 @@ public class MenuPanel extends PopupMenu {
 	    }
 	});
 
+	managerButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		userInterface.showManager();
+	    }
+	});
+	this.add(managerButton);
 	this.add(settingsButton);
 	this.add(exitButton);
     }

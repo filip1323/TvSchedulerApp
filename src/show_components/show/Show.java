@@ -34,16 +34,20 @@ public class Show implements Readable, Serializable {
 
     @Override
     public Episode getLastEpisode() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	if (this.isNextEpisodeAnnouncement()) {
+	    return getSeason(getNextEpisodeSeasonOrdinal()).getEpisode(getNextEpisodeOrdinal());
+	} else {
+	    return getLastSeason().getLastEpisode();
+	}
     }
 
     @Override
     public Season getLastSeason() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	return getSeason(getSeasonsNumber());
     }
 
     @Override
-    public boolean getNextEpisodeAnnouncementAvailableState() {
+    public boolean isNextEpisodeAnnouncement() {
 	return nextEpisodeAnnouncementAvailableState;
     }
 
@@ -103,7 +107,7 @@ public class Show implements Readable, Serializable {
 		+ "Title " + getTitle() + "\n"
 		+ "TvcomUrl " + getTvcomUrl() + "\n"
 		+ "SeasonsNumber " + getSeasonsNumber() + "\n"
-		+ "Next ep announcement " + getNextEpisodeAnnouncementAvailableState() + "\n"
+		+ "Next ep announcement " + isNextEpisodeAnnouncement() + "\n"
 		+ "Next ep summary " + getNextEpisodeSeasonOrdinal() + "x" + getNextEpisodeOrdinal();
     }
 

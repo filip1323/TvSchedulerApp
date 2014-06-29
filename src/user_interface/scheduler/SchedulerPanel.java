@@ -10,7 +10,7 @@ import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebAccordionStyle;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
-import user_interface.UserActionResponder;
+import action_responders.ConfigActionResponder;
 
 /**
  *
@@ -20,10 +20,10 @@ public class SchedulerPanel extends WebPanel {
 
     private GroupPanel contentGroupPanel;
     private WebButton exitButton;
-    private UserActionResponder userActionResponder;
+    private ConfigActionResponder userActionResponder;
     private WebAccordion accordion;
 
-    public void assignUserActionResponder(UserActionResponder userActionResponder) {
+    public void assignUserActionResponder(ConfigActionResponder userActionResponder) {
 	this.userActionResponder = userActionResponder;
     }
 

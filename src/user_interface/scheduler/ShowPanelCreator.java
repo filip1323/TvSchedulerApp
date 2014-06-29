@@ -5,6 +5,7 @@
  */
 package user_interface.scheduler;
 
+import action_responders.ConfigActionResponder;
 import com.alee.extended.image.WebDecoratedImage;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.window.PopOverDirection;
@@ -23,6 +24,7 @@ import misc.Utils;
 import show_components.episode.Episode;
 import show_components.season.Season;
 import show_components.show.Show;
+import user_exceptions.DebugError;
 
 /**
  *
@@ -34,7 +36,16 @@ public class ShowPanelCreator {
 
     private GroupPanel panel;
 
+    private static ConfigActionResponder userActionResponder;
+
+    public static void assignUserActionResponder(ConfigActionResponder userActionResponder) {
+	ShowPanelCreator.userActionResponder = userActionResponder;
+    }
+
     public GroupPanel getShowPanel(Show show) {
+	if (userActionResponder == null) {
+	    throw new DebugError("user action responder not initialzied");
+	}
 	this.show = show;
 	//creating panel
 	panel = new GroupPanel();
@@ -47,23 +58,30 @@ public class ShowPanelCreator {
 	panel.add(thumb);
 	panel.add(new WebSeparator());
 
-//	//creating title label
-//	WebLabel titleLabel = new WebLabel(show.getTitle());
-//	titleLabel.setFontSize(20);
-//	titleLabel.setHorizontalAlignment(0);
-//	panel.add(titleLabel);
-	//tvcom button
-	WebButton tvcomButton = new WebButton("tv.com", Resources.getImageIcon("external-link.png"));
+	//creating tvcomButton
+	WebButton tvcomButton = new WebButton();
 	tvcomButton.setDrawSides(true, false, true, false);
 	tvcomButton.setHorizontalAlignment(SwingConstants.LEFT);
+//	tvcomButton.setAction(new ButtonAction(TYPE.OPEN_TVCOM_HOMEPAGE, show));
+	tvcomButton.setText("tv.com");
+	tvcomButton.setIcon(Resources.getImageIcon("external-link.png"));
 	panel.add(tvcomButton);
-
+//TODO
 	//ekino button
 	if (Settings.getInstance().OPTION_CONNECT_EKINO) {
-	    WebButton ekinoButton = new WebButton("ekino.tv", Resources.getImageIcon("external-link.png"));
+	    WebButton ekinoButton = new WebButton();
 	    ekinoButton.setDrawSides(false, false, true, false);
 	    ekinoButton.setHorizontalAlignment(SwingConstants.LEFT);
+//	    ekinoButton.setAction(new ButtonAction(TYPE.OPEN_EKINO_HOMEPAGE, show));
+	    ekinoButton.setText("ekino.tv");
+	    ekinoButton.setIcon(Resources.getImageIcon("external-link.png"));
 	    panel.add(ekinoButton);
+	}
+
+	if (Settings.getInstance().OPTION_MENU_LAST_EP) {
+	    Episode lastEpisode = show.getLastEpisode();
+	    WebButton lastEpButton = getEpisodeDetailed(lastEpisode.getSeasonOrdinal(), lastEpisode.getOrdinal());
+	    panel.add(lastEpButton);
 	}
 
 	//seasons list
@@ -101,7 +119,7 @@ public class ShowPanelCreator {
 		popOver.add(content);
 		popOver.setShadeWidth(0);
 
-		popOver.show((WebButton) e.getSource(), PopOverDirection.left);
+		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
 	    }
 	});
 
@@ -142,7 +160,7 @@ public class ShowPanelCreator {
 		popOver.add(content);
 		popOver.setShadeWidth(0);
 
-		popOver.show((WebButton) e.getSource(), PopOverDirection.left);
+		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
 	    }
 	});
 	return episodesButton;
@@ -192,17 +210,23 @@ public class ShowPanelCreator {
 	}
 	tvcomButton.setHorizontalAlignment(SwingConstants.LEFT);
 	tvcomButton.setShadeWidth(0);
+//	tvcomButton.setAction(new ButtonAction(TYPE.OPEN_TVCOM_EPISODE, episode));
+	tvcomButton.setText("Tv.com");
+	tvcomButton.setIcon(Resources.getImageIcon("external-link.png"));
 	externalLinksGroup.add(tvcomButton);
 
 	//piratebay
 	if (Settings.getInstance().OPTION_CONNECT_PIRATEBAY) {
-	    WebButton piratebayButton = new WebButton("Torrent", Resources.getImageIcon("external-link.png"));
+	    WebButton piratebayButton = new WebButton();
 	    piratebayButton.setDrawSides(false, true, true, true);
 	    if (Settings.getInstance().OPTION_CONNECT_EKINO) {
 		piratebayButton.setDrawBottom(false);
 	    }
 	    piratebayButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    piratebayButton.setShadeWidth(0);
+//	    piratebayButton.setAction(new ButtonAction(TYPE.OPEN_PIRATEBAY_EPISODE, episode));
+	    piratebayButton.setText("Torrent");
+	    piratebayButton.setIcon(Resources.getImageIcon("external-link.png"));
 	    externalLinksGroup.add(piratebayButton);
 	}
 
@@ -212,12 +236,17 @@ public class ShowPanelCreator {
 	    ekinoButton.setDrawSides(false, true, true, true);
 	    ekinoButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    ekinoButton.setShadeWidth(0);
+//	    ekinoButton.setAction(new ButtonAction(TYPE.OPEN_EKINO_EPISODE, episode));
+	    ekinoButton.setText("Ekino.TV");
+	    ekinoButton.setIcon(Resources.getImageIcon("external-link.png"));
 	    externalLinksGroup.add(ekinoButton);
 	}
 
 	content.add(externalLinksGroup);
 
 	WebCheckBox viewedCheckbox = new WebCheckBox("Obejrzany?");
+//	viewedCheckbox.setAction(new ButtonAction(TYPE.CHANGE_EPISODE_VIEWED_STATE, episode));
+	viewedCheckbox.setText("Obejrzany?");
 	content.add(viewedCheckbox);
 
 	episodeDetailedInfoButton.addActionListener(new ActionListener() {

@@ -25,14 +25,22 @@ public class TvcomShowHomepage { //e.g `http://www.tv.com/shows/lost/`
     public TvcomShowHomepage(String url) throws WrongUrlException {
 	url = Utils.Web.normalizeUrl(url);
 	if (!isUrlCorrect(url)) {
-	    throw new WrongUrlException("`" + url + "` is not matching Settings.SHOW_TVCOM_URL: `" + Settings.SHOW_TVCOM_URL + "`");
+	    throw new WrongUrlException("`" + url + "` is not matching Settings.SHOW_TVCOM_URL: `" + Settings.getInstance().SHOW_TVCOM_URL + "`");
 	}
 	this.url = url;
 	this.document = WebsiteRepository.getInstance().getDocument(url);
     }
 
+    public String getTitle() {
+	return document.select("div.m.show_head h1").first().text();
+    }
+
+    public String getUrl() {
+	return url;
+    }
+
     private boolean isUrlCorrect(String url) {
-	return url.contains(Settings.SHOW_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL);
+	return url.contains(Settings.getInstance().SHOW_TVCOM_URL) && !url.equals(Settings.getInstance().SHOW_TVCOM_URL);
     }
 
     public boolean isNextEpisodeAnnouncementAvailable() {

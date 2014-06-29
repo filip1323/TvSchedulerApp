@@ -5,7 +5,7 @@
  */
 package user_interface;
 
-import action_responders.UserActionResponder;
+import action_responders.ConfigActionResponder;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.painter.TitledBorderPainter;
 import com.alee.extended.panel.GroupPanel;
@@ -22,6 +22,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import local_data.Messages;
+import local_data.Settings;
 
 /**
  *
@@ -32,11 +33,10 @@ public class ConfigFrame extends WebFrame {
     private GroupPanel tabGroup;
     private WebTabbedPane tabGroupPane;
     private MainOptionsTab mainOptionsTab;
-    private ShowsManagerTab showsManagerTab;
     private NotificationsOptionTab notificationsOptionTab;
-    private UserActionResponder userActionResponder;
+    private ConfigActionResponder userActionResponder;
 
-    public void assignUserActionResponder(UserActionResponder userActionResponder) {
+    public void assignUserActionResponder(ConfigActionResponder userActionResponder) {
 	this.userActionResponder = userActionResponder;
     }
 
@@ -76,11 +76,6 @@ public class ConfigFrame extends WebFrame {
 	notificationsOptionTab.setPainter(titledBorderPainter);
 	tabGroupPane.add(notificationsOptionTab);
 
-	//adding show manager tab
-	showsManagerTab = new ShowsManagerTab();
-	showsManagerTab.setPainter(titledBorderPainter);
-	tabGroupPane.add(showsManagerTab);
-
 	add(tabGroupPane);
 
 	//inside padding
@@ -101,6 +96,22 @@ public class ConfigFrame extends WebFrame {
 	int xLocation = (width - (int) getPreferredSize().getWidth()) / 2;
 	int yLocation = (height - (int) getPreferredSize().getHeight() - taskBarHeight) / 2;
 	setLocation(xLocation, yLocation);
+
+	OPTION_AUTOREFRESH_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOREFRESH);
+	OPTION_AUTOSTART_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOSTART);
+	OPTION_DEBUG_CHECKBOX.setSelected(Settings.getInstance().OPTION_DEBUG);
+
+	OPTION_MENU_LAST_EP_CHECKBOX.setSelected(Settings.getInstance().OPTION_MENU_LAST_EP);
+	OPTION_MENU_NEXT_EP_FOR_ME.setSelected(Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME);
+
+	OPTION_CONNECT_EKINO.setSelected(Settings.getInstance().OPTION_CONNECT_EKINO);
+	OPTION_CONNECT_PIRATEBAY.setSelected(Settings.getInstance().OPTION_CONNECT_PIRATEBAY);
+
+	NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT);
+	NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_COUNTER);
+	NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_RELEASED_TODAY);
+	NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_SEAS_RELEASED_TODAY);
+	NOTIFICATION_UPDATE_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_UPDATE);
 
     }
     public WebCheckBox OPTION_AUTOSTART_CHECKBOX;
@@ -177,20 +188,6 @@ public class ConfigFrame extends WebFrame {
 
 	}
 
-    }
-
-    class ShowsManagerTab extends GroupPanel {
-
-	public ShowsManagerTab() {
-	    setName("Zarządzaj serialami");
-	    setContent();
-	}
-
-	public void setContent() {
-	    //setting layout
-	    this.setLayout(new VerticalFlowLayout(10, 10));
-
-	}
     }
 
     public WebCheckBox NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX;

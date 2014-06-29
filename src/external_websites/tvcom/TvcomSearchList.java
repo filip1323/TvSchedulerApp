@@ -11,6 +11,7 @@ import misc.Utils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import user_exceptions.DebugError;
 import user_exceptions.WrongUrlException;
 
 /**
@@ -26,7 +27,7 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
     public TvcomSearchList(String url) throws WrongUrlException {
 	url = Utils.Web.normalizeUrl(url);
 	if (!isUrlCorrect(url)) {
-	    throw new WrongUrlException("`" + url + "` is not matching Settings.SEARCH_TVCOM_URL: `" + Settings.SEARCH_TVCOM_URL + "`");
+	    throw new WrongUrlException("`" + url + "` is not matching Settings.SEARCH_TVCOM_URL: `" + Settings.getInstance().SEARCH_TVCOM_URL + "`");
 	}
 	this.url = url;
 	this.document = WebsiteRepository.getInstance().getDocument(url);
@@ -43,8 +44,8 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 	    ordinal = 1;
 	}
 
-	if (ordinal > resultElements.size()) {
-	    return null;
+	if (ordinal > getResultsNumber()) {
+	    throw new DebugError("Too high ordinal " + ordinal + "/" + getResultsNumber());
 	}
 
 	String title, showUrl, imageUrl;
@@ -53,7 +54,7 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 
 	title = resultElement.select("div.info h4").first().text();
 
-	showUrl = Settings.BASIC_TVCOM_URL.substring(0, Settings.BASIC_TVCOM_URL.length() - 1) + resultElement.select("div.info h4 a").attr("href");
+	showUrl = Settings.getInstance().BASIC_TVCOM_URL.substring(0, Settings.getInstance().BASIC_TVCOM_URL.length() - 1) + resultElement.select("div.info h4 a").attr("href");
 
 	imageUrl = resultElement.select(">a._image_container img").first().attr("src");
 
@@ -62,7 +63,7 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
     }
 
     private boolean isUrlCorrect(String url) {
-	return url.contains(Settings.SEARCH_TVCOM_URL) && !url.equals(Settings.SEARCH_TVCOM_URL);
+	return url.contains(Settings.getInstance().SEARCH_TVCOM_URL) && !url.equals(Settings.getInstance().SEARCH_TVCOM_URL);
     }
 
     public Result getFirstResult() {

@@ -3,35 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package user_interface;
+package action_responders;
 
+import com.alee.laf.button.WebButton;
 import com.alee.laf.checkbox.WebCheckBox;
-import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import local_data.Messages;
 import local_data.Settings;
-import show_components.ShowController;
+import user_interface.UserInterface;
 
 /**
  *
  * @author Filip
  */
-public class UserActionResponder implements ActionListener, MouseListener {
+public class ConfigActionResponder implements ActionListener {
 
     private UserInterface userInterface;
-
-    private ShowController showController;
-
-    public void assignShowController(ShowController showController) {
-	this.showController = showController;
-    }
-
-    public void assignUserInterface(UserInterface ui) {
-	userInterface = ui;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -80,30 +68,12 @@ public class UserActionResponder implements ActionListener, MouseListener {
 	    }
 	    Settings.getInstance().saveMe();
 	}
-    }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-	if (e.getSource().getClass().equals(TrayIcon.class)) { //tray icon clicked
-	    if (e.getButton() == MouseEvent.BUTTON1) {//left button
-		userInterface.toggleScheduler();
+	if (e.getSource().getClass() == WebButton.class) {
+	    switch (e.getActionCommand().toString()) {
+		case Messages.MANAGER_ADD_SHOW:
+		    break;
 	    }
 	}
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
     }
 }

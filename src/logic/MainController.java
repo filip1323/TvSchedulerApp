@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package logic;
 
 /**
  *
  * @author Filip
  */
-public class Controller {
+public class MainController {
+
+    public void shutdown() {
+	System.exit(0);
+    }
 
 }

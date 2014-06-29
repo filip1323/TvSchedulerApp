@@ -25,7 +25,7 @@ interface Readable {
 
     public long getUpdateDayTime();
 
-    public boolean getNextEpisodeAnnouncementAvailableState();
+    public boolean isNextEpisodeAnnouncement();
 
     public int getNextEpisodeOrdinal();
 

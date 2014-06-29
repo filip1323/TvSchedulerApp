@@ -33,15 +33,15 @@ public class TvcomSeasonGuide {
 	}
 	this.url = url;
 	this.document = WebsiteRepository.getInstance().getDocument(url);
-	if (getSeasonOrdinal() > getSeasonsNumber()) {
+	if (getOrdinal() > getSeasonsNumber()) {
 	    throw new DebugError("Season ordinal cant be higher than seasons number");
-	} else if (getSeasonOrdinal() < 1) {
+	} else if (getOrdinal() < 1) {
 	    throw new DebugError("Season ordinal cant be lower than 1");
 	}
     }
 
     private boolean isUrlCorrect(String url) {
-	return url.contains(Settings.SHOW_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL) && (url.endsWith("/episodes/") || url.endsWith("/episodes") || url.contains("/season-"));
+	return url.contains(Settings.getInstance().SHOW_TVCOM_URL) && !url.equals(Settings.getInstance().SHOW_TVCOM_URL) && (url.endsWith("/episodes/") || url.endsWith("/episodes") || url.contains("/season-"));
     }
 
     public int getSeasonsNumber() {
@@ -70,7 +70,7 @@ public class TvcomSeasonGuide {
 	return maxEpOrdinalFound;
     }
 
-    public int getSeasonOrdinal() {
+    public int getOrdinal() {
 	String url = this.url.replace("-", " "); //magic, not clean but working
 	return Utils.Readers.getSeasonOrdinalOrNull(url);
 
@@ -95,7 +95,7 @@ public class TvcomSeasonGuide {
 
 	HashMap<String, String> episodeInfo = new HashMap<>();
 
-	int seasonOrdinal = getSeasonOrdinal();
+	int seasonOrdinal = getOrdinal();
 
 	int episodeOrdinal = ordinal;
 
@@ -107,13 +107,13 @@ public class TvcomSeasonGuide {
 
 	String title = titleElement.text();
 
-	String url = Settings.BASIC_TVCOM_URL + titleElement.attr("href");
+	String url = Utils.Web.normalizeUrl(Settings.getInstance().BASIC_TVCOM_URL + titleElement.attr("href"));
 
 	episodeInfo.put("seasonOrdinal", Integer.toString(seasonOrdinal));
 	episodeInfo.put("ordinal", Integer.toString(episodeOrdinal));
 	episodeInfo.put("title", title);
-	episodeInfo.put("date", Long.toString(date));
-	episodeInfo.put("url", url);
+	episodeInfo.put("releaseDate", Long.toString(date));
+	episodeInfo.put("tvcomUrl", url);
 	return episodeInfo;
 
 	//return selectedEpElement
@@ -123,7 +123,7 @@ public class TvcomSeasonGuide {
     public String toString() {
 	String result = "`" + url + "`\t"
 		+ "\tSeasons number: " + getSeasonsNumber()
-		+ "\tSeason ordinal: " + getSeasonOrdinal()
+		+ "\tSeason ordinal: " + getOrdinal()
 		+ "\tEpisodes number: " + getEpisodesNumber();
 
 	return result;

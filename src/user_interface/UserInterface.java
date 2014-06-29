@@ -5,18 +5,18 @@
  */
 package user_interface;
 
+import action_responders.ConfigActionResponder;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.AWTException;
-import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import local_data.Resources;
-import logic.Controller;
-import show_components.ShowController;
 import show_components.show.Show;
 import user_interface.scheduler.SchedulerPanel;
 import user_interface.scheduler.ShowPanelCreator;
@@ -27,29 +27,24 @@ import user_interface.scheduler.ShowPanelCreator;
  */
 public class UserInterface {
 
-    private ShowController showController;
-    private Controller controller;
-    private UserActionResponder userActionResponder;
+    private ConfigActionResponder userActionResponder;
 
+    private TrayMenu trayMenu;
     private TransparentWindow window;
     private SchedulerPanel schedulerPanel;
     private ConfigFrame configFrame;
-    private MenuPanel menuPanel;
+    private ShowManagerFrame showManagementFrame;
     private ShowPanelCreator showPanelCreator;
 
-    public UserInterface() {
-	showPanelCreator = new ShowPanelCreator();
+    private TrayIcon trayIcon;
+
+    private boolean schedulerVisibleState = false;
+
+    public void assignShowPanelCreator(ShowPanelCreator showPanelCreator) {
+	this.showPanelCreator = showPanelCreator;
     }
 
-    public void assignShowController(ShowController showController) {
-	this.showController = showController;
-    }
-
-    public void assignController(Controller controller) {
-	this.controller = controller;
-    }
-
-    public void assignUserActionResponder(UserActionResponder userActionResponder) {
+    public void assignUserActionResponder(ConfigActionResponder userActionResponder) {
 	this.userActionResponder = userActionResponder;
     }
 
@@ -72,36 +67,69 @@ public class UserInterface {
 	schedulerPanel.assignUserActionResponder(userActionResponder);
 	schedulerPanel.initComponents();
 
-	//creating configFrame(raw)
-	ConfigFrameConstuctor configFrameController = new ConfigFrameConstuctor();
-	configFrameController.assignUserActionResponder(userActionResponder);
-	configFrame = configFrameController.getConfigFrame();
+	//creating configFrame
+	configFrame = new ConfigFrame();
+	configFrame.assignUserActionResponder(userActionResponder);
+	configFrame.initComponents();
+
+	//creating show manager
+	showManagementFrame = new ShowManagerFrame();
+	showManagementFrame.assignUserActionResponder(userActionResponder);
+	showManagementFrame.initComponents();
 
 	//creating menu
-	menuPanel = new MenuPanel();
-	menuPanel.assignUserInterface(this);
-	menuPanel.assignController(controller);
-	menuPanel.initComponents();
+	trayMenu = new TrayMenu();
+	trayMenu.assignUserInterface(this);
+	trayMenu.initComponents();
 
 	//creating tray handler
 	createTrayHandler();
-	trayIcon.addMouseListener(userActionResponder);
-	trayIcon.addActionListener(userActionResponder);
-	trayIcon.setPopupMenu(menuPanel);
+	trayIcon.addMouseListener(new MouseListener() {
+
+	    @Override
+	    public void mousePressed(MouseEvent e) {
+		if (e.getSource().getClass().equals(TrayIcon.class)) { //tray icon clicked
+		    if (e.getButton() == MouseEvent.BUTTON1) {//left button
+			toggleScheduler();
+		    }
+		}
+	    }
+	    //<editor-fold defaultstate="collapsed" desc="useless">
+
+	    @Override
+	    public void mouseClicked(MouseEvent e) {
+		//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	    }
+
+	    @Override
+	    public void mouseEntered(MouseEvent e) {
+		//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	    }
+
+	    @Override
+	    public void mouseExited(MouseEvent e) {
+		//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	    }
+
+	    @Override
+	    public void mouseReleased(MouseEvent e
+	    ) {
+		//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	    }
+
+//</editor-fold>
+	});
+	trayIcon.setPopupMenu(trayMenu);
 //	window.addPanel(menuPanel);
 //	window.addPanel(schedulerPanel);
 	window.setVisible(true);
     }
 
-    private SystemTray tray;
-    private TrayIcon trayIcon;
-    private Image trayIconImage;
-
     private void createTrayHandler() {
 	//img
 	trayIcon = new java.awt.TrayIcon(new ImageIcon(Resources.getUrl("tray-icon.png")).getImage());
 	//tray instance
-	tray = SystemTray.getSystemTray();
+	SystemTray tray = SystemTray.getSystemTray();
 	//auto size for img
 	trayIcon.setImageAutoSize(true);
 	//adding tray handle to tray bar
@@ -115,12 +143,6 @@ public class UserInterface {
     public void showConfig() {
 	configFrame.setVisible(true);
     }
-
-    public void hideConfig() {
-	configFrame.setVisible(false);
-    }
-
-    private boolean schedulerVisibleState = false;
 
     public void showScheduler() {
 	window.setVisible(false);
@@ -147,6 +169,22 @@ public class UserInterface {
 	} else {
 	    showScheduler();
 	}
+    }
+
+    public void showManager() {
+	showManagementFrame.setVisible(true);
+    }
+
+    public SchedulerPanel getSchedulerPanel() {
+	return schedulerPanel;
+    }
+
+    public ConfigFrame getConfigFrame() {
+	return configFrame;
+    }
+
+    public ShowManagerFrame getShowManagementFrame() {
+	return showManagementFrame;
     }
 
 }

@@ -26,7 +26,7 @@ interface Readable {
 
     public Episode getEpisode(int ordinal);
 
-    public Episode getFirstEpisode(int ordinal);
+    public Episode getFirstEpisode();
 
-    public Episode getLastEpisode(int ordinal);
+    public Episode getLastEpisode();
 }
