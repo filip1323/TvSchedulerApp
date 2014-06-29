@@ -16,6 +16,7 @@ import show_components.season.Season;
  */
 public class Show implements Readable, Serializable {
 
+    protected String thumbUrl;
     protected String title;
     protected String tvcomUrl;
     protected String ekinoUrl;
@@ -44,6 +45,11 @@ public class Show implements Readable, Serializable {
     @Override
     public Season getLastSeason() {
 	return getSeason(getSeasonsNumber());
+    }
+
+    @Override
+    public String getThumbUrl() {
+	return thumbUrl;
     }
 
     @Override

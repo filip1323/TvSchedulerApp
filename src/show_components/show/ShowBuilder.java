@@ -27,6 +27,7 @@ public class ShowBuilder {
 	showFrame.setEkinoUrl(null);
 	showFrame.setSeasonsNumber(provider.getSeasonsNumber());
 	showFrame.setNextEpisodeAnnouncementAvailableState(provider.isNextEpisodeAnnounced());
+	showFrame.setThumbUrl(provider.getImgUrl());
 	if (provider.isNextEpisodeAnnounced()) {
 	    showFrame.setNextEpisodeOrdinal(provider.getNextEpisodeOrdinal());
 	    showFrame.setNextEpisodeSeasonOrdinal(provider.getNextEpisodeSeasonOrdinal());

@@ -21,6 +21,8 @@ interface Readable {
 
     public String getTvcomUrl();
 
+    public String getThumbUrl();
+
     public int getSeasonsNumber();
 
     public long getUpdateDayTime();

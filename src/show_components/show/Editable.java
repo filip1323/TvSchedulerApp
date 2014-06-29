@@ -19,6 +19,8 @@ interface Editable {
 
     public void setTvcomUrl(String url);
 
+    public void setThumbUrl(String url);
+
     public void setSeasonsNumber(int number);
 
     public void setUpdateDayTime(long date);

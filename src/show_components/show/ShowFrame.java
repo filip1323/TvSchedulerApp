@@ -49,6 +49,11 @@ public class ShowFrame extends Show implements Editable {
     }
 
     @Override
+    public void setThumbUrl(String url) {
+	this.thumbUrl = url;
+    }
+
+    @Override
     public void setTitle(String title) {
 	this.title = title;
     }
