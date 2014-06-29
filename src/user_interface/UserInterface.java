@@ -75,8 +75,8 @@ public class UserInterface {
 
 	//creating show manager
 	showManagementFrame = new ShowManagerFrame();
-	showManagementFrame.assignResponder(responder);
 	showManagementFrame.initComponents();
+	showManagementFrame.setVisible(false);
 
 	//creating menu
 	trayMenu = new TrayMenu();
