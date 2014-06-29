@@ -43,15 +43,17 @@ public class TvSchedulerApp {
 	ShowLocalDataHUB showLocalDataHUB = new ShowLocalDataHUB();
 
 	//passing arguments------------------------------------------
+	mainController.assignUserInterface(ui);
+
 	showController.assignShowLocalDataHUB(showLocalDataHUB);
 
-	ui.assignUserActionResponder(responder);
+	ui.assignResponder(responder);
 	ui.assignShowPanelCreator(showPanelCreator);
 
-	ShowPanelCreator.assignUserActionResponder(responder);
+	ShowPanelCreator.assignResponder(responder);
 
 	//showing shieeet
-	ui.initComponents();
+	mainController.start();
     }
 
 }

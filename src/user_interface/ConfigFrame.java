@@ -34,10 +34,10 @@ public class ConfigFrame extends WebFrame {
     private WebTabbedPane tabGroupPane;
     private MainOptionsTab mainOptionsTab;
     private NotificationsOptionTab notificationsOptionTab;
-    private ConfigActionResponder userActionResponder;
+    private ConfigActionResponder responder;
 
-    public void assignUserActionResponder(ConfigActionResponder userActionResponder) {
-	this.userActionResponder = userActionResponder;
+    public void assignResponder(ConfigActionResponder responder) {
+	this.responder = responder;
     }
 
     public void initComponents() {
@@ -176,15 +176,15 @@ public class ConfigFrame extends WebFrame {
 	    OPTION_CONNECT_EKINO = new WebCheckBox(Messages.OPTION_CONNECT_EKINO);
 	    this.add(OPTION_CONNECT_EKINO);
 
-	    OPTION_AUTOSTART_CHECKBOX.addActionListener(userActionResponder);
-	    OPTION_AUTOREFRESH_CHECKBOX.addActionListener(userActionResponder);
-	    OPTION_DEBUG_CHECKBOX.addActionListener(userActionResponder);
+	    OPTION_AUTOSTART_CHECKBOX.addActionListener(responder);
+	    OPTION_AUTOREFRESH_CHECKBOX.addActionListener(responder);
+	    OPTION_DEBUG_CHECKBOX.addActionListener(responder);
 
-	    OPTION_MENU_LAST_EP_CHECKBOX.addActionListener(userActionResponder);
-	    OPTION_MENU_NEXT_EP_FOR_ME.addActionListener(userActionResponder);
+	    OPTION_MENU_LAST_EP_CHECKBOX.addActionListener(responder);
+	    OPTION_MENU_NEXT_EP_FOR_ME.addActionListener(responder);
 
-	    OPTION_CONNECT_PIRATEBAY.addActionListener(userActionResponder);
-	    OPTION_CONNECT_EKINO.addActionListener(userActionResponder);
+	    OPTION_CONNECT_PIRATEBAY.addActionListener(responder);
+	    OPTION_CONNECT_EKINO.addActionListener(responder);
 
 	}
 
@@ -238,11 +238,11 @@ public class ConfigFrame extends WebFrame {
 	    NOTIFICATION_UPDATE_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_UPDATE);
 	    this.add(NOTIFICATION_UPDATE_CHECKBOX);
 
-	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.addActionListener(userActionResponder);
-	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.addActionListener(userActionResponder);
-	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.addActionListener(userActionResponder);
-	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.addActionListener(userActionResponder);
-	    NOTIFICATION_UPDATE_CHECKBOX.addActionListener(userActionResponder);
+	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.addActionListener(responder);
+	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.addActionListener(responder);
+	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.addActionListener(responder);
+	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.addActionListener(responder);
+	    NOTIFICATION_UPDATE_CHECKBOX.addActionListener(responder);
 
 	}
     }

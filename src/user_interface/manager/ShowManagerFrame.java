@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package user_interface;
+package user_interface.manager;
 
 import action_responders.ConfigActionResponder;
 import com.alee.extended.panel.GroupPanel;
@@ -27,17 +27,17 @@ import local_data.Resources;
  */
 public class ShowManagerFrame extends WebFrame {
 
-    private ConfigActionResponder userActionResponder;
+    private ConfigActionResponder responder;
+    private GroupPanel content;
+    private GroupPanel ordinaryContent;
+    private GroupPanel addManagerContent;
+    private ShowManagerFrame owner;
 
-    void assignUserActionResponder(ConfigActionResponder userActionResponder) {
-	this.userActionResponder = userActionResponder;
+    public void assignResponder(ConfigActionResponder responder) {
+	this.responder = responder;
     }
-    GroupPanel content;
-    GroupPanel ordinaryContent;
-    GroupPanel addManagerContent;
-    ShowManagerFrame owner;
 
-    void initComponents() {
+    public void initComponents() {
 
 	owner = this;
 	content = new GroupPanel(0, false);
@@ -68,7 +68,7 @@ public class ShowManagerFrame extends WebFrame {
 	ordinaryContent.add(addShowButton);
 
 	WebButton removeShowButton = new WebButton();
-	removeShowButton.addActionListener(userActionResponder);
+	removeShowButton.addActionListener(responder);
 	removeShowButton.setText(Messages.MANAGER_REMOVE_SHOW);
 	removeShowButton.setFontSizeAndStyle(20, Font.BOLD);
 	removeShowButton.setHorizontalAlignment(SwingConstants.LEFT);

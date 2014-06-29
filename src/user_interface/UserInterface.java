@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import local_data.Resources;
 import show_components.show.Show;
+import user_interface.manager.ShowManagerFrame;
 import user_interface.scheduler.SchedulerPanel;
 import user_interface.scheduler.ShowPanelCreator;
 
@@ -27,7 +28,7 @@ import user_interface.scheduler.ShowPanelCreator;
  */
 public class UserInterface {
 
-    private ConfigActionResponder userActionResponder;
+    private ConfigActionResponder responder;
 
     private TrayMenu trayMenu;
     private TransparentWindow window;
@@ -44,8 +45,8 @@ public class UserInterface {
 	this.showPanelCreator = showPanelCreator;
     }
 
-    public void assignUserActionResponder(ConfigActionResponder userActionResponder) {
-	this.userActionResponder = userActionResponder;
+    public void assignResponder(ConfigActionResponder responder) {
+	this.responder = responder;
     }
 
     public void initComponents() {
@@ -64,17 +65,17 @@ public class UserInterface {
 
 	//creating scheduler panel(raw)
 	schedulerPanel = new SchedulerPanel();
-	schedulerPanel.assignUserActionResponder(userActionResponder);
+	schedulerPanel.assignResponder(responder);
 	schedulerPanel.initComponents();
 
 	//creating configFrame
 	configFrame = new ConfigFrame();
-	configFrame.assignUserActionResponder(userActionResponder);
+	configFrame.assignResponder(responder);
 	configFrame.initComponents();
 
 	//creating show manager
 	showManagementFrame = new ShowManagerFrame();
-	showManagementFrame.assignUserActionResponder(userActionResponder);
+	showManagementFrame.assignResponder(responder);
 	showManagementFrame.initComponents();
 
 	//creating menu

@@ -5,12 +5,12 @@
  */
 package user_interface.scheduler;
 
+import action_responders.ConfigActionResponder;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebAccordionStyle;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
-import action_responders.ConfigActionResponder;
 
 /**
  *
@@ -20,11 +20,11 @@ public class SchedulerPanel extends WebPanel {
 
     private GroupPanel contentGroupPanel;
     private WebButton exitButton;
-    private ConfigActionResponder userActionResponder;
+    private ConfigActionResponder responder;
     private WebAccordion accordion;
 
-    public void assignUserActionResponder(ConfigActionResponder userActionResponder) {
-	this.userActionResponder = userActionResponder;
+    public void assignResponder(ConfigActionResponder responder) {
+	this.responder = responder;
     }
 
     public void initComponents() {

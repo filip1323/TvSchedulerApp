@@ -36,14 +36,14 @@ public class ShowPanelCreator {
 
     private GroupPanel panel;
 
-    private static ConfigActionResponder userActionResponder;
+    private static ConfigActionResponder responder;
 
-    public static void assignUserActionResponder(ConfigActionResponder userActionResponder) {
-	ShowPanelCreator.userActionResponder = userActionResponder;
+    public static void assignResponder(ConfigActionResponder responder) {
+	ShowPanelCreator.responder = responder;
     }
 
     public GroupPanel getShowPanel(Show show) {
-	if (userActionResponder == null) {
+	if (responder == null) {
 	    throw new DebugError("user action responder not initialzied");
 	}
 	this.show = show;

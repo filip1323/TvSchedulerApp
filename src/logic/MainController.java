@@ -5,14 +5,26 @@
  */
 package logic;
 
+import user_interface.UserInterface;
+
 /**
  *
  * @author Filip
  */
 public class MainController {
 
+    private UserInterface userInterface;
+
     public void shutdown() {
 	System.exit(0);
+    }
+
+    public void assignUserInterface(UserInterface ui) {
+	this.userInterface = ui;
+    }
+
+    public void start() {
+	userInterface.initComponents();;
     }
 
 }
