@@ -29,6 +29,7 @@ import local_data.Settings;
  * @author Filip
  */
 public class ConfigFrame extends WebFrame {
+//TODO show x near episode panel
 
     private GroupPanel tabGroup;
     private WebTabbedPane tabGroupPane;
@@ -97,22 +98,6 @@ public class ConfigFrame extends WebFrame {
 	int yLocation = (height - (int) getPreferredSize().getHeight() - taskBarHeight) / 2;
 	setLocation(xLocation, yLocation);
 
-	OPTION_AUTOREFRESH_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOREFRESH);
-	OPTION_AUTOSTART_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOSTART);
-	OPTION_DEBUG_CHECKBOX.setSelected(Settings.getInstance().OPTION_DEBUG);
-
-	OPTION_MENU_LAST_EP_CHECKBOX.setSelected(Settings.getInstance().OPTION_MENU_LAST_EP);
-	OPTION_MENU_NEXT_EP_FOR_ME.setSelected(Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME);
-
-	OPTION_CONNECT_EKINO.setSelected(Settings.getInstance().OPTION_CONNECT_EKINO);
-	OPTION_CONNECT_PIRATEBAY.setSelected(Settings.getInstance().OPTION_CONNECT_PIRATEBAY);
-
-	NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT);
-	NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_COUNTER);
-	NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_RELEASED_TODAY);
-	NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_SEAS_RELEASED_TODAY);
-	NOTIFICATION_UPDATE_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_UPDATE);
-
     }
     public WebCheckBox OPTION_AUTOSTART_CHECKBOX;
     public WebCheckBox OPTION_AUTOREFRESH_CHECKBOX;
@@ -176,6 +161,7 @@ public class ConfigFrame extends WebFrame {
 	    OPTION_CONNECT_EKINO = new WebCheckBox(Messages.OPTION_CONNECT_EKINO);
 	    this.add(OPTION_CONNECT_EKINO);
 
+	    //add responder
 	    OPTION_AUTOSTART_CHECKBOX.addActionListener(responder);
 	    OPTION_AUTOREFRESH_CHECKBOX.addActionListener(responder);
 	    OPTION_DEBUG_CHECKBOX.addActionListener(responder);
@@ -185,6 +171,17 @@ public class ConfigFrame extends WebFrame {
 
 	    OPTION_CONNECT_PIRATEBAY.addActionListener(responder);
 	    OPTION_CONNECT_EKINO.addActionListener(responder);
+
+	    //settings checkboxes
+	    OPTION_AUTOREFRESH_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOREFRESH);
+	    OPTION_AUTOSTART_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOSTART);
+	    OPTION_DEBUG_CHECKBOX.setSelected(Settings.getInstance().OPTION_DEBUG);
+
+	    OPTION_MENU_LAST_EP_CHECKBOX.setSelected(Settings.getInstance().OPTION_MENU_LAST_EP);
+	    OPTION_MENU_NEXT_EP_FOR_ME.setSelected(Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME);
+
+	    OPTION_CONNECT_EKINO.setSelected(Settings.getInstance().OPTION_CONNECT_EKINO);
+	    OPTION_CONNECT_PIRATEBAY.setSelected(Settings.getInstance().OPTION_CONNECT_PIRATEBAY);
 
 	}
 
@@ -238,11 +235,19 @@ public class ConfigFrame extends WebFrame {
 	    NOTIFICATION_UPDATE_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_UPDATE);
 	    this.add(NOTIFICATION_UPDATE_CHECKBOX);
 
+	    //responder
 	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.addActionListener(responder);
 	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.addActionListener(responder);
 	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.addActionListener(responder);
 	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.addActionListener(responder);
 	    NOTIFICATION_UPDATE_CHECKBOX.addActionListener(responder);
+
+	    //checkboxes
+	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT);
+	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_COUNTER);
+	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_RELEASED_TODAY);
+	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_SEAS_RELEASED_TODAY);
+	    NOTIFICATION_UPDATE_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_UPDATE);
 
 	}
     }

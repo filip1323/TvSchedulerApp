@@ -15,13 +15,16 @@ import com.alee.extended.progress.WebStepProgress;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.notification.NotificationManager;
 import external_websites.tvcom.TvcomSearchList.Result;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -34,6 +37,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 import local_data.Messages;
 import local_data.Resources;
@@ -42,6 +46,7 @@ import show_components.ShowOnlineEngineer;
 import show_components.show.Show;
 import user_exceptions.DataNotAssignedException;
 import user_exceptions.DebugError;
+import user_interface.UserInterface;
 
 /**
  *
@@ -51,10 +56,15 @@ public class ShowManagerFrame extends WebFrame {
 
     private GroupPanel contentPane;
     private ShowManagerFrame managerFrame;
+    private UserInterface userInterface;
     ShowController showController;
 
     public void assignShowController(ShowController showController) {
 	this.showController = showController;
+    }
+
+    public void assignUserInterface(UserInterface userInterface) {
+	this.userInterface = userInterface;
     }
 
     public void initComponents() {
@@ -84,7 +94,6 @@ public class ShowManagerFrame extends WebFrame {
     }
 
     void autoResize() {
-	setVisible(false);
 	//getting windows size
 	Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
 	int width = (int) scrnSize.getWidth();
@@ -98,6 +107,7 @@ public class ShowManagerFrame extends WebFrame {
 	int xLocation = (width - (int) getPreferredSize().getWidth()) / 2;
 	int yLocation = (height - (int) getPreferredSize().getHeight() - taskBarHeight) / 2;
 
+	setVisible(false);
 	setBounds(new Rectangle(getPreferredSize()));
 
 	setLocation(xLocation, yLocation);
@@ -128,6 +138,14 @@ public class ShowManagerFrame extends WebFrame {
 	    removeShowButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    removeShowButton.setIcon(Resources.getImageIcon("delete.png"));
 
+	    removeShowButton.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    managerFrame.setContent(new ShowRemoveContent());
+		}
+	    });
+
 	    setOrientation(SwingConstants.VERTICAL);
 	    add(addShowButton);
 	    add(removeShowButton);
@@ -135,7 +153,121 @@ public class ShowManagerFrame extends WebFrame {
 	}
     }
 
-    private class ShowAddContent extends GroupPanel {
+    class ShowRemoveContent extends GroupPanel {
+
+	WebButton backButton;
+
+	public ShowRemoveContent() {
+
+	    setOrientation(SwingConstants.VERTICAL);
+
+	    WebLabel headerLabel = new WebLabel("Lista seriali");
+	    headerLabel.setFontSize(20);
+	    add(headerLabel);
+
+	    GroupPanel innerContent = new GroupPanel(GroupingType.fillAll, 5, false);
+	    ShowOnlineEngineer engie = new ShowOnlineEngineer();
+
+	    backButton = new WebButton();
+	    backButton.setText("Cofnij");
+	    backButton.setHorizontalAlignment(SwingConstants.CENTER);
+	    backButton.setIcon(Resources.getImageIcon("caret-left.png"));
+	    backButton.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		    managerFrame.setContent(new menuContent(managerFrame));
+		    backButton.removeActionListener(this);
+		}
+	    });
+
+	    ArrayList<Show> shows = showController.getStoredShows();
+	    if (shows.size() == 0) {
+		EventQueue.invokeLater(new Runnable() {
+
+		    @Override
+		    public void run() {
+			backButton.doClick();
+		    }
+		});
+		NotificationManager.showNotification((JWindow) userInterface.getWindow(), "Baza seriali jest pusta.", Resources.getImageIcon("info.png"));
+
+	    }
+	    innerContent.add(toList(shows));
+	    add(innerContent);
+	    if (getPreferredSize().height > 300) {
+		remove(innerContent);
+		WebScrollPane scroll = new WebScrollPane(innerContent);
+		scroll.setPreferredHeight(350);
+		scroll.setPreferredWidth(500);
+		innerContent.setMargin(5);
+		add(scroll);
+	    }
+	    add(backButton);
+
+	}
+
+	private ArrayList<GroupPanel> toList(ArrayList<Show> shows) {
+	    ArrayList<GroupPanel> list = new ArrayList<>();
+
+	    try {
+		for (final Show show : shows) {
+		    //title
+		    WebLabel titleLabel = new WebLabel(show.getTitle());
+		    titleLabel.setFontSizeAndStyle(20, true, false);
+
+		    //thumb
+		    URL url = new URL(show.getThumbUrl());
+		    Image image = ImageIO.read(url);
+		    WebDecoratedImage thumb = new WebDecoratedImage(image);
+		    thumb.setRound(5);
+
+		    //tvcomLink
+		    WebLinkLabel tvcomLink = new WebLinkLabel("tv.com");
+		    tvcomLink.setLink(show.getTvcomUrl());
+
+		    //removeButton
+		    WebButton removeButton = new WebButton();
+		    removeButton.setText("Usuń");
+		    removeButton.setHorizontalAlignment(SwingConstants.CENTER);
+		    removeButton.setIcon(Resources.getImageIcon("delete-small.png"));
+
+		    //infogroup
+		    GroupPanel infoGroup = new GroupPanel(5, false, titleLabel, tvcomLink, new GroupPanel(GroupingType.fillFirst, new WebSeparator(), removeButton));
+		    infoGroup.setPreferredWidth(300);
+
+		    //panel
+		    GroupPanel panel = new GroupPanel(5, true, thumb, infoGroup);
+		    panel.setMargin(5, 0, 0, 0);
+		    list.add(panel);
+
+		    //buttons settings
+		    removeButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			    int state = WebOptionPane.showConfirmDialog(managerFrame, "Jesteś pewien że chcesz usunąć " + show.getTitle() + "?", "Usuwanie " + show.getTitle(),
+				    WebOptionPane.YES_NO_CANCEL_OPTION, WebOptionPane.QUESTION_MESSAGE);
+			    if (state == WebOptionPane.YES_OPTION) {
+				showController.removeShow(show);
+				setContent(new ShowRemoveContent());
+			    }
+			}
+		    });
+
+		}
+	    } catch (MalformedURLException ex) {
+		ex.printStackTrace();
+	    } catch (IOException ex) {
+		ex.printStackTrace();
+	    }
+	    return list;
+	}
+
+    }
+
+    class ShowAddContent extends GroupPanel {
 
 	ShowManagerFrame managerFrame;
 	WebBreadcrumb progressBreadcrumb;
@@ -202,14 +334,23 @@ public class ShowManagerFrame extends WebFrame {
 		owner.titleLabel.setBoldFont();
 		owner.showLabel.setFontStyle(Font.PLAIN);
 
+		//label
 		WebLabel titleLabel = new WebLabel("Tytuł serialu:");
 
+		//field
 		final WebTextField titleField = new WebTextField();
 		titleField.setPreferredWidth(300);
 		titleField.setInputPrompt("Tytuł...");
 		titleField.setMargin(0, 0, 0, 2);
 		titleField.setTrailingComponent(Resources.getWebImage("double-quote-sans-left.png"));
+		titleField.requestFocusInWindow();
+		titleField.addActionListener(new ActionListener() {
 
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+			nextButton.doClick();
+		    }
+		});
 		add(new GroupPanel(GroupingType.fillLast, 5, titleLabel, titleField));
 
 		//buttons settings
@@ -221,6 +362,7 @@ public class ShowManagerFrame extends WebFrame {
 
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
+
 			managerFrame.setContent(new menuContent(managerFrame));
 			backButton.removeActionListener(this);
 		    }
@@ -233,6 +375,9 @@ public class ShowManagerFrame extends WebFrame {
 
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
+			if (titleField.getText().trim().equals("")) {
+			    return;
+			}
 			setContent(new selectShowContent(owner, titleField.getText()));
 			nextButton.removeActionListener(this);
 		    }
@@ -242,7 +387,7 @@ public class ShowManagerFrame extends WebFrame {
 
 	private class selectShowContent extends GroupPanel {
 
-	    private ShowAddContent owner;
+	    private final ShowAddContent owner;
 
 	    public selectShowContent(final ShowAddContent owner, final String title) {
 		this.owner = owner;
@@ -270,9 +415,13 @@ public class ShowManagerFrame extends WebFrame {
 		    public void run() {
 			//engineer
 			ShowOnlineEngineer engie = new ShowOnlineEngineer();
-			engie.assignTitle(title);
 			try {
-			    ArrayList<Result> results = (engie.getResults());
+			    ArrayList<Result> results = (engie.getResults(title));
+			    if (results.size() == 0) {
+				backButton.doClick();
+				NotificationManager.showNotification((JWindow) userInterface.getWindow(), "Brak wyników dla `" + title + "`. Spróbuj ponownie.", Resources.getImageIcon("info.png"));
+
+			    }
 			    innerContent.add(toList(results));
 			    remove(progressBar);
 			    owner.managerFrame.autoResize();
@@ -430,6 +579,19 @@ public class ShowManagerFrame extends WebFrame {
 		    }
 		});
 
+		for (Show show : showController.getStoredShows()) {
+		    if (show.getTvcomUrl().equals(result.getShowHomepageUrl())) {
+			NotificationManager.showNotification((JWindow) userInterface.getWindow(), "Serial `" + show.getTitle() + "` został dodany wcześniej.", Resources.getImageIcon("info.png"));
+			EventQueue.invokeLater(new Runnable() {
+			    @Override
+			    public void run() {
+				backButton.doClick();
+			    }
+			});
+			return;
+		    }
+		}
+
 	    }
 
 	}
@@ -462,10 +624,10 @@ public class ShowManagerFrame extends WebFrame {
 			remove(progressBar);
 
 			//creating fancy gui
-			WebLabel headerLabel = new WebLabel("Pobieranie danych o " + show.getTitle());
+			WebLabel headerLabel = new WebLabel("Pobieranie danych o serialu " + show.getTitle());
 			headerLabel.setFontSize(16);
 
-			final WebLabel endingLabel = new WebLabel("Zapisywanie danych o " + show.getTitle());
+			final WebLabel endingLabel = new WebLabel("Zapisywanie danych o serialu " + show.getTitle());
 			endingLabel.setFontSize(16);
 			endingLabel.setVisible(false);
 
@@ -548,7 +710,7 @@ public class ShowManagerFrame extends WebFrame {
 	    private finishContent(final ShowAddContent owner, String title) {
 
 		//progress breadcrumb settings
-		owner.downloadLabel.setBoldFont();
+		owner.finishLabel.setBoldFont();
 
 		//header
 		WebLabel headerLabel = new WebLabel("Serial " + title + " dodany!");

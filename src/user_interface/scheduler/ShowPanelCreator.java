@@ -8,10 +8,11 @@ package user_interface.scheduler;
 import action_responders.ConfigActionResponder;
 import com.alee.extended.image.WebDecoratedImage;
 import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.panel.GroupingType;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.separator.WebSeparator;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ import javax.swing.SwingConstants;
 import local_data.Resources;
 import local_data.Settings;
 import misc.Utils;
+import show_components.ShowLocalDataHUB;
 import show_components.episode.Episode;
 import show_components.season.Season;
 import show_components.show.Show;
@@ -53,7 +55,7 @@ public class ShowPanelCreator {
 	panel.setOrientation(SwingConstants.VERTICAL);
 
 	//creating thumb img
-	String thumbPath = "thumbs/" + show.getTitle() + "_thumb.jpg";
+	String thumbPath = ShowLocalDataHUB.getPathForThumb(show.getTitle());
 	WebDecoratedImage thumb = new WebDecoratedImage(new ImageIcon(thumbPath));
 	panel.add(thumb);
 	panel.add(new WebSeparator());
@@ -82,6 +84,8 @@ public class ShowPanelCreator {
 	if (Settings.getInstance().OPTION_MENU_LAST_EP) {
 	    Episode lastEpisode = show.getLastEpisode();
 	    WebButton lastEpButton = getEpisodeDetailed(lastEpisode.getSeasonOrdinal(), lastEpisode.getOrdinal());
+	    lastEpButton.setIcon(Resources.getImageIcon("bookmark.png"));
+	    lastEpButton.setMaximumSize(tvcomButton.getSize());
 	    panel.add(lastEpButton);
 	}
 
@@ -195,7 +199,6 @@ public class ShowPanelCreator {
 		popOver.setAlwaysOnTop(true);
 		popOver.add(getEpisodeDetailedContent(seasonOrdinal, ordinal));
 		popOver.setShadeWidth(0);
-
 		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
 	    }
 	});
@@ -204,37 +207,63 @@ public class ShowPanelCreator {
 
     private GroupPanel getEpisodeDetailedContent(int seasonOrdinal, int ordinal) {
 	Episode episode = show.getSeason(seasonOrdinal).getEpisode(ordinal);
-
+	//final GroupPanel uberContent = new GroupPanel(GroupingType.none, 0, true);
 	final GroupPanel content = new GroupPanel(0, false);
 	content.setMargin(10);
 	content.setGap(3);
 
+	//close button
+	WebButton closeButton = new WebButton(Resources.getImageIcon("x.png"));
+	///closeButton.setHorizontalAlignment(SwingConstants.RIGHT);
+	//closeButton.setHorizontalAlignment(SwingConstants.TOP);
+	//closeButton.setPreferredHeight(12);
+	closeButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		content.setVisible(false);
+	    }
+	});
+//	uberContent.add(closeButton);
+//	uberContent.add(content);
+	closeButton.setFocusable(false);
+
+	//show title
 	WebLabel showTitleLabel = new WebLabel(show.getTitle());
 	showTitleLabel.setBoldFont();
-	content.add(showTitleLabel);
 
+	GroupPanel titleGroup = new GroupPanel(GroupingType.fillFirst, showTitleLabel, closeButton);
+	content.add(titleGroup);
+
+	//season ordinal
 	WebLabel episodeSeasonOrdinalLabel = new WebLabel("Sezon " + seasonOrdinal);
 	episodeSeasonOrdinalLabel.setBoldFont();
 	content.add(episodeSeasonOrdinalLabel);
 
+	//episode ordinal
 	WebLabel episodeOrdinalLabel = new WebLabel("Odcinek " + ordinal);
 	episodeOrdinalLabel.setBoldFont();
 	content.add(episodeOrdinalLabel);
 
 	content.add(new WebSeparator());
 
+	//episode title
 	WebLabel episodeTitleLabel = new WebLabel(episode.getTitle());
 	content.add(episodeTitleLabel);
 
+	//summary
 	WebLabel summaryLabel = new WebLabel(show.getTitle() + " " + Utils.Others.prepareStandardSummary(seasonOrdinal, ordinal));
 	//content.add(summaryLabel);
 
+	//date
 	WebLabel releaseDateLabel = new WebLabel("Premiera: " + Utils.DateManager.convertLongIntoUnifiedFormat(episode.getReleaseDate()));
 	content.add(releaseDateLabel);
 	content.add(new WebSeparator());
 
+	//external links TODO
 	GroupPanel externalLinksGroup = new GroupPanel(0, false);
 
+	//tvcom
 	WebButton tvcomButton = new WebButton("Tv.com", Resources.getImageIcon("external-link.png"));
 	if (Settings.getInstance().OPTION_CONNECT_PIRATEBAY || (Settings.getInstance().OPTION_CONNECT_EKINO)) {
 	    tvcomButton.setDrawSides(true, true, false, true);
@@ -275,10 +304,14 @@ public class ShowPanelCreator {
 
 	content.add(externalLinksGroup);
 
-	WebCheckBox viewedCheckbox = new WebCheckBox("Obejrzany?");
-//	viewedCheckbox.setAction(new ButtonAction(TYPE.CHANGE_EPISODE_VIEWED_STATE, episode));
-	viewedCheckbox.setText("Obejrzany?");
-	content.add(viewedCheckbox);
+	content.add(new WebSeparator());
+
+	WebToggleButton viewedButton = new WebToggleButton("Ostatnio obejrzany?", Resources.getImageIcon("pin.png"));
+	viewedButton.setFontSize(10);
+	viewedButton.setDrawSides(false, false, false, false);
+	//viewedButton.setUndecorated(true);
+	//	viewedCheckbox.setAction(new ButtonAction(TYPE.CHANGE_EPISODE_VIEWED_STATE, episode));
+	content.add(viewedButton);
 	return content;
     }
 }

@@ -6,6 +6,7 @@
 package external_websites.tvcom;
 
 import external_websites.WebsiteRepository;
+import java.util.ArrayList;
 import local_data.Settings;
 import misc.Utils;
 import org.jsoup.nodes.Document;
@@ -60,6 +61,14 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 
 	return new Result(title, showUrl, imageUrl);
 
+    }
+
+    public ArrayList<Result> getResults() {
+	ArrayList<Result> results = new ArrayList<>();
+	for (int i = 1; i <= getResultsNumber(); i++) {
+	    results.add(getResult(i));
+	}
+	return results;
     }
 
     private boolean isUrlCorrect(String url) {

@@ -9,8 +9,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import misc.Utils;
 import show_components.episode.Episode;
@@ -27,8 +31,14 @@ public class ShowLocalDataHUB {
 	return "shows/" + title.replace(" ", "-") + ".ser";
     }
 
+    static public String getPathForThumb(String title) {
+	return "thumbs/" + title.replace(" ", "-").toLowerCase() + "_thumb.jpg";
+    }
+
     public void save(Show show) {
 	try {
+
+	    //saving show
 	    String path = getPathForShow(show.getTitle());
 
 	    File file = new File(path);
@@ -42,6 +52,11 @@ public class ShowLocalDataHUB {
 	    out.writeObject(show);
 	    out.close();
 	    fileOut.close();
+
+	    //saving thumb
+	    String thumbPath = getPathForThumb(show.getTitle());
+	    saveImage(show.getThumbUrl(), thumbPath);
+
 	} catch (IOException i) {
 	    i.printStackTrace();
 	}
@@ -88,6 +103,31 @@ public class ShowLocalDataHUB {
     }
 
     public void remove(String title) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	File file = new File(getPathForShow(title));
+	File thumb = new File(getPathForThumb(title));
+	file.delete();
+	thumb.delete();
+    }
+
+    private static void saveImage(String imageUrl, String destinationFile) {
+	try {
+	    URL url = new URL(imageUrl);
+	    InputStream is = url.openStream();
+	    OutputStream os = new FileOutputStream(destinationFile);
+
+	    byte[] b = new byte[2048];
+	    int length;
+
+	    while ((length = is.read(b)) != -1) {
+		os.write(b, 0, length);
+	    }
+
+	    is.close();
+	    os.close();
+	} catch (MalformedURLException ex) {
+	    ex.printStackTrace();
+	} catch (IOException ex) {
+	    ex.printStackTrace();
+	}
     }
 }

@@ -6,12 +6,18 @@
 package logic;
 
 import action_responders.ConfigActionResponder;
+import com.alee.laf.WebLookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import show_components.ShowController;
 import show_components.ShowLocalDataHUB;
 import user_exceptions.DataNotAssignedException;
 import user_exceptions.TorrentNotFoundException;
 import user_exceptions.WrongUrlException;
+import user_interface.ConfigFrame;
+import user_interface.TrayMenu;
 import user_interface.UserInterface;
+import user_interface.manager.ShowManagerFrame;
 import user_interface.scheduler.ShowPanelCreator;
 
 /**
@@ -24,6 +30,15 @@ public class TvSchedulerApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws WrongUrlException, TorrentNotFoundException, DataNotAssignedException, InterruptedException {
+
+	//setting look and feel
+	try {
+	    UIManager.setLookAndFeel(new WebLookAndFeel());
+	    WebLookAndFeel.setDecorateFrames(true);
+	} catch (UnsupportedLookAndFeelException ex) {
+	    ex.printStackTrace();
+	}
+
 	//creating ui
 	UserInterface ui = new UserInterface();
 
@@ -36,6 +51,15 @@ public class TvSchedulerApp {
 	//creating show panel creator
 	ShowPanelCreator showPanelCreator = new ShowPanelCreator();
 
+	//config frame
+	ConfigFrame configFrame = new ConfigFrame();
+
+	//show manager
+	ShowManagerFrame showManager = new ShowManagerFrame();
+
+	//traymenu
+	TrayMenu trayMenu = new TrayMenu();
+
 	//creating action responder
 	ConfigActionResponder responder = new ConfigActionResponder();
 
@@ -44,11 +68,22 @@ public class TvSchedulerApp {
 
 	//passing arguments------------------------------------------
 	mainController.assignUserInterface(ui);
+	mainController.assignShowController(showController);
 
 	showController.assignShowLocalDataHUB(showLocalDataHUB);
+	showController.assignUserInterface(ui);
+	showController.assignMainController(mainController);
 
-	ui.assignResponder(responder);
-	ui.assignShowPanelCreator(showPanelCreator);
+	ui.assignConfigFrame(configFrame);
+	ui.assignShowManagerFrame(showManager);
+	ui.assignTrayMenu(trayMenu);
+
+	trayMenu.assignController(mainController);
+	trayMenu.assignUserInterface(ui);
+
+	configFrame.assignResponder(responder);
+	showManager.assignShowController(showController);
+	showManager.assignUserInterface(ui);
 
 	ShowPanelCreator.assignResponder(responder);
 

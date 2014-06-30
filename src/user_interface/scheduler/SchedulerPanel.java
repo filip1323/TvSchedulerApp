@@ -9,6 +9,7 @@ import action_responders.ConfigActionResponder;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebAccordionStyle;
+import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
 
@@ -40,5 +41,17 @@ public class SchedulerPanel extends WebPanel {
     public void addShowPanel(String title, GroupPanel content) {
 	accordion.addPane(title, content);
 	//content.setMargin(5);
+    }
+
+    public void removeShowPanel(String title) {
+	int index = 0;
+	for (WebCollapsiblePane pane : accordion.getPanes()) {
+	    if (pane.getTitle().equals(title)) {
+		accordion.removePane(index);
+	    }
+	    index++;
+	}
+	accordion.repaint();
+	repaint();
     }
 }

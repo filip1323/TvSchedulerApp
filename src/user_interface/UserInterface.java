@@ -5,7 +5,6 @@
  */
 package user_interface;
 
-import action_responders.ConfigActionResponder;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import java.awt.AWTException;
@@ -28,26 +27,20 @@ import user_interface.scheduler.ShowPanelCreator;
  */
 public class UserInterface {
 
-    private ConfigActionResponder responder;
-
+    // private ConfigActionResponder responder;
     private TrayMenu trayMenu;
     private TransparentWindow window;
     private SchedulerPanel schedulerPanel;
     private ConfigFrame configFrame;
+
+    public void assignConfigFrame(ConfigFrame configFrame) {
+	this.configFrame = configFrame;
+    }
     private ShowManagerFrame showManagementFrame;
-    private ShowPanelCreator showPanelCreator;
 
     private TrayIcon trayIcon;
 
     private boolean schedulerVisibleState = false;
-
-    public void assignShowPanelCreator(ShowPanelCreator showPanelCreator) {
-	this.showPanelCreator = showPanelCreator;
-    }
-
-    public void assignResponder(ConfigActionResponder responder) {
-	this.responder = responder;
-    }
 
     public void initComponents() {
 
@@ -65,22 +58,16 @@ public class UserInterface {
 
 	//creating scheduler panel(raw)
 	schedulerPanel = new SchedulerPanel();
-	schedulerPanel.assignResponder(responder);
 	schedulerPanel.initComponents();
 
 	//creating configFrame
-	configFrame = new ConfigFrame();
-	configFrame.assignResponder(responder);
 	configFrame.initComponents();
 
 	//creating show manager
-	showManagementFrame = new ShowManagerFrame();
 	showManagementFrame.initComponents();
 	showManagementFrame.setVisible(false);
 
 	//creating menu
-	trayMenu = new TrayMenu();
-	trayMenu.assignUserInterface(this);
 	trayMenu.initComponents();
 
 	//creating tray handler
@@ -126,6 +113,23 @@ public class UserInterface {
 	window.setVisible(true);
     }
 
+    public void assignTrayMenu(TrayMenu trayMenu) {
+	this.trayMenu = trayMenu;
+    }
+
+    public void assignShowManagerFrame(ShowManagerFrame showManagementFrame) {
+	this.showManagementFrame = showManagementFrame;
+    }
+
+    public void reloadScheduler() {
+	if (schedulerPanel != null) {
+	    window.remove(schedulerPanel);
+	}
+	schedulerPanel = new SchedulerPanel();
+	schedulerPanel.initComponents();
+	window.addPanel(schedulerPanel);
+    }
+
     private void createTrayHandler() {
 	//img
 	trayIcon = new java.awt.TrayIcon(new ImageIcon(Resources.getUrl("tray-icon.png")).getImage());
@@ -160,8 +164,13 @@ public class UserInterface {
     }
 
     public void addShowTabToScheduler(Show show) {
+	ShowPanelCreator showPanelCreator = new ShowPanelCreator();
 	GroupPanel panel = showPanelCreator.getShowPanel(show);
 	schedulerPanel.addShowPanel(show.getTitle(), panel);
+	if (schedulerVisibleState) {
+	    toggleScheduler();
+	    toggleScheduler();
+	}
     }
 
     public void toggleScheduler() {
@@ -176,6 +185,10 @@ public class UserInterface {
 	showManagementFrame.setVisible(true);
     }
 
+    public TransparentWindow getWindow() {
+	return window;
+    }
+
     public SchedulerPanel getSchedulerPanel() {
 	return schedulerPanel;
     }
@@ -186,6 +199,10 @@ public class UserInterface {
 
     public ShowManagerFrame getShowManagementFrame() {
 	return showManagementFrame;
+    }
+
+    public void showNotification() {
+
     }
 
 }

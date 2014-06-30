@@ -10,6 +10,7 @@ import external_websites.tvcom.TvcomSearchList.Result;
 import external_websites.tvcom.TvcomSeasonGuide;
 import external_websites.tvcom.TvcomShowHomepage;
 import external_websites.tvcom.TvcomUtils;
+import java.util.ArrayList;
 import local_data.Settings;
 import show_components.episode.Episode;
 import show_components.episode.EpisodeBuilder;
@@ -22,22 +23,132 @@ import show_components.show.ShowBuilder;
 import show_components.show.ShowTvcomInfo;
 import user_exceptions.DataNotAssignedException;
 import user_exceptions.DebugError;
+import user_exceptions.NoMoreEpisodesException;
 import user_exceptions.WrongUrlException;
 
 /**
  *
  * @author Filip
  */
-class ShowOnlineEngineer {
+public class ShowOnlineEngineer {
 
     private String title;
     private Show show;
 
-    public void assignTitle(String title) {
-	this.title = title;
+    public ArrayList<Result> getResults(String title) throws DataNotAssignedException {
+	if (title == null) {
+	    throw new DataNotAssignedException("title");
+	}
+	String searchListUrl = Settings.getInstance().SEARCH_TVCOM_URL + title;
+	try {
+	    TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
+	    return searchList.getResults();
+	} catch (WrongUrlException ex) {
+	    ex.printStackTrace();
+	}
+	return null;
+
     }
 
-    public void constructShow() throws DataNotAssignedException, WrongUrlException {
+    public Show getBasicInfo(Result result) {
+	try {
+	    String homepageUrl = result.getShowHomepageUrl();
+	    TvcomShowHomepage homepage = new TvcomShowHomepage(homepageUrl);
+
+	    //getting first season guide
+	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(homepageUrl, 1));
+
+	    //getting seasons number
+	    int seasonsNumber = currentSeasonGuide.getSeasonsNumber();
+
+	    //creating show
+	    ShowBuilder showBuilder = new ShowBuilder();
+	    ShowTvcomInfo showInfoProvider = new ShowTvcomInfo(result, homepage, currentSeasonGuide);
+	    show = showBuilder.getShow(showInfoProvider);
+
+	    return show;
+	} catch (WrongUrlException ex) {
+	    ex.printStackTrace();
+	    throw new DebugError("must be some deep error or miscoding");
+	}
+
+    }
+
+    private int seasonOrdinal = 1;
+    private int episodeOrdinal = 1;
+
+    private TvcomSeasonGuide currentSeasonGuide;
+
+    public boolean hasNextEpisode() {
+	if (seasonOrdinal > show.getSeasonsNumber()) {
+	    return false;
+	}
+	if (seasonOrdinal == show.getSeasonsNumber() && episodeOrdinal > 1 && episodeOrdinal > show.getSeason(seasonOrdinal).getEpisodesNumber()) {
+	    return false;
+	}
+	return true;
+    }
+
+    public boolean saveNextEpisode() {
+	try {
+	    if (seasonOrdinal > currentSeasonGuide.getSeasonsNumber()) {
+		throw new NoMoreEpisodesException();
+	    }
+	    Season season;
+	    if (episodeOrdinal == 1) {
+
+		currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(show.getTvcomUrl(), seasonOrdinal));
+
+		//creating season
+		SeasonBuilder seasonBuilder = new SeasonBuilder();
+		SeasonTvcomInfo seasonInfoProvider = new SeasonTvcomInfo(currentSeasonGuide);
+		season = seasonBuilder.getSeason(seasonInfoProvider);
+
+		//assigning season
+		show.edit().addSeason(season);
+	    } else {
+		season = show.getSeason(seasonOrdinal);
+	    }
+	    //creating episode
+	    EpisodeBuilder episodeBuilder = new EpisodeBuilder();
+	    EpisodeTvcomInfo episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, episodeOrdinal);
+	    Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
+
+	    //assigning episode
+	    season.edit().addEpisode(episode);
+
+	    if (++episodeOrdinal > currentSeasonGuide.getEpisodesNumber()) {
+		seasonOrdinal += 1;
+		episodeOrdinal = 1;
+
+	    }
+	    return false;
+	} catch (WrongUrlException ex) {
+	    ex.printStackTrace();
+	}
+	return false;
+
+    }
+//
+//    public void saveThisShow(Result result) {
+//	try {
+//	    TvcomShowHomepage homepage = new TvcomShowHomepage(result.getShowHomepageUrl());
+//
+//	    //getting first season guide
+//	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(result.getShowHomepageUrl(), 1));
+//
+//	    ShowBuilder showBuilder = new ShowBuilder();
+//	    ShowTvcomInfo showInfoProvider = new ShowTvcomInfo(result, homepage, currentSeasonGuide);
+//	    show = showBuilder.getShow(showInfoProvider);
+//
+//	} catch (WrongUrlException ex) {
+//	    ex.printStackTrace();
+//	}
+//
+//    }
+//<editor-fold defaultstate="collapsed" desc="comment">
+
+    private void constructShow() throws DataNotAssignedException, WrongUrlException {
 	if (title == null) {
 	    throw new DataNotAssignedException("title");
 	}
@@ -45,7 +156,7 @@ class ShowOnlineEngineer {
 	String searchListUrl = Settings.getInstance().SEARCH_TVCOM_URL + title;
 	TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
 
-//TODO its wrong	//getting first result
+	//getting first result
 	Result firstResult = searchList.getFirstResult();
 	//make sure its right
 	//getting homepage
@@ -90,11 +201,24 @@ class ShowOnlineEngineer {
 
 	this.show = show;
     }
+//</editor-fold>
 
     public Show getShow() {
 	if (show == null) {
 	    throw new DebugError("Create show first");
 	}
 	return show;
+    }
+
+    public int getCurrentSeasonOrdinal() {
+	return seasonOrdinal;
+    }
+
+    public int getCurrentEpisodeOrdinal() {
+	return episodeOrdinal;
+    }
+
+    public int getSeasonProgress() {
+	return (int) (((double) episodeOrdinal / currentSeasonGuide.getEpisodesNumber()) * 100);
     }
 }

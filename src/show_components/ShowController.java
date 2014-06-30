@@ -6,8 +6,10 @@
 package show_components;
 
 import java.util.ArrayList;
+import logic.MainController;
 import show_components.show.Show;
 import user_exceptions.DebugError;
+import user_interface.UserInterface;
 
 /**
  *
@@ -15,20 +17,23 @@ import user_exceptions.DebugError;
  */
 public class ShowController {
 
-    private final ArrayList<Show> storedShows;
+    private MainController mainController;
+
+    private ArrayList<Show> storedShows;
     private ArrayList<String> storedShowsTitle;
     private ShowLocalDataHUB showLocalDataHUB;
+    private UserInterface userInterface;
 
-    public ShowController() {
-	storedShows = new ArrayList<>();
-//	storedShowsTitle = showLocalDataHUB.getLoadedTitles();
-//	for (String title : storedShowsTitle) {
-//	    storedShows.add(showLocalDataHUB.load(title));
-//	}
+    public void assignMainController(MainController mainController) {
+	this.mainController = mainController;
     }
 
     public void assignShowLocalDataHUB(ShowLocalDataHUB showLocalDataHUB) {
 	this.showLocalDataHUB = showLocalDataHUB;
+    }
+
+    public void assignUserInterface(UserInterface userInterface) {
+	this.userInterface = userInterface;
     }
 
     public Show getShowWithTitle(String title) {
@@ -44,15 +49,26 @@ public class ShowController {
     }
 
     public ArrayList<Show> getStoredShows() {
+	if (storedShows == null) {
+	    storedShows = new ArrayList<>();
+	    storedShowsTitle = showLocalDataHUB.getLoadedTitles();
+	    for (String title : storedShowsTitle) {
+		storedShows.add(showLocalDataHUB.load(title));
+	    }
+	}
 	return storedShows;
     }
 
     public void removeShow(Show show) {
+	storedShows.remove(show);
+	mainController.loadScheduler();
 	showLocalDataHUB.remove(show.getTitle());
     }
 
     public void saveShow(Show show) {
 	showLocalDataHUB.save(show);
+	storedShows.add(show);
+	userInterface.addShowTabToScheduler(show);
     }
 
     public boolean showStored(Show show) {
