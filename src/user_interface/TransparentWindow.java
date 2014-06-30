@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
+import local_data.Properties;
 
 /**
  *
@@ -32,7 +33,7 @@ public class TransparentWindow extends JWindow {
 //	Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 //	int taskBarHeight = scrnSize.height - winSize.height;
 	//creating transparent jwindow
-	setAlwaysOnTop(true);
+	setAlwaysOnTop(Properties.getInstance().OPTION_ALWAYS_ON_TOP.getValue());
 	setSize(scrnSize);
 //	setSize(width, height - taskBarHeight);
 	setBackground(new Color(0, 0, 0, 0));

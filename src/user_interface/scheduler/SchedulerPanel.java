@@ -8,7 +8,6 @@ package user_interface.scheduler;
 import action_responders.ConfigActionResponder;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebAccordion;
-import com.alee.extended.panel.WebAccordionStyle;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
@@ -29,9 +28,8 @@ public class SchedulerPanel extends WebPanel {
     }
 
     public void initComponents() {
-	accordion = new WebAccordion(WebAccordionStyle.accordionStyle);
+	accordion = new WebAccordion();
 	accordion.setMultiplySelectionAllowed(false);
-
 	contentGroupPanel = new GroupPanel(4, accordion);
 	accordion.setOrientation(0);
 	add(contentGroupPanel);

@@ -31,10 +31,12 @@ public class Properties implements Serializable {
     public Property NOTIFICATION_NEXT_EP_RELEASED_TODAY = new Property();
     public Property NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT = new Property();
     public Property NOTIFICATION_UPDATE = new Property();
+    public Property OPTION_ALWAYS_ON_TOP = new Property();
 
     {
 	OPTION_AUTOSTART.setText("Włączaj przy starcie systemu windows.");
 	OPTION_AUTOREFRESH.setText("Automatycznie aktualizuj informacje o serialach.");
+	OPTION_ALWAYS_ON_TOP.setText("Zawsze na wierzchu.");
 	OPTION_DEBUG.setText("Pomóż rozwijać aplikację, przez wysyłanie danych o błędach.");
 	OPTION_MENU_LAST_EP.setText("Pokaż ostatnio wydany odcinek.");
 	OPTION_MENU_MARKED_EPISODE.setText("Pokaż wyróżniony odcinek.");
@@ -45,6 +47,9 @@ public class Properties implements Serializable {
 	NOTIFICATION_NEXT_EP_RELEASED_TODAY.setText("Powiadamiaj o premierze nowego odcinka.");
 	NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT.setText("Powiadamiaj o zapowiedzi nowego sezonu.");
 	NOTIFICATION_UPDATE.setText("Powiadamiaj o dostępności nowej wersji programu.");
+
+	//TODO auto hide when not selected
+	//TODO akordeon
     }
 
     private transient static Properties instance = null;

@@ -120,6 +120,7 @@ public class ConfigFrame extends WebFrame {
 	    this.getLastComponent().setEnabled(false);
 	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_AUTOREFRESH));
 	    this.getLastComponent().setEnabled(false);
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_ALWAYS_ON_TOP));
 	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_DEBUG));
 	    this.getLastComponent().setEnabled(false);
 
