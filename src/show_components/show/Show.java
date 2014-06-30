@@ -25,6 +25,7 @@ public class Show implements Readable, Serializable {
     protected boolean nextEpisodeAnnouncementAvailableState;
     protected int nextEpisodeOrdinal;
     protected int nextEpisodeSeasonOrdinal;
+    protected Episode nextEpisodeToWatch;
 
     protected HashMap<Integer, Season> seasons;
 
@@ -58,17 +59,8 @@ public class Show implements Readable, Serializable {
     }
 
     @Override
-    public Episode getNextEpisodeForMe() {
-	for (int seasonOrdinal = 1; seasonOrdinal < seasonsNumber; seasonOrdinal++) {
-	    Season season = getSeason(seasonOrdinal);
-	    for (int episodeOrdinal = 1; episodeOrdinal < season.getEpisodesNumber(); episodeOrdinal++) {
-		Episode episode = season.getEpisode(episodeOrdinal);
-		if (episode.isViewed()) {
-		    return episode;
-		}
-	    }
-	}
-	return null;
+    public Episode getNextEpisodeToWatch() {
+	return nextEpisodeToWatch;
     }
 
     @Override

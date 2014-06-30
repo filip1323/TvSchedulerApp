@@ -40,5 +40,5 @@ interface Readable {
 
     public Episode getLastEpisode();
 
-    public Episode getNextEpisodeForMe();
+    public Episode getNextEpisodeToWatch();
 }

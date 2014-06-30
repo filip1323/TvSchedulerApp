@@ -25,7 +25,7 @@ interface Editable {
 
     public void setReleaseDate(long date);
 
-    public void setViewedState(boolean state);
+    public void setAsNextToWatch();
 
     public void setSeason(Season season);
 

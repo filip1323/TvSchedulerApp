@@ -49,8 +49,8 @@ public class EpisodeFrame extends Episode implements Editable {
     }
 
     @Override
-    public void setViewedState(boolean state) {
-	viewedState = state;
+    public void setAsNextToWatch() {
+	getSeason().getShow().edit().setNextEpisodeToWatch(this);
     }
 
     public Episode readOnly() {

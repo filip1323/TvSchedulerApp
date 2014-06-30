@@ -21,7 +21,6 @@ public class Episode implements Readable, Serializable {
     protected long releaseDate;
     protected String title;
     protected String tvcomUrl;
-    protected boolean viewedState;
     protected transient Season season;
 
     @Override
@@ -65,8 +64,8 @@ public class Episode implements Readable, Serializable {
     }
 
     @Override
-    public boolean isViewed() {
-	return viewedState;
+    public boolean isNextToBeWatched() {
+	return (getSeason().getShow().getNextEpisodeToWatch() == this);
     }
 
     @Override

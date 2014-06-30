@@ -6,7 +6,9 @@
 package show_components.show;
 
 import java.util.HashMap;
+import show_components.episode.Episode;
 import show_components.season.Season;
+import user_exceptions.DebugError;
 
 /**
  *
@@ -41,6 +43,14 @@ public class ShowFrame extends Show implements Editable {
     @Override
     public void setNextEpisodeSeasonOrdinal(int ordinal) {
 	nextEpisodeSeasonOrdinal = ordinal;
+    }
+
+    @Override
+    public void setNextEpisodeToWatch(Episode episode) {
+	if (!seasons.containsValue(episode.getSeason())) {
+	    throw new DebugError("Seasons dont match");
+	}
+	nextEpisodeToWatch = episode;
     }
 
     @Override

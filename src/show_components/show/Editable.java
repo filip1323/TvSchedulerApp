@@ -5,6 +5,7 @@
  */
 package show_components.show;
 
+import show_components.episode.Episode;
 import show_components.season.Season;
 
 /**
@@ -30,6 +31,8 @@ interface Editable {
     public void setNextEpisodeOrdinal(int ordinal);
 
     public void setNextEpisodeSeasonOrdinal(int ordinal);
+
+    public void setNextEpisodeToWatch(Episode episode);
 
     public void addSeason(Season season);
 }

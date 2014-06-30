@@ -25,7 +25,5 @@ public class EpisodeBuilder {
 	episodeFrame.setSeasonOrdinal(provider.getSeasonOrdinal());
 	episodeFrame.setTitle(provider.getTitle());
 	episodeFrame.setTvcomUrl(provider.getTvcomUrl());
-	episodeFrame.setViewedState(false);
-
     }
 }

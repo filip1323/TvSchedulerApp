@@ -26,7 +26,7 @@ interface Readable {
 
     public long getReleaseDate();
 
-    public boolean isViewed();
+    public boolean isNextToBeWatched();
 
     //medicomplex data
     public String getSummary();
