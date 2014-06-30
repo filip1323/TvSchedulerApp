@@ -7,12 +7,17 @@ package user_interface;
 
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.WebNotificationPopup;
 import java.awt.AWTException;
+import java.awt.Component;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import local_data.Resources;
@@ -201,8 +206,17 @@ public class UserInterface {
 	return showManagementFrame;
     }
 
-    public void showNotification() {
+    public void showNotification(Component content, String icoName) {
+	WebNotificationPopup notification = new WebNotificationPopup();
+	notification.setContent(content);
+	notification.setIcon(Resources.getImageIcon(icoName));
+	NotificationManager.setLocation(SwingConstants.SOUTH_WEST);
+	NotificationManager.showNotification(window, notification);
 
+    }
+
+    public void showNotification(String content, String icoName) {
+	showNotification(new WebLabel(content), icoName);
     }
 
 }

@@ -23,13 +23,13 @@ public class Properties implements Serializable {
     public Property OPTION_AUTOREFRESH = new Property();
     public Property OPTION_DEBUG = new Property();
     public Property OPTION_MENU_LAST_EP = new Property();
-    public Property OPTION_MENU_NEXT_EP_FOR_ME = new Property();
+    public Property OPTION_MENU_MARKED_EPISODE = new Property();
     public Property OPTION_CONNECT_PIRATEBAY = new Property();
     public Property OPTION_CONNECT_EKINO = new Property();
     public Property OPTION_INFO_NEXT_EP_COUNTER = new Property();
     public Property NOTIFICATION_NEXT_EP_ANNOUNCEMENT = new Property();
     public Property NOTIFICATION_NEXT_EP_RELEASED_TODAY = new Property();
-    public Property NOTIFICATION_NEXT_SEAS_RELEASED_TODAY = new Property();
+    public Property NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT = new Property();
     public Property NOTIFICATION_UPDATE = new Property();
 
     {
@@ -37,13 +37,13 @@ public class Properties implements Serializable {
 	OPTION_AUTOREFRESH.setText("Automatycznie aktualizuj informacje o serialach.");
 	OPTION_DEBUG.setText("Pomóż rozwijać aplikację, przez wysyłanie danych o błędach.");
 	OPTION_MENU_LAST_EP.setText("Pokaż ostatnio wydany odcinek.");
-	OPTION_MENU_NEXT_EP_FOR_ME.setText("Pokaż następny odcinek którego nie oglądałem");
+	OPTION_MENU_MARKED_EPISODE.setText("Pokaż wyróżniony odcinek.");
 	OPTION_CONNECT_PIRATEBAY.setText("Połącz z thepiratebay.");
 	OPTION_CONNECT_EKINO.setText("Połącz z ekinem.tv");
 	OPTION_INFO_NEXT_EP_COUNTER.setText("Pokazuj ile dni zostało do następnego epizodu.");
 	NOTIFICATION_NEXT_EP_ANNOUNCEMENT.setText("Powiadamiaj o zapowiedzi nowego odcinka.");
 	NOTIFICATION_NEXT_EP_RELEASED_TODAY.setText("Powiadamiaj o premierze nowego odcinka.");
-	NOTIFICATION_NEXT_SEAS_RELEASED_TODAY.setText("Powiadamiaj o premierze nowego sezonu.");
+	NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT.setText("Powiadamiaj o zapowiedzi nowego sezonu.");
 	NOTIFICATION_UPDATE.setText("Powiadamiaj o dostępności nowej wersji programu.");
     }
 

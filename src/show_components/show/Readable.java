@@ -41,4 +41,6 @@ interface Readable {
     public Episode getLastEpisode();
 
     public Episode getNextEpisodeToWatch();
+
+    public Episode getAnnouncenedEpisode();
 }

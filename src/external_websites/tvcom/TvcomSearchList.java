@@ -79,36 +79,6 @@ public class TvcomSearchList { //e.g `http://www.tv.com/search?q=lost`
 	return getResult(1);
     }
 
-    public class Result {
-
-	private final String imageUrl;
-	private final String showUrl;
-	private final String showTitle;
-
-	public Result(String title, String showUrl, String imageUrl) {
-	    this.showTitle = title;
-	    this.imageUrl = imageUrl;
-	    this.showUrl = showUrl;
-	}
-
-	public String getTitle() {
-	    return showTitle;
-	}
-
-	public String getImageUrl() {
-	    return imageUrl;
-	}
-
-	public String getShowHomepageUrl() {
-	    return showUrl;
-	}
-
-	@Override
-	public String toString() {
-	    return "Title: " + showTitle + "\tImage URL: " + imageUrl + "\tShow URL: " + showUrl;
-	}
-    }
-
     @Override
     public String toString() {
 	return "`" + url + "` (" + getResultsNumber() + ")";

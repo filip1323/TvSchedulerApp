@@ -5,7 +5,6 @@
  */
 package user_interface.scheduler;
 
-import action_responders.ConfigActionResponder;
 import action_responders.actions.ButtonAction;
 import action_responders.actions.ButtonAction.Type;
 import com.alee.extended.image.WebDecoratedImage;
@@ -30,7 +29,6 @@ import show_components.ShowLocalDataHUB;
 import show_components.episode.Episode;
 import show_components.season.Season;
 import show_components.show.Show;
-import user_exceptions.DebugError;
 
 /**
  *
@@ -42,22 +40,13 @@ public class ShowPanelCreator {
 
     private GroupPanel panel;
 
-    private static ConfigActionResponder responder;
-
     private WebButton nextEpisodeButton;
     private int nextEpisodeButtonIndex;
 
-    public static void assignResponder(ConfigActionResponder responder) {
-	ShowPanelCreator.responder = responder;
-    }
-
     public GroupPanel getShowPanel(Show show) {
-	if (responder == null) {
-	    throw new DebugError("user action responder not initialzied");
-	}
 	this.show = show;
 	//creating panel
-	panel = new GroupPanel();
+	panel = new GroupPanel(GroupingType.fillLast);
 	panel.setGap(0);
 	panel.setOrientation(SwingConstants.VERTICAL);
 
@@ -75,7 +64,7 @@ public class ShowPanelCreator {
 	tvcomButton.setText("tv.com");
 	tvcomButton.setIcon(Resources.getImageIcon("external-link.png"));
 	panel.add(tvcomButton);
-//TODO
+
 	//ekino button
 	if (Properties.getInstance().OPTION_CONNECT_EKINO.getValue()) {
 	    WebButton ekinoButton = new WebButton();
@@ -89,6 +78,22 @@ public class ShowPanelCreator {
 
 	panel.add(new WebSeparator());
 
+	//next ep counter
+	if (Properties.getInstance().OPTION_INFO_NEXT_EP_COUNTER.getValue() && show.isNextEpisodeAnnouncement()) {
+	    Episode announcenedEpisode = show.getAnnouncenedEpisode();
+	    long timeDiff = Utils.DateManager.getTimeDifferenceInDays(Utils.DateManager.getCurrentDayInMilis(), announcenedEpisode.getReleaseDate());
+	    WebLabel annLabel = new WebLabel(timeDiff + " dni do premiery");
+	    if (timeDiff == 0) {
+		annLabel.setText("Dzień premiery");
+	    }
+	    if (timeDiff == 1) {
+		annLabel.setText("Jutro premiera");
+	    }
+	    annLabel.setMargin(3);
+	    annLabel.setIcon(Resources.getImageIcon("aperture-small.png"));
+	    panel.add(annLabel);
+	}
+
 	//creating last ep button
 	if (Properties.getInstance().OPTION_MENU_LAST_EP.getValue()) {
 	    Episode lastEpisode = show.getLastEpisode();
@@ -100,7 +105,7 @@ public class ShowPanelCreator {
 	}
 
 	//creating next ep button
-	if (Properties.getInstance().OPTION_MENU_NEXT_EP_FOR_ME.getValue()) {
+	if (Properties.getInstance().OPTION_MENU_MARKED_EPISODE.getValue()) {
 	    nextEpisodeButtonIndex = panel.getComponentCount();
 	    reloadNextEpisodeButton();
 	}
@@ -417,7 +422,7 @@ public class ShowPanelCreator {
 	content.add(new WebSeparator());
 
 	//last viewed
-	if (Properties.getInstance().OPTION_MENU_NEXT_EP_FOR_ME.getValue()) {
+	if (Properties.getInstance().OPTION_MENU_MARKED_EPISODE.getValue()) {
 	    final WebToggleButton viewedButton = new WebToggleButton("Oznaczyć?", Resources.getImageIcon("pin.png"));
 	    viewedButton.setFontSize(10);
 	    viewedButton.setDrawSides(false, false, false, false);

@@ -36,7 +36,6 @@ public class ButtonAction extends AbstractAction {
     private Object arg;
     private Type type;
     static private ShowController showController;
-//TODO
 
     static public void assign(ShowController showController) {
 	ButtonAction.showController = showController;

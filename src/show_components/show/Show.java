@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.season.Season;
+import user_exceptions.DebugError;
 
 /**
  *
@@ -28,6 +29,14 @@ public class Show implements Readable, Serializable {
     protected Episode nextEpisodeToWatch = null;
 
     protected HashMap<Integer, Season> seasons;
+
+    @Override
+    public Episode getAnnouncenedEpisode() {
+	if (!isNextEpisodeAnnouncement()) {
+	    throw new DebugError("NOt announcened");
+	}
+	return getSeason(getNextEpisodeSeasonOrdinal()).getEpisode(getNextEpisodeOrdinal());
+    }
 
     @Override
     public String getEkinoUrl() {

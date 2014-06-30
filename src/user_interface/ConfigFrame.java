@@ -129,7 +129,7 @@ public class ConfigFrame extends WebFrame {
 	    this.add(label2);
 
 	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_MENU_LAST_EP));
-	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_MENU_NEXT_EP_FOR_ME));
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_MENU_MARKED_EPISODE));
 
 	    this.add(new WebSeparator());
 
@@ -166,18 +166,14 @@ public class ConfigFrame extends WebFrame {
 	    this.add(label1);
 
 	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_INFO_NEXT_EP_COUNTER));
-	    this.getLastComponent().setEnabled(false);
 
 	    this.add(new WebSeparator());
 	    WebLabel label2 = new WebLabel("O serialu");
 	    this.add(label2);
 
 	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT));
-	    this.getLastComponent().setEnabled(false);
 	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_EP_RELEASED_TODAY));
-	    this.getLastComponent().setEnabled(false);
-	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_SEAS_RELEASED_TODAY));
-	    this.getLastComponent().setEnabled(false);
+	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT));
 
 	    this.add(new WebSeparator());
 	    WebLabel label3 = new WebLabel("Pozostałe");

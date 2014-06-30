@@ -22,7 +22,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.notification.NotificationManager;
-import external_websites.tvcom.TvcomSearchList.Result;
+import external_websites.tvcom.Result;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;

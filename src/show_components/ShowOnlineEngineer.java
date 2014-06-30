@@ -5,8 +5,8 @@
  */
 package show_components;
 
+import external_websites.tvcom.Result;
 import external_websites.tvcom.TvcomSearchList;
-import external_websites.tvcom.TvcomSearchList.Result;
 import external_websites.tvcom.TvcomSeasonGuide;
 import external_websites.tvcom.TvcomShowHomepage;
 import external_websites.tvcom.TvcomUtils;
@@ -74,6 +74,31 @@ public class ShowOnlineEngineer {
 
     }
 
+    public Show getBasicInfo(Show show) {
+	try {
+	    TvcomShowHomepage homepage = new TvcomShowHomepage(show.getTvcomUrl());
+
+	    //getting first season guide
+	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(show.getTvcomUrl(), 1));
+
+	    //getting seasons number
+	    int seasonsNumber = currentSeasonGuide.getSeasonsNumber();
+
+	    //pseudo result
+	    Result result = new Result(show.getTitle(), show.getTvcomUrl(), show.getThumbUrl());
+
+	    //creating show
+	    ShowBuilder showBuilder = new ShowBuilder();
+	    ShowTvcomInfo showInfoProvider = new ShowTvcomInfo(result, homepage, currentSeasonGuide);
+	    show = showBuilder.getShow(showInfoProvider);
+
+	    return show;
+	} catch (WrongUrlException ex) {
+	    ex.printStackTrace();
+	}
+	return null;
+    }
+
     private int seasonOrdinal = 1;
     private int episodeOrdinal = 1;
 
@@ -87,6 +112,34 @@ public class ShowOnlineEngineer {
 	    return false;
 	}
 	return true;
+    }
+
+    public void loadLastSeason(Show show) {
+	try {
+	    TvcomSeasonGuide currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(show.getTvcomUrl(), show.getSeasonsNumber()));
+
+	    //creating season
+	    SeasonBuilder seasonBuilder = new SeasonBuilder();
+	    SeasonTvcomInfo seasonInfoProvider = new SeasonTvcomInfo(currentSeasonGuide);
+	    Season season = seasonBuilder.getSeason(seasonInfoProvider);
+
+	    //assigning season
+	    show.edit().addSeason(season);
+	    season.edit().setShow(show);
+
+	    for (int ordinal = 1; ordinal <= season.getEpisodesNumber(); ordinal++) {
+		EpisodeBuilder episodeBuilder = new EpisodeBuilder();
+		EpisodeTvcomInfo episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, ordinal);
+		Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
+
+		//assigning episode
+		season.edit().addEpisode(episode);
+		episode.edit().setSeason(season);
+	    }
+
+	} catch (WrongUrlException ex) {
+	    ex.printStackTrace();
+	}
     }
 
     public boolean saveNextEpisode() {

@@ -86,8 +86,6 @@ public class TvSchedulerApp {
 	showManager.assignShowController(showController);
 	showManager.assignUserInterface(ui);
 
-	ShowPanelCreator.assignResponder(responder);
-
 	Ekino.assignUserInterface(ui);
 	Ekino.assignShowController(showController);
 

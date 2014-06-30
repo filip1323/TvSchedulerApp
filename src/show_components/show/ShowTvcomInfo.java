@@ -5,7 +5,7 @@
  */
 package show_components.show;
 
-import external_websites.tvcom.TvcomSearchList.Result;
+import external_websites.tvcom.Result;
 import external_websites.tvcom.TvcomSeasonGuide;
 import external_websites.tvcom.TvcomShowHomepage;
 
