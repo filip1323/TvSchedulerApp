@@ -35,6 +35,9 @@ public class MainController {
     }
 
     public void shutdown() {
+	for (Show show : showController.getStoredShows()) {
+	    showController.updateShow(show);
+	}
 	System.exit(0);
     }
 

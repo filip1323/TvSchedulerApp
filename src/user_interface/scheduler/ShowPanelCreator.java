@@ -6,6 +6,8 @@
 package user_interface.scheduler;
 
 import action_responders.ConfigActionResponder;
+import action_responders.actions.ButtonAction;
+import action_responders.actions.ButtonAction.Type;
 import com.alee.extended.image.WebDecoratedImage;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
@@ -15,12 +17,14 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.separator.WebSeparator;
+import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import local_data.Properties;
 import local_data.Resources;
-import local_data.Settings;
 import misc.Utils;
 import show_components.ShowLocalDataHUB;
 import show_components.episode.Episode;
@@ -39,6 +43,9 @@ public class ShowPanelCreator {
     private GroupPanel panel;
 
     private static ConfigActionResponder responder;
+
+    private WebButton nextEpisodeButton;
+    private int nextEpisodeButtonIndex;
 
     public static void assignResponder(ConfigActionResponder responder) {
 	ShowPanelCreator.responder = responder;
@@ -64,29 +71,38 @@ public class ShowPanelCreator {
 	WebButton tvcomButton = new WebButton();
 	tvcomButton.setDrawSides(true, false, true, false);
 	tvcomButton.setHorizontalAlignment(SwingConstants.LEFT);
-//	tvcomButton.setAction(new ButtonAction(TYPE.OPEN_TVCOM_HOMEPAGE, show));
+	tvcomButton.setAction(new ButtonAction(Type.OPEN_TVCOM_HOMEPAGE, show));
 	tvcomButton.setText("tv.com");
 	tvcomButton.setIcon(Resources.getImageIcon("external-link.png"));
 	panel.add(tvcomButton);
 //TODO
 	//ekino button
-	if (Settings.getInstance().OPTION_CONNECT_EKINO) {
+	if (Properties.getInstance().OPTION_CONNECT_EKINO.getValue()) {
 	    WebButton ekinoButton = new WebButton();
 	    ekinoButton.setDrawSides(false, false, true, false);
 	    ekinoButton.setHorizontalAlignment(SwingConstants.LEFT);
-//	    ekinoButton.setAction(new ButtonAction(TYPE.OPEN_EKINO_HOMEPAGE, show));
+	    ekinoButton.setAction(new ButtonAction(Type.OPEN_EKINO_HOMEPAGE, show));
 	    ekinoButton.setText("ekino.tv");
 	    ekinoButton.setIcon(Resources.getImageIcon("external-link.png"));
 	    panel.add(ekinoButton);
 	}
 
+	panel.add(new WebSeparator());
+
 	//creating last ep button
-	if (Settings.getInstance().OPTION_MENU_LAST_EP) {
+	if (Properties.getInstance().OPTION_MENU_LAST_EP.getValue()) {
 	    Episode lastEpisode = show.getLastEpisode();
 	    WebButton lastEpButton = getEpisodeDetailed(lastEpisode.getSeasonOrdinal(), lastEpisode.getOrdinal());
 	    lastEpButton.setIcon(Resources.getImageIcon("bookmark.png"));
 	    lastEpButton.setMaximumSize(tvcomButton.getSize());
+	    lastEpButton.setText("Najnowszy  " + lastEpisode.getSummary());
 	    panel.add(lastEpButton);
+	}
+
+	//creating next ep button
+	if (Properties.getInstance().OPTION_MENU_NEXT_EP_FOR_ME.getValue()) {
+	    nextEpisodeButtonIndex = panel.getComponentCount();
+	    reloadNextEpisodeButton();
 	}
 
 	//seasons list
@@ -94,6 +110,31 @@ public class ShowPanelCreator {
 	panel.add(seasonsButton);
 
 	return panel;
+
+    }
+
+    private void reloadNextEpisodeButton() {
+	EventQueue.invokeLater(new Runnable() {
+
+	    @Override
+	    public void run() {
+		if (nextEpisodeButton != null) {
+		    panel.remove(nextEpisodeButton);
+		}
+
+		Episode nextEpisode = show.getNextEpisodeToWatch();
+
+		nextEpisodeButton = getEpisodeDetailed(nextEpisode.getSeasonOrdinal(), nextEpisode.getOrdinal());
+		nextEpisodeButton.setIcon(Resources.getImageIcon("pin.png"));
+		nextEpisodeButton.setDrawSides(false, false, true, false);
+		nextEpisodeButton.setText("Wyróżniony " + nextEpisode.getSummary());
+
+		panel.add(nextEpisodeButton, nextEpisodeButtonIndex);
+		panel.repaint();
+		panel.setVisible(false);
+		panel.setVisible(true);
+	    }
+	});
 
     }
 
@@ -110,8 +151,9 @@ public class ShowPanelCreator {
 		popOver.setAlwaysOnTop(true);
 		popOver.add(getSeasonsListContent());
 		popOver.setShadeWidth(0);
+		popOver.setMovable(false);
 
-		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
+		popOver.show(panel, PopOverDirection.right);
 	    }
 	});
 
@@ -153,8 +195,9 @@ public class ShowPanelCreator {
 		popOver.setAlwaysOnTop(true);
 		popOver.add(getEpisodesListContent(seasonOrdinal));
 		popOver.setShadeWidth(0);
+		popOver.setMovable(false);
 
-		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
+		popOver.show(panel, PopOverDirection.right);
 	    }
 	});
 	return episodesButton;
@@ -176,6 +219,9 @@ public class ShowPanelCreator {
 	for (int ordinal = 1; ordinal <= season.getEpisodesNumber(); ordinal++) {
 	    WebButton episodeButton = getEpisodeDetailed(seasonOrdinal, ordinal);
 	    content.add(episodeButton);
+	    if (show.getLastEpisode().getSeasonOrdinal() == seasonOrdinal && show.getLastEpisode().getOrdinal() == ordinal) {
+		break;
+	    }
 	}
 
 	return content;
@@ -199,24 +245,23 @@ public class ShowPanelCreator {
 		popOver.setAlwaysOnTop(true);
 		popOver.add(getEpisodeDetailedContent(seasonOrdinal, ordinal));
 		popOver.setShadeWidth(0);
-		popOver.show((WebButton) e.getSource(), PopOverDirection.right);
+		popOver.setMovable(false);
+		Point location = panel.getLocationOnScreen();
+		location.x -= popOver.getPreferredSize().width;
+		popOver.show(location);
 	    }
 	});
 	return episodeDetailedInfoButton;
     }
 
     private GroupPanel getEpisodeDetailedContent(int seasonOrdinal, int ordinal) {
-	Episode episode = show.getSeason(seasonOrdinal).getEpisode(ordinal);
-	//final GroupPanel uberContent = new GroupPanel(GroupingType.none, 0, true);
-	final GroupPanel content = new GroupPanel(0, false);
+	final Episode episode = show.getSeason(seasonOrdinal).getEpisode(ordinal);
+	final GroupPanel content = new GroupPanel(GroupingType.fillAll, 0, false);
 	content.setMargin(10);
 	content.setGap(3);
 
 	//close button
 	WebButton closeButton = new WebButton(Resources.getImageIcon("x.png"));
-	///closeButton.setHorizontalAlignment(SwingConstants.RIGHT);
-	//closeButton.setHorizontalAlignment(SwingConstants.TOP);
-	//closeButton.setPreferredHeight(12);
 	closeButton.addActionListener(new ActionListener() {
 
 	    @Override
@@ -224,8 +269,6 @@ public class ShowPanelCreator {
 		content.setVisible(false);
 	    }
 	});
-//	uberContent.add(closeButton);
-//	uberContent.add(content);
 	closeButton.setFocusable(false);
 
 	//show title
@@ -249,14 +292,81 @@ public class ShowPanelCreator {
 
 	//episode title
 	WebLabel episodeTitleLabel = new WebLabel(episode.getTitle());
-	content.add(episodeTitleLabel);
+	episodeTitleLabel.setMargin(0, 0, 0, 5);
+	//content.add(episodeTitleLabel);
+
+	//next and previous
+	WebButton nextButton = new WebButton(Resources.getImageIcon("chevron-right.png"));
+	nextButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		Episode nextEpisode = episode.getNextEpisode();
+
+		final WebPopOver popOver = new WebPopOver();
+		popOver.setCloseOnFocusLoss(true);
+		popOver.setAlwaysOnTop(true);
+		popOver.add(getEpisodeDetailedContent(nextEpisode.getSeasonOrdinal(), nextEpisode.getOrdinal()));
+		popOver.setShadeWidth(0);
+		popOver.setMovable(false);
+		Point location = panel.getLocationOnScreen();
+		location.x -= popOver.getPreferredSize().width;
+		popOver.show(location);
+	    }
+	});
+	WebButton previousButton = new WebButton(Resources.getImageIcon("chevron-left.png"));
+	previousButton.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		Episode previous = episode.getPreviousEpisode();
+
+		final WebPopOver popOver = new WebPopOver();
+		//popOver.
+		popOver.setCloseOnFocusLoss(true);
+		popOver.setAlwaysOnTop(true);
+		popOver.add(getEpisodeDetailedContent(previous.getSeasonOrdinal(), previous.getOrdinal()));
+		popOver.setShadeWidth(0);
+		popOver.setMovable(false);
+		Point location = panel.getLocationOnScreen();
+		location.x -= popOver.getPreferredSize().width;
+		popOver.show(location);
+	    }
+	});
+	GroupPanel chevrons = new GroupPanel(GroupingType.fillFirst, episodeTitleLabel, previousButton, nextButton);
+	nextButton.setShadeWidth(0);
+	previousButton.setShadeWidth(0);
+	//buttons disable when needs
+
+	if (show.getLastEpisode() == episode) {
+	    nextButton.setVisible(false);
+	}
+	if (episode.getSeasonOrdinal() == 1 && episode.getOrdinal() == 1) {
+	    previousButton.setVisible(false);
+	}
+	content.add(chevrons);
 
 	//summary
 	WebLabel summaryLabel = new WebLabel(show.getTitle() + " " + Utils.Others.prepareStandardSummary(seasonOrdinal, ordinal));
 	//content.add(summaryLabel);
 
 	//date
-	WebLabel releaseDateLabel = new WebLabel("Premiera: " + Utils.DateManager.convertLongIntoUnifiedFormat(episode.getReleaseDate()));
+	WebLabel releaseDateLabel = new WebLabel();
+	String dateString = "Premiera: " + Utils.DateManager.convertLongIntoUnifiedFormat(episode.getReleaseDate());
+	long timeDiff = Utils.DateManager.getTimeDifferenceInDays(Utils.DateManager.getCurrentDayInMilis(), episode.getReleaseDate());
+
+	if (timeDiff < -1 && timeDiff > -180) {
+	    dateString += ", " + (-timeDiff) + " dni temu";
+	} else if (timeDiff == -1) {
+	    dateString += ", wczoraj";
+	} else if (timeDiff > 1) {
+	    dateString += ", za " + timeDiff + " dni";
+	} else if (timeDiff == 1) {
+	    dateString += ", jutro";
+	} else if (timeDiff == 0) {
+	    dateString += ", dziś";
+	}
+	releaseDateLabel.setText(dateString);
 	content.add(releaseDateLabel);
 	content.add(new WebSeparator());
 
@@ -265,38 +375,38 @@ public class ShowPanelCreator {
 
 	//tvcom
 	WebButton tvcomButton = new WebButton("Tv.com", Resources.getImageIcon("external-link.png"));
-	if (Settings.getInstance().OPTION_CONNECT_PIRATEBAY || (Settings.getInstance().OPTION_CONNECT_EKINO)) {
+	if (Properties.getInstance().OPTION_CONNECT_PIRATEBAY.getValue() || (Properties.getInstance().OPTION_CONNECT_EKINO.getValue())) {
 	    tvcomButton.setDrawSides(true, true, false, true);
 	}
 	tvcomButton.setHorizontalAlignment(SwingConstants.LEFT);
 	tvcomButton.setShadeWidth(0);
-//	tvcomButton.setAction(new ButtonAction(TYPE.OPEN_TVCOM_EPISODE, episode));
+	tvcomButton.setAction(new ButtonAction(Type.OPEN_TVCOM_EPISODE, episode));
 	tvcomButton.setText("Tv.com");
 	tvcomButton.setIcon(Resources.getImageIcon("external-link.png"));
 	externalLinksGroup.add(tvcomButton);
 
 	//piratebay
-	if (Settings.getInstance().OPTION_CONNECT_PIRATEBAY) {
+	if (Properties.getInstance().OPTION_CONNECT_PIRATEBAY.getValue()) {
 	    WebButton piratebayButton = new WebButton();
 	    piratebayButton.setDrawSides(false, true, true, true);
-	    if (Settings.getInstance().OPTION_CONNECT_EKINO) {
+	    if (Properties.getInstance().OPTION_CONNECT_EKINO.getValue()) {
 		piratebayButton.setDrawBottom(false);
 	    }
 	    piratebayButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    piratebayButton.setShadeWidth(0);
-//	    piratebayButton.setAction(new ButtonAction(TYPE.OPEN_PIRATEBAY_EPISODE, episode));
+	    piratebayButton.setAction(new ButtonAction(Type.OPEN_PIRATEBAY_EPISODE, episode));
 	    piratebayButton.setText("Torrent");
 	    piratebayButton.setIcon(Resources.getImageIcon("external-link.png"));
 	    externalLinksGroup.add(piratebayButton);
 	}
 
 	//ekino
-	if (Settings.getInstance().OPTION_CONNECT_EKINO) {
+	if (Properties.getInstance().OPTION_CONNECT_EKINO.getValue()) {
 	    WebButton ekinoButton = new WebButton("Ekino.TV", Resources.getImageIcon("external-link.png"));
 	    ekinoButton.setDrawSides(false, true, true, true);
 	    ekinoButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    ekinoButton.setShadeWidth(0);
-//	    ekinoButton.setAction(new ButtonAction(TYPE.OPEN_EKINO_EPISODE, episode));
+	    ekinoButton.setAction(new ButtonAction(Type.OPEN_EKINO_EPISODE, episode));
 	    ekinoButton.setText("Ekino.TV");
 	    ekinoButton.setIcon(Resources.getImageIcon("external-link.png"));
 	    externalLinksGroup.add(ekinoButton);
@@ -306,12 +416,28 @@ public class ShowPanelCreator {
 
 	content.add(new WebSeparator());
 
-	WebToggleButton viewedButton = new WebToggleButton("Ostatnio obejrzany?", Resources.getImageIcon("pin.png"));
-	viewedButton.setFontSize(10);
-	viewedButton.setDrawSides(false, false, false, false);
-	//viewedButton.setUndecorated(true);
-	//	viewedCheckbox.setAction(new ButtonAction(TYPE.CHANGE_EPISODE_VIEWED_STATE, episode));
-	content.add(viewedButton);
+	//last viewed
+	if (Properties.getInstance().OPTION_MENU_NEXT_EP_FOR_ME.getValue()) {
+	    final WebToggleButton viewedButton = new WebToggleButton("Oznaczyć?", Resources.getImageIcon("pin.png"));
+	    viewedButton.setFontSize(10);
+	    viewedButton.setDrawSides(false, false, false, false);
+	    if (episode.isNextToBeWatched()) {
+		viewedButton.setSelected(true);
+		viewedButton.setEnabled(false);
+	    }
+
+	    viewedButton.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    episode.edit().setAsNextToWatch();
+		    viewedButton.setEnabled(false);
+		    reloadNextEpisodeButton();
+		}
+	    }
+	    );
+	    content.add(viewedButton);
+	}
 	return content;
     }
 }

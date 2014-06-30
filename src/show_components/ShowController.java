@@ -76,6 +76,6 @@ public class ShowController {
     }
 
     public void updateShow(Show show) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	showLocalDataHUB.update(show);
     }
 }

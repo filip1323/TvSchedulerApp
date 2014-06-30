@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import show_components.episode.Episode;
 import show_components.show.Show;
+import user_exceptions.DebugError;
 
 /**
  *
@@ -41,6 +42,22 @@ public class Season implements Readable, Serializable {
     @Override
     public Episode getLastEpisode() {
 	return episodes.get(episodesNumber);
+    }
+
+    @Override
+    public Season getNextSeason() {
+	if (ordinal == getShow().getSeasonsNumber()) {
+	    throw new DebugError("Season too high");
+	}
+	return getShow().getSeason(ordinal + 1);
+    }
+
+    @Override
+    public Season getPreviousSeason() {
+	if (ordinal == 1) {
+	    throw new DebugError("Season cant be less than 1");
+	}
+	return getShow().getSeason(ordinal - 1);
     }
 
     @Override

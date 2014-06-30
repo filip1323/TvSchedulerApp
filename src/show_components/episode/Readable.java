@@ -33,4 +33,8 @@ interface Readable {
 
     //complex getters
     public Season getSeason();
+
+    public Episode getNextEpisode();
+
+    public Episode getPreviousEpisode();
 }

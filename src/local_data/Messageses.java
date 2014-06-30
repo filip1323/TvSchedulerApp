@@ -9,7 +9,7 @@ package local_data;
  *
  * @author Filip
  */
-public class Messages {
+public class Messageses {
 
     public static final String OPTION_AUTOSTART = "Włączaj przy starcie systemu windows.";
 
@@ -25,7 +25,7 @@ public class Messages {
 
     public static final String OPTION_CONNECT_EKINO = "Połącz z ekinem.tv";
 
-    public static final String NOTIFICATION_NEXT_EP_COUNTER = "Pokazuj ile dni zostało do następnego epizodu.";
+    public static final String OPTION_INFO_NEXT_EP_COUNTER = "Pokazuj ile dni zostało do następnego epizodu.";
 
     public static final String NOTIFICATION_NEXT_EP_ANNOUNCEMENT = "Powiadamiaj o zapowiedzi nowego odcinka.";
 

@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
-import local_data.Messages;
 import local_data.Resources;
 import show_components.ShowController;
 import show_components.ShowOnlineEngineer;
@@ -119,7 +118,7 @@ public class ShowManagerFrame extends WebFrame {
 	public menuContent(final ShowManagerFrame managerFrame) {
 
 	    WebButton addShowButton = new WebButton();
-	    addShowButton.setText(Messages.MANAGER_ADD_SHOW);
+	    addShowButton.setText("Dodaj serial");
 	    addShowButton.setFontSizeAndStyle(20, Font.BOLD);
 	    addShowButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    addShowButton.setIcon(Resources.getImageIcon("plus.png"));
@@ -133,7 +132,7 @@ public class ShowManagerFrame extends WebFrame {
 	    });
 
 	    WebButton removeShowButton = new WebButton();
-	    removeShowButton.setText(Messages.MANAGER_REMOVE_SHOW);
+	    removeShowButton.setText("Usuń serial");
 	    removeShowButton.setFontSizeAndStyle(20, Font.BOLD);
 	    removeShowButton.setHorizontalAlignment(SwingConstants.LEFT);
 	    removeShowButton.setIcon(Resources.getImageIcon("delete.png"));

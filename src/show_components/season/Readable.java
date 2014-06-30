@@ -29,4 +29,8 @@ interface Readable {
     public Episode getFirstEpisode();
 
     public Episode getLastEpisode();
+
+    public Season getNextSeason();
+
+    public Season getPreviousSeason();
 }

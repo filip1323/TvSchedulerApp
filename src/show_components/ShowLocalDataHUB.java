@@ -77,10 +77,10 @@ public class ShowLocalDataHUB {
 	    c.printStackTrace();
 	}
 
-	for (int seasonOrdinal = 1; seasonOrdinal < show.getSeasonsNumber(); seasonOrdinal++) {
+	for (int seasonOrdinal = 1; seasonOrdinal <= show.getSeasonsNumber(); seasonOrdinal++) {
 	    Season season = show.getSeason(seasonOrdinal);
 	    season.edit().setShow(show);
-	    for (int episodeOrdinal = 1; episodeOrdinal < season.getEpisodesNumber(); episodeOrdinal++) {
+	    for (int episodeOrdinal = 1; episodeOrdinal <= season.getEpisodesNumber(); episodeOrdinal++) {
 		Episode episode = season.getEpisode(episodeOrdinal);
 		episode.edit().setSeason(season);
 	    }
@@ -128,6 +128,28 @@ public class ShowLocalDataHUB {
 	    ex.printStackTrace();
 	} catch (IOException ex) {
 	    ex.printStackTrace();
+	}
+    }
+
+    void update(Show show) {
+	try {
+
+	    //saving show
+	    String path = getPathForShow(show.getTitle());
+
+	    File file = new File(path);
+	    if (!file.exists()) {
+		file.createNewFile();
+	    }
+	    FileOutputStream fileOut
+		    = new FileOutputStream(path);
+
+	    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	    out.writeObject(show);
+	    out.close();
+	    fileOut.close();
+	} catch (IOException i) {
+	    i.printStackTrace();
 	}
     }
 }

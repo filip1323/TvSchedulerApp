@@ -6,6 +6,7 @@
 package user_interface;
 
 import action_responders.ConfigActionResponder;
+import action_responders.actions.ButtonAction;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.painter.TitledBorderPainter;
 import com.alee.extended.panel.GroupPanel;
@@ -21,15 +22,14 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.BorderFactory;
-import local_data.Messages;
-import local_data.Settings;
+import local_data.Properties;
+import local_data.Property;
 
 /**
  *
  * @author Filip
  */
 public class ConfigFrame extends WebFrame {
-//TODO show x near episode panel
 
     private GroupPanel tabGroup;
     private WebTabbedPane tabGroupPane;
@@ -99,15 +99,6 @@ public class ConfigFrame extends WebFrame {
 	setLocation(xLocation, yLocation);
 
     }
-    public WebCheckBox OPTION_AUTOSTART_CHECKBOX;
-    public WebCheckBox OPTION_AUTOREFRESH_CHECKBOX;
-    public WebCheckBox OPTION_DEBUG_CHECKBOX;
-
-    public WebCheckBox OPTION_MENU_LAST_EP_CHECKBOX;
-    public WebCheckBox OPTION_MENU_NEXT_EP_FOR_ME;
-
-    public WebCheckBox OPTION_CONNECT_PIRATEBAY;
-    public WebCheckBox OPTION_CONNECT_EKINO;
 
     class MainOptionsTab extends GroupPanel {
 
@@ -117,6 +108,7 @@ public class ConfigFrame extends WebFrame {
 	}
 
 	public void setContent() {
+
 	    //setting layout
 	    this.setLayout(new VerticalFlowLayout(10, 10));
 
@@ -124,74 +116,36 @@ public class ConfigFrame extends WebFrame {
 	    this.add(label1);
 
 	    //autostart option
-	    OPTION_AUTOSTART_CHECKBOX = new WebCheckBox(Messages.OPTION_AUTOSTART);
-	    this.add(OPTION_AUTOSTART_CHECKBOX);
-
-	    //autorefresh option
-	    OPTION_AUTOREFRESH_CHECKBOX = new WebCheckBox(Messages.OPTION_AUTOREFRESH);
-	    this.add(OPTION_AUTOREFRESH_CHECKBOX);
-
-	    //debug option
-	    OPTION_DEBUG_CHECKBOX = new WebCheckBox(Messages.OPTION_DEBUG);
-	    this.add(OPTION_DEBUG_CHECKBOX);
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_AUTOSTART));
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_AUTOREFRESH));
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_DEBUG));
 
 	    this.add(new WebSeparator());
 
 	    WebLabel label2 = new WebLabel("W informacjach o serialu");
 	    this.add(label2);
 
-	    //autorefresh option
-	    OPTION_MENU_LAST_EP_CHECKBOX = new WebCheckBox(Messages.OPTION_MENU_LAST_EP);
-	    this.add(OPTION_MENU_LAST_EP_CHECKBOX);
-
-	    //debug option
-	    OPTION_MENU_NEXT_EP_FOR_ME = new WebCheckBox(Messages.OPTION_MENU_NEXT_EP_FOR_ME);
-	    this.add(OPTION_MENU_NEXT_EP_FOR_ME);
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_MENU_LAST_EP));
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_MENU_NEXT_EP_FOR_ME));
 
 	    this.add(new WebSeparator());
 
 	    WebLabel label3 = new WebLabel("Zewnętrzne serwisy");
 	    this.add(label3);
-
-	    //thepiratebay
-	    OPTION_CONNECT_PIRATEBAY = new WebCheckBox(Messages.OPTION_CONNECT_PIRATEBAY);
-	    this.add(OPTION_CONNECT_PIRATEBAY);
-
-	    //ekino
-	    OPTION_CONNECT_EKINO = new WebCheckBox(Messages.OPTION_CONNECT_EKINO);
-	    this.add(OPTION_CONNECT_EKINO);
-
-	    //add responder
-	    OPTION_AUTOSTART_CHECKBOX.addActionListener(responder);
-	    OPTION_AUTOREFRESH_CHECKBOX.addActionListener(responder);
-	    OPTION_DEBUG_CHECKBOX.addActionListener(responder);
-
-	    OPTION_MENU_LAST_EP_CHECKBOX.addActionListener(responder);
-	    OPTION_MENU_NEXT_EP_FOR_ME.addActionListener(responder);
-
-	    OPTION_CONNECT_PIRATEBAY.addActionListener(responder);
-	    OPTION_CONNECT_EKINO.addActionListener(responder);
-
-	    //settings checkboxes
-	    OPTION_AUTOREFRESH_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOREFRESH);
-	    OPTION_AUTOSTART_CHECKBOX.setSelected(Settings.getInstance().OPTION_AUTOSTART);
-	    OPTION_DEBUG_CHECKBOX.setSelected(Settings.getInstance().OPTION_DEBUG);
-
-	    OPTION_MENU_LAST_EP_CHECKBOX.setSelected(Settings.getInstance().OPTION_MENU_LAST_EP);
-	    OPTION_MENU_NEXT_EP_FOR_ME.setSelected(Settings.getInstance().OPTION_MENU_NEXT_EP_FOR_ME);
-
-	    OPTION_CONNECT_EKINO.setSelected(Settings.getInstance().OPTION_CONNECT_EKINO);
-	    OPTION_CONNECT_PIRATEBAY.setSelected(Settings.getInstance().OPTION_CONNECT_PIRATEBAY);
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_CONNECT_EKINO));
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_CONNECT_PIRATEBAY));
 
 	}
 
     }
 
-    public WebCheckBox NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX;
-    public WebCheckBox NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX;
-    public WebCheckBox NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX;
-    public WebCheckBox NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX;
-    public WebCheckBox NOTIFICATION_UPDATE_CHECKBOX;
+    WebCheckBox getPropertyCheckbox(Property prop) {
+	WebCheckBox option = new WebCheckBox();
+	option.setAction(new ButtonAction(ButtonAction.Type.CHANGE_SETTINGS, prop));
+	option.setText(prop.getText());
+	option.setSelected(prop.getValue());
+	return option;
+    }
 
     class NotificationsOptionTab extends GroupPanel {
 
@@ -201,53 +155,27 @@ public class ConfigFrame extends WebFrame {
 	}
 
 	public void setContent() {
+
 	    //setting layout
 	    this.setLayout(new VerticalFlowLayout(10, 10));
 
 	    WebLabel label1 = new WebLabel("W informacjach o serialu");
 	    this.add(label1);
 
-	    //counter option
-	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_EP_COUNTER);
-	    this.add(NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX);
+	    this.add(getPropertyCheckbox(Properties.getInstance().OPTION_INFO_NEXT_EP_COUNTER));
 
 	    this.add(new WebSeparator());
 	    WebLabel label2 = new WebLabel("O serialu");
 	    this.add(label2);
 
-	    //annouce notification
-	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_EP_ANNOUNCEMENT);
-	    this.add(NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX);
-
-	    //premiere notification
-	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_EP_RELEASED_TODAY);
-	    this.add(NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX);
-
-	    //season premiere notification
-	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_NEXT_SEAS_RELEASED_TODAY);
-	    this.add(NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX);
+	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT));
+	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_EP_RELEASED_TODAY));
+	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_NEXT_SEAS_RELEASED_TODAY));
 
 	    this.add(new WebSeparator());
 	    WebLabel label3 = new WebLabel("Pozostałe");
 	    this.add(label3);
-
-	    //new client version notification
-	    NOTIFICATION_UPDATE_CHECKBOX = new WebCheckBox(Messages.NOTIFICATION_UPDATE);
-	    this.add(NOTIFICATION_UPDATE_CHECKBOX);
-
-	    //responder
-	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.addActionListener(responder);
-	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.addActionListener(responder);
-	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.addActionListener(responder);
-	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.addActionListener(responder);
-	    NOTIFICATION_UPDATE_CHECKBOX.addActionListener(responder);
-
-	    //checkboxes
-	    NOTIFICATION_NEXT_EP_ANNOUNCEMENT_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT);
-	    NOTIFICATION_NEXT_EP_COUNTER_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_COUNTER);
-	    NOTIFICATION_NEXT_EP_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_EP_RELEASED_TODAY);
-	    NOTIFICATION_NEXT_SEAS_RELEASED_TODAY_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_NEXT_SEAS_RELEASED_TODAY);
-	    NOTIFICATION_UPDATE_CHECKBOX.setSelected(Settings.getInstance().NOTIFICATION_UPDATE);
+	    this.add(getPropertyCheckbox(Properties.getInstance().NOTIFICATION_UPDATE));
 
 	}
     }

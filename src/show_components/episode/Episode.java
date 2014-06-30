@@ -29,6 +29,24 @@ public class Episode implements Readable, Serializable {
     }
 
     @Override
+    public Episode getNextEpisode() {
+	if (getSeason().getLastEpisode() == this) {
+	    return getSeason().getNextSeason().getFirstEpisode();
+	} else {
+	    return getSeason().getEpisode(ordinal + 1);
+	}
+    }
+
+    @Override
+    public Episode getPreviousEpisode() {
+	if (getSeason().getFirstEpisode() == this) {
+	    return getSeason().getPreviousSeason().getLastEpisode();
+	} else {
+	    return getSeason().getEpisode(ordinal - 1);
+	}
+    }
+
+    @Override
     public int getOrdinal() {
 	return ordinal;
     }
@@ -65,7 +83,10 @@ public class Episode implements Readable, Serializable {
 
     @Override
     public boolean isNextToBeWatched() {
-	return (getSeason().getShow().getNextEpisodeToWatch() == this);
+	return (getSeason()
+		.getShow()
+		.getNextEpisodeToWatch()
+		== this);
     }
 
     @Override

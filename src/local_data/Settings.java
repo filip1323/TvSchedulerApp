@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  *
@@ -20,27 +19,9 @@ import java.util.HashMap;
  */
 public class Settings implements Serializable {
 
-    private HashMap<String, String> configCollection = null;
-
     public final String BASIC_TVCOM_URL = "http://www.tv.com/";
     public final String SEARCH_TVCOM_URL = "http://www.tv.com/search?q=";
     public final String SHOW_TVCOM_URL = "http://www.tv.com/shows/";
-
-    public boolean OPTION_AUTOSTART = false;
-    public boolean OPTION_AUTOREFRESH = false;
-    public boolean OPTION_DEBUG = false;
-
-    public boolean OPTION_MENU_LAST_EP = false;
-    public boolean OPTION_MENU_NEXT_EP_FOR_ME = false;
-
-    public boolean OPTION_CONNECT_PIRATEBAY = false;
-    public boolean OPTION_CONNECT_EKINO = false;
-
-    public boolean NOTIFICATION_NEXT_EP_COUNTER = false;
-    public boolean NOTIFICATION_NEXT_EP_ANNOUNCEMENT = false;
-    public boolean NOTIFICATION_NEXT_EP_RELEASED_TODAY = false;
-    public boolean NOTIFICATION_NEXT_SEAS_RELEASED_TODAY = false;
-    public boolean NOTIFICATION_UPDATE = false;
 
     private transient static Settings instance = null;
 

@@ -7,6 +7,8 @@ package action_responders.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import local_data.Properties;
+import local_data.Property;
 import show_components.ShowController;
 import user_exceptions.DebugError;
 
@@ -16,12 +18,17 @@ import user_exceptions.DebugError;
  */
 public class ButtonAction extends AbstractAction {
 
-    public enum TYPE {
+    public enum Type {
 
-	OPEN_TVCOM_HOMEPAGE, OPEN_EKINO_HOMEPAGE, OPEN_PIRATEBAY_EPISODE, OPEN_EKINO_EPISODE, CHANGE_EPISODE_VIEWED_STATE, OPEN_TVCOM_EPISODE
+	OPEN_TVCOM_HOMEPAGE,
+	OPEN_EKINO_HOMEPAGE,
+	OPEN_PIRATEBAY_EPISODE,
+	OPEN_EKINO_EPISODE,
+	OPEN_TVCOM_EPISODE,
+	CHANGE_SETTINGS
     }
     private Object arg;
-    private TYPE type;
+    private Type type;
     static private ShowController showController;
 //TODO
 
@@ -40,11 +47,11 @@ public class ButtonAction extends AbstractAction {
 
     }
 
-    private ButtonAction(TYPE type) {
+    private ButtonAction(Type type) {
 	this.type = type;
     }
 
-    private ButtonAction(TYPE type, Object arg) {
+    public ButtonAction(Type type, Object arg) {
 	this.type = type;
 	this.arg = arg;
     }
@@ -61,10 +68,13 @@ public class ButtonAction extends AbstractAction {
 		break;
 	    case OPEN_EKINO_EPISODE:
 		break;
-	    case CHANGE_EPISODE_VIEWED_STATE:
+	    case CHANGE_SETTINGS:
+		//System.out.println(arg);
+		Property prop = ((Property) arg);
+		prop.toggle();
+		Properties.getInstance().saveMe();
 		break;
 	}
-	System.out.println(type + ":" + arg);
     }
 
 }

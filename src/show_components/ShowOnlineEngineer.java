@@ -106,6 +106,7 @@ public class ShowOnlineEngineer {
 
 		//assigning season
 		show.edit().addSeason(season);
+		season.edit().setShow(show);
 	    } else {
 		season = show.getSeason(seasonOrdinal);
 	    }
@@ -116,6 +117,7 @@ public class ShowOnlineEngineer {
 
 	    //assigning episode
 	    season.edit().addEpisode(episode);
+	    episode.edit().setSeason(season);
 
 	    if (++episodeOrdinal > currentSeasonGuide.getEpisodesNumber()) {
 		seasonOrdinal += 1;
