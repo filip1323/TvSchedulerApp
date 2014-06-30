@@ -7,6 +7,7 @@ package logic;
 
 import action_responders.ConfigActionResponder;
 import com.alee.laf.WebLookAndFeel;
+import external_websites.Ekino;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import show_components.ShowController;
@@ -86,6 +87,9 @@ public class TvSchedulerApp {
 	showManager.assignUserInterface(ui);
 
 	ShowPanelCreator.assignResponder(responder);
+
+	Ekino.assignUserInterface(ui);
+	Ekino.assignShowController(showController);
 
 	//showing shieeet
 	mainController.start();

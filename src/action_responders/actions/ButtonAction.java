@@ -5,12 +5,18 @@
  */
 package action_responders.actions;
 
+import external_websites.Ekino;
+import external_websites.Thepiratebay;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import local_data.Properties;
 import local_data.Property;
+import misc.Utils;
 import show_components.ShowController;
+import show_components.episode.Episode;
+import show_components.show.Show;
 import user_exceptions.DebugError;
+import user_exceptions.TorrentNotFoundException;
 
 /**
  *
@@ -58,18 +64,50 @@ public class ButtonAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+	Episode episode;
+	Show show;
+	String url;
+	Ekino ekino;
 	switch (type) {
-	    case OPEN_TVCOM_HOMEPAGE:
-		//TODO
+	    case OPEN_TVCOM_EPISODE:
+		episode = (Episode) arg;
+		Utils.Web.openWebpage(episode.getTvcomUrl());
 		break;
-	    case OPEN_EKINO_HOMEPAGE:
+	    case OPEN_TVCOM_HOMEPAGE:
+		Utils.Web.openWebpage(((Show) arg).getTvcomUrl());
 		break;
 	    case OPEN_PIRATEBAY_EPISODE:
+		episode = (Episode) arg;
+		Thepiratebay piratebay = new Thepiratebay(episode.getSeason().getShow().getTitle());
+		try {
+		    Utils.Web.openWebpage(piratebay.getEpisodeTorrentLink(episode.getSeasonOrdinal(), episode.getOrdinal()));
+		} catch (TorrentNotFoundException ex) {
+		    Utils.Web.openWebpage(piratebay.getEpisodeListLink(episode.getSeasonOrdinal(), episode.getOrdinal()));
+		}
+		break;
+	    case OPEN_EKINO_HOMEPAGE:
+		show = (Show) arg;
+		ekino = new Ekino();
+		ekino.assignShow(show);
+		url = ekino.getHomepageShowLink();
+		if (url != null) {
+		    Utils.Web.openWebpage(url);
+		    break;
+		}
+
 		break;
 	    case OPEN_EKINO_EPISODE:
+		episode = (Episode) arg;
+		ekino = new Ekino();
+		ekino.assignShow(episode.getSeason().getShow());
+		url = ekino.getHomepageShowLink();
+		if (url != null) {
+		    url = ekino.getEpisodeLink(episode.getSeasonOrdinal(), episode.getOrdinal());
+		    Utils.Web.openWebpage(url);
+		}
+
 		break;
 	    case CHANGE_SETTINGS:
-		//System.out.println(arg);
 		Property prop = ((Property) arg);
 		prop.toggle();
 		Properties.getInstance().saveMe();
