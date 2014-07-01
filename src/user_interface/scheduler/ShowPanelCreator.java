@@ -234,6 +234,13 @@ public class ShowPanelCreator {
 	    }
 	}
 
+	if (Properties.getInstance().OPTION_CONNECT_PIRATEBAY.getValue()) {
+	    WebButton tpb = new WebButton("Torrent");
+	    tpb.setIcon(Resources.getImageIcon("external-link.png"));
+	    tpb.addActionListener(new ButtonAction(Type.OPEN_PIRATEBAY_SEASON, season));
+	    content.add(tpb);
+	}
+
 	return content;
 
     }

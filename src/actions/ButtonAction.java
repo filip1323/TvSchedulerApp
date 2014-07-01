@@ -5,8 +5,8 @@
  */
 package actions;
 
-import external_websites.ekino.Ekino;
 import external_websites.Thepiratebay;
+import external_websites.ekino.Ekino;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import local_data.Properties;
@@ -14,6 +14,7 @@ import local_data.Property;
 import misc.Utils;
 import show_components.ShowController;
 import show_components.episode.Episode;
+import show_components.season.Season;
 import show_components.show.Show;
 import user_exceptions.DebugError;
 import user_exceptions.TorrentNotFoundException;
@@ -31,7 +32,8 @@ public class ButtonAction extends AbstractAction {
 	OPEN_PIRATEBAY_EPISODE,
 	OPEN_EKINO_EPISODE,
 	OPEN_TVCOM_EPISODE,
-	CHANGE_SETTINGS
+	CHANGE_SETTINGS,
+	OPEN_PIRATEBAY_SEASON
     }
     private Object arg;
     private Type type;
@@ -67,6 +69,8 @@ public class ButtonAction extends AbstractAction {
 	Show show;
 	String url;
 	Ekino ekino;
+	Season season;
+	Thepiratebay piratebay;
 	switch (type) {
 	    case OPEN_TVCOM_EPISODE:
 		episode = (Episode) arg;
@@ -77,13 +81,18 @@ public class ButtonAction extends AbstractAction {
 		break;
 	    case OPEN_PIRATEBAY_EPISODE:
 		episode = (Episode) arg;
-		Thepiratebay piratebay = new Thepiratebay(episode.getSeason().getShow().getTitle());
+		piratebay = new Thepiratebay(episode.getSeason().getShow().getTitle());
 		try {
 		    Utils.Web.openWebpage(piratebay.getEpisodeTorrentLink(episode.getSeasonOrdinal(), episode.getOrdinal()));
 		} catch (TorrentNotFoundException ex) {
 		    Utils.Web.openWebpage(piratebay.getEpisodeListLink(episode.getSeasonOrdinal(), episode.getOrdinal()));
 		}
 		break;
+	    case OPEN_PIRATEBAY_SEASON:
+		season = (Season) arg;
+		piratebay = new Thepiratebay(season.getShow().getTitle());
+		Utils.Web.openWebpage(piratebay.getSeasonListLink(season.getOrdinal()));
+
 	    case OPEN_EKINO_HOMEPAGE:
 		show = (Show) arg;
 		ekino = new Ekino();

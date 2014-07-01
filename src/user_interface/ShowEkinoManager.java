@@ -255,7 +255,7 @@ public class ShowEkinoManager extends WebFrame {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 			show.edit().setEkinoUrl(result.getShowHomepageUrl());
-			showController.saveShow(show);
+			showController.updateShow(show);
 			Utils.Web.openWebpage(result.getShowHomepageUrl());
 			frame.dispose();
 		    }

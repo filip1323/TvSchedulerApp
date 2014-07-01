@@ -8,6 +8,7 @@ package logic;
 import client.ClientController;
 import com.alee.laf.WebLookAndFeel;
 import external_websites.ekino.Ekino;
+import java.io.File;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import show_components.ShowController;
@@ -26,7 +27,9 @@ import user_interface.scheduler.ShowPanelCreator;
  * @author Filip
  */
 public class TvSchedulerApp {
-
+    //TODO only one instance
+    //TODO other externals
+    //TODO edit externals
     /**
      * @param args the command line arguments
      */
@@ -39,6 +42,8 @@ public class TvSchedulerApp {
 	} catch (UnsupportedLookAndFeelException ex) {
 	    ex.printStackTrace();
 	}
+
+	createMissingDirectories();
 
 	//creating ui
 	UserInterface ui = new UserInterface();
@@ -95,6 +100,18 @@ public class TvSchedulerApp {
 
 	//showing shieeet
 	mainController.start();
+    }
+
+    private static void createMissingDirectories() {
+	File shows = new File("shows");
+	if (!shows.exists()) {
+	    shows.mkdir();
+	}
+	File thumbs = new File("thumbs");
+	if (!thumbs.exists()) {
+	    thumbs.mkdir();
+	}
+
     }
 
 }
