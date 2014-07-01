@@ -7,9 +7,11 @@ package show_components;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -84,19 +86,21 @@ public class ShowLocalDataHUB {
 	}
     }
 
-    public Show load(String title) {
+    public Show load(String title) throws InvalidClassException, IOException {
 	String path = getPathForShow(title);
 	Show show = null;
 	try {
 	    FileInputStream fileIn = new FileInputStream(path);
 	    ObjectInputStream in = new ObjectInputStream(fileIn);
+
 	    show = (Show) in.readObject();
+
 	    in.close();
 	    fileIn.close();
-	} catch (IOException i) {
-	    i.printStackTrace();
 	} catch (ClassNotFoundException c) {
 	    c.printStackTrace();
+	} catch (FileNotFoundException ex) {
+	    ex.printStackTrace();
 	}
 
 	for (int seasonOrdinal = 1; seasonOrdinal <= show.getSeasonsNumber(); seasonOrdinal++) {

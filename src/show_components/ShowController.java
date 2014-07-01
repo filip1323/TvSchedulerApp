@@ -5,6 +5,8 @@
  */
 package show_components;
 
+import java.io.IOException;
+import java.io.InvalidClassException;
 import java.util.ArrayList;
 import logic.MainController;
 import show_components.show.Show;
@@ -53,7 +55,13 @@ public class ShowController {
 	    storedShows = new ArrayList<>();
 	    storedShowsTitle = showLocalDataHUB.getLoadedTitles();
 	    for (String title : storedShowsTitle) {
-		storedShows.add(showLocalDataHUB.load(title));
+		try {
+		    storedShows.add(showLocalDataHUB.load(title));
+		} catch (InvalidClassException ex) {
+		    showLocalDataHUB.remove(title);
+		} catch (IOException ex) {
+		    ex.printStackTrace();
+		}
 	    }
 	}
 	return storedShows;

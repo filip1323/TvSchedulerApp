@@ -173,12 +173,10 @@ public class UserInterface {
 
 	    @Override
 	    public void accepted() {
-		System.out.println("ACCEPT");
 	    }
 
 	    @Override
 	    public void closed() {
-		System.out.println("CLOSED");
 	    }
 
 	    @Override

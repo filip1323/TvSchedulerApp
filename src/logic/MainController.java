@@ -9,6 +9,9 @@ import com.alee.extended.label.WebHotkeyLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JWindow;
 import local_data.Properties;
@@ -67,7 +70,12 @@ public class MainController {
     }
 
     public void updateApplication() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	try {
+	    Desktop.getDesktop().open(new File("TvSchedulerAppUpdater.jar"));
+	} catch (IOException ex) {
+	    ex.printStackTrace();
+	}
+	shutdown();
     }
 
     private void update() {
