@@ -5,6 +5,7 @@
  */
 package user_interface;
 
+import com.alee.extended.label.WebHotkeyLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
@@ -20,6 +21,7 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -82,11 +84,28 @@ public class UserInterface {
 	//creating tray handler
 	createTrayHandler();
 	trayIcon.addMouseListener(new MouseListener() {
+	    WebNotificationPopup notification;
 
 	    @Override
 	    public void mousePressed(MouseEvent e) {
 		if (e.getSource().getClass().equals(TrayIcon.class)) { //tray icon clicked
 		    if (e.getButton() == MouseEvent.BUTTON1) {//left button
+
+			if (mainController.getShowController().getStoredShows().size() == 0) {
+			    NotificationManager.hideAllNotifications();
+			    if (notification == null) {
+				WebLabel header = new WebLabel("Dodaj swoje ulubione seriale.");
+				GroupPanel tipOne = new GroupPanel(new WebLabel("Aby dodać nowy serial kliknij "), new WebHotkeyLabel("PPM"), new WebLabel(" na ikonie programu"));
+				GroupPanel tipTwo = new GroupPanel(new WebLabel("Następnie "), new WebHotkeyLabel("Zarządzaj serialami"), new WebLabel(" i "), new WebHotkeyLabel("Dodaj serial"));
+				GroupPanel content = new GroupPanel(5, false, header, tipOne, tipTwo);
+				ImageIcon logo = Resources.getImageIcon("logo.png");
+				notification = new WebNotificationPopup();
+				notification.setIcon(logo);
+				notification.setContent(content);
+			    }
+			    NotificationManager.showNotification((JWindow) getWindow(), notification);
+			    NotificationManager.setLocation(NotificationManager.SOUTH_WEST);
+			}
 			toggleScheduler();
 		    }
 		}

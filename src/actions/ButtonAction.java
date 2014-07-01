@@ -5,7 +5,7 @@
  */
 package actions;
 
-import external_websites.Ekino;
+import external_websites.ekino.Ekino;
 import external_websites.Thepiratebay;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;

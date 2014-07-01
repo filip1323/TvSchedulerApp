@@ -3,21 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package external_websites;
+package external_websites.ekino;
 
-import com.alee.extended.label.WebLinkLabel;
-import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.panel.GroupingType;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.label.WebLabel;
-import com.alee.laf.rootpane.WebFrame;
-import com.alee.laf.text.WebTextField;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import misc.Utils;
+import external_websites.ExternalSource;
+import external_websites.WebsiteRepository;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,6 +15,7 @@ import show_components.show.Show;
 import user_exceptions.DebugError;
 import user_exceptions.EmptyDocumentException;
 import user_exceptions.WrongUrlException;
+import user_interface.ShowEkinoManager;
 import user_interface.UserInterface;
 
 /**
@@ -119,11 +109,15 @@ public class Ekino implements ExternalSource {
 	Element list = listPage.select(".serialsList ul.list").first();
 
 	if (list.select("li").size() != 1) {
-	    try {
-		manualInputDialog(searchListUrl);
-	    } catch (WrongUrlException ex) {
-		ex.printStackTrace();
-	    }
+//	    try {
+//		manualInputDialog(searchListUrl);
+//	    } catch (WrongUrlException ex) {
+//		ex.printStackTrace();
+//	    }
+	    ShowEkinoManager manager = new ShowEkinoManager();
+	    manager.assignShowController(showController);
+	    manager.initComponents(show);
+	    manager.setVisible(true);
 	} else {
 	    return "http://www.ekino.tv/" + list.select("li").first().select(".title h2 a").attr("href");
 	}
@@ -133,60 +127,6 @@ public class Ekino implements ExternalSource {
     }
 
     private boolean flag = false;
-
-    private void manualInputDialog(String url) throws WrongUrlException {
-	flag = false;
-	Utils.Web.openWebpage(url);
-	//creating dialog
-	WebLookAndFeel.setDecorateFrames(true);
-	final WebFrame ekinoDialog = new WebFrame();
-	ekinoDialog.setTitle("ekino.tv");
-	ekinoDialog.setDefaultCloseOperation(WebFrame.DISPOSE_ON_CLOSE);
-	ekinoDialog.setResizable(false);
-	//content
-	WebLabel header = new WebLabel("Wprowadź adres internetowy ");
-	WebLabel header2 = new WebLabel("strony głównej serialu na ");
-	WebLinkLabel link = new WebLinkLabel();
-	link.setLink("http://www.ekino.tv/seriale-online.html");
-	link.setText("www.ekino.tv");
-	link.setIcon(null);
-	final WebTextField field = new WebTextField(30);
-	field.setInputPrompt("np. http://www.ekino.tv/serial,house-m-d-dr-house.html");
-	final WebButton button = new WebButton("Ok");
-
-	//content itselfs
-	GroupPanel content = new GroupPanel(GroupingType.none, 5, false, header, new GroupPanel(header2, link), field, button);
-	content.setMargin(10);
-
-	//final dialog
-	ekinoDialog.setAlwaysOnTop(true);
-	ekinoDialog.add(content);
-	ekinoDialog.pack();
-	ekinoDialog.setVisible(true);
-
-	//location
-	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	ekinoDialog.setLocation(dim.width / 2 - ekinoDialog.getSize().width / 2, dim.height / 2 - ekinoDialog.getSize().height / 2);
-
-	button.addActionListener(new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		checkAndUpdateUrl(field.getText());
-		ekinoDialog.dispose();
-	    }
-	});
-
-	field.addActionListener(new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		button.doClick();
-	    }
-	}
-	);
-
-    }
 
     private void checkAndUpdateUrl(String ekinoUrl) {
 

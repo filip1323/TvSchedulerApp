@@ -29,6 +29,10 @@ import user_interface.UserInterface;
  */
 public class MainController {
 
+    public ShowController getShowController() {
+	return showController;
+    }
+
     private ShowController showController;
 
     private UserInterface userInterface;

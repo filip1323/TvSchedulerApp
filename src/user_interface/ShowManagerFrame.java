@@ -22,7 +22,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.notification.NotificationManager;
-import external_websites.tvcom.Result;
+import external_websites.tvcom.TvcomResult;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -415,7 +415,7 @@ public class ShowManagerFrame extends WebFrame {
 			//engineer
 			ShowOnlineEngineer engie = new ShowOnlineEngineer();
 			try {
-			    ArrayList<Result> results = (engie.getResults(title));
+			    ArrayList<TvcomResult> results = (engie.getResults(title));
 			    if (results.size() == 0) {
 				backButton.doClick();
 				NotificationManager.showNotification((JWindow) userInterface.getWindow(), "Brak wyników dla `" + title + "`. Spróbuj ponownie.", Resources.getImageIcon("info.png"));
@@ -458,11 +458,11 @@ public class ShowManagerFrame extends WebFrame {
 		owner.nextButton.setVisible(false);
 	    }
 
-	    private ArrayList<GroupPanel> toList(ArrayList<Result> results) {
+	    private ArrayList<GroupPanel> toList(ArrayList<TvcomResult> results) {
 		ArrayList<GroupPanel> list = new ArrayList<>();
 
 		try {
-		    for (final Result result : results) {
+		    for (final TvcomResult result : results) {
 			//title
 			WebLabel titleLabel = new WebLabel(result.getTitle());
 			titleLabel.setFontSizeAndStyle(20, true, false);
@@ -518,7 +518,7 @@ public class ShowManagerFrame extends WebFrame {
 
 	class confirmResultContent extends GroupPanel {
 
-	    private confirmResultContent(final ShowAddContent owner, final Result result) {
+	    private confirmResultContent(final ShowAddContent owner, final TvcomResult result) {
 
 		//progress breadcrumb settings
 		owner.confirmLabel.setBoldFont();
@@ -597,7 +597,7 @@ public class ShowManagerFrame extends WebFrame {
 
 	class saveShowContent extends GroupPanel {
 
-	    private saveShowContent(final ShowAddContent owner, final Result result) {
+	    private saveShowContent(final ShowAddContent owner, final TvcomResult result) {
 
 		//progress breadcrumb settings
 		owner.downloadLabel.setBoldFont();

@@ -7,7 +7,7 @@ package logic;
 
 import client.ClientController;
 import com.alee.laf.WebLookAndFeel;
-import external_websites.Ekino;
+import external_websites.ekino.Ekino;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import show_components.ShowController;

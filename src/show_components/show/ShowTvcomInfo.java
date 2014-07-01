@@ -5,7 +5,7 @@
  */
 package show_components.show;
 
-import external_websites.tvcom.Result;
+import external_websites.tvcom.TvcomResult;
 import external_websites.tvcom.TvcomSeasonGuide;
 import external_websites.tvcom.TvcomShowHomepage;
 
@@ -15,11 +15,11 @@ import external_websites.tvcom.TvcomShowHomepage;
  */
 public class ShowTvcomInfo implements InfoProvider {
 
-    private final Result tvcomResult;
+    private final TvcomResult tvcomResult;
     private final TvcomShowHomepage tvcomShowHomepage;
     private final TvcomSeasonGuide tvcomSeasonGuide;
 
-    public ShowTvcomInfo(Result tvcomResult, TvcomShowHomepage tvcomHomepage, TvcomSeasonGuide tvcomGuide) {
+    public ShowTvcomInfo(TvcomResult tvcomResult, TvcomShowHomepage tvcomHomepage, TvcomSeasonGuide tvcomGuide) {
 	this.tvcomResult = tvcomResult;
 	this.tvcomSeasonGuide = tvcomGuide;
 	this.tvcomShowHomepage = tvcomHomepage;

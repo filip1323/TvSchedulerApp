@@ -5,7 +5,7 @@
  */
 package show_components;
 
-import external_websites.tvcom.Result;
+import external_websites.tvcom.TvcomResult;
 import external_websites.tvcom.TvcomSearchList;
 import external_websites.tvcom.TvcomSeasonGuide;
 import external_websites.tvcom.TvcomShowHomepage;
@@ -35,7 +35,7 @@ public class ShowOnlineEngineer {
     private String title;
     private Show show;
 
-    public ArrayList<Result> getResults(String title) throws DataNotAssignedException {
+    public ArrayList<TvcomResult> getResults(String title) throws DataNotAssignedException {
 	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
 	try {
 	    TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
@@ -47,7 +47,7 @@ public class ShowOnlineEngineer {
 
     }
 
-    public Show getBasicInfo(Result result) {
+    public Show getBasicInfo(TvcomResult result) {
 	try {
 	    String homepageUrl = result.getShowHomepageUrl();
 	    TvcomShowHomepage homepage = new TvcomShowHomepage(homepageUrl);
@@ -76,7 +76,7 @@ public class ShowOnlineEngineer {
 	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(show.getTvcomUrl(), 1));
 
 	    //pseudo result
-	    Result result = new Result(show.getTitle(), show.getTvcomUrl(), show.getThumbUrl());
+	    TvcomResult result = new TvcomResult(show.getTitle(), show.getTvcomUrl(), show.getThumbUrl());
 
 	    //creating show
 	    ShowBuilder showBuilder = new ShowBuilder();

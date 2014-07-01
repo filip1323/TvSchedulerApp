@@ -9,13 +9,13 @@ package external_websites.tvcom;
  *
  * @author Filip
  */
-public class Result {
+public class TvcomResult {
 
     private final String imageUrl;
     private final String showUrl;
     private final String showTitle;
 
-    public Result(String title, String showUrl, String imageUrl) {
+    public TvcomResult(String title, String showUrl, String imageUrl) {
 	this.showTitle = title;
 	this.imageUrl = imageUrl;
 	this.showUrl = showUrl;

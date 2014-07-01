@@ -9,7 +9,7 @@ package external_websites;
  *
  * @author Filip
  */
-interface ExternalSource {
+public interface ExternalSource {
 
     public String getEpisodeLink(int seasonOrdinal, int episodeOrdinal);
 
