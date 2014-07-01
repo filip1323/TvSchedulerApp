@@ -18,7 +18,7 @@ import user_exceptions.WrongUrlException;
 import user_interface.ConfigFrame;
 import user_interface.TrayMenu;
 import user_interface.UserInterface;
-import user_interface.manager.ShowManagerFrame;
+import user_interface.ShowManagerFrame;
 import user_interface.scheduler.ShowPanelCreator;
 
 /**

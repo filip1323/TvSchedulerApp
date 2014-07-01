@@ -61,7 +61,7 @@ public class ShowController {
 
     public void removeShow(Show show) {
 	storedShows.remove(show);
-	mainController.loadScheduler();
+	mainController.reloadScheduler();
 	showLocalDataHUB.remove(show.getTitle());
     }
 
@@ -71,7 +71,7 @@ public class ShowController {
 	userInterface.addShowTabToScheduler(show);
     }
 
-    public boolean showStored(Show show) {
+    public boolean isShowStored(Show show) {
 	return (storedShowsTitle.contains(show.getTitle()));
     }
 

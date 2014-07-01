@@ -36,9 +36,6 @@ public class ShowOnlineEngineer {
     private Show show;
 
     public ArrayList<Result> getResults(String title) throws DataNotAssignedException {
-	if (title == null) {
-	    throw new DataNotAssignedException("title");
-	}
 	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
 	try {
 	    TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
@@ -57,9 +54,6 @@ public class ShowOnlineEngineer {
 
 	    //getting first season guide
 	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(homepageUrl, 1));
-
-	    //getting seasons number
-	    int seasonsNumber = currentSeasonGuide.getSeasonsNumber();
 
 	    //creating show
 	    ShowBuilder showBuilder = new ShowBuilder();
@@ -81,9 +75,6 @@ public class ShowOnlineEngineer {
 	    //getting first season guide
 	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(show.getTvcomUrl(), 1));
 
-	    //getting seasons number
-	    int seasonsNumber = currentSeasonGuide.getSeasonsNumber();
-
 	    //pseudo result
 	    Result result = new Result(show.getTitle(), show.getTvcomUrl(), show.getThumbUrl());
 
@@ -101,7 +92,6 @@ public class ShowOnlineEngineer {
 
     private int seasonOrdinal = 1;
     private int episodeOrdinal = 1;
-
     private TvcomSeasonGuide currentSeasonGuide;
 
     public boolean hasNextEpisode() {
@@ -149,7 +139,6 @@ public class ShowOnlineEngineer {
 	    }
 	    Season season;
 	    if (episodeOrdinal == 1) {
-
 		currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(show.getTvcomUrl(), seasonOrdinal));
 
 		//creating season
@@ -184,79 +173,6 @@ public class ShowOnlineEngineer {
 	return false;
 
     }
-//
-//    public void saveThisShow(Result result) {
-//	try {
-//	    TvcomShowHomepage homepage = new TvcomShowHomepage(result.getShowHomepageUrl());
-//
-//	    //getting first season guide
-//	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(result.getShowHomepageUrl(), 1));
-//
-//	    ShowBuilder showBuilder = new ShowBuilder();
-//	    ShowTvcomInfo showInfoProvider = new ShowTvcomInfo(result, homepage, currentSeasonGuide);
-//	    show = showBuilder.getShow(showInfoProvider);
-//
-//	} catch (WrongUrlException ex) {
-//	    ex.printStackTrace();
-//	}
-//
-//    }
-//<editor-fold defaultstate="collapsed" desc="comment">
-
-    private void constructShow() throws DataNotAssignedException, WrongUrlException {
-	if (title == null) {
-	    throw new DataNotAssignedException("title");
-	}
-	//creating search list link
-	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
-	TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
-
-	//getting first result
-	Result firstResult = searchList.getFirstResult();
-	//make sure its right
-	//getting homepage
-	String homepageUrl = firstResult.getShowHomepageUrl();
-	TvcomShowHomepage homepage = new TvcomShowHomepage(homepageUrl);
-
-	//getting first season guide
-	TvcomSeasonGuide currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(homepageUrl, 1));
-
-	//getting seasons number
-	int seasonsNumber = currentSeasonGuide.getSeasonsNumber();
-
-	//creating show
-	ShowBuilder showBuilder = new ShowBuilder();
-	ShowTvcomInfo showInfoProvider = new ShowTvcomInfo(firstResult, homepage, currentSeasonGuide);
-	Show show = showBuilder.getShow(showInfoProvider);
-
-	//listing through all seasons and episodes
-	for (int currentSeasonOrdinal = 1; currentSeasonOrdinal <= seasonsNumber; currentSeasonOrdinal++) {
-
-	    currentSeasonGuide = new TvcomSeasonGuide(TvcomUtils.getSeasonGuideLinkFromHomepageLink(homepageUrl, currentSeasonOrdinal));
-
-	    //creating season
-	    SeasonBuilder seasonBuilder = new SeasonBuilder();
-	    SeasonTvcomInfo seasonInfoProvider = new SeasonTvcomInfo(currentSeasonGuide);
-	    Season season = seasonBuilder.getSeason(seasonInfoProvider);
-
-	    //assigning season
-	    show.edit().addSeason(season);
-
-	    for (int ordinal = 1; ordinal <= currentSeasonGuide.getEpisodesNumber(); ordinal++) {
-		//creating episode
-		EpisodeBuilder episodeBuilder = new EpisodeBuilder();
-		EpisodeTvcomInfo episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, ordinal);
-		Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
-
-		//assigning episode
-		season.edit().addEpisode(episode);
-	    }
-
-	}
-
-	this.show = show;
-    }
-//</editor-fold>
 
     public Show getShow() {
 	if (show == null) {

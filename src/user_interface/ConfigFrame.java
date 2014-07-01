@@ -140,7 +140,7 @@ public class ConfigFrame extends WebFrame {
     WebCheckBox getPropertyCheckbox(Property prop) {
 	WebCheckBox option = new WebCheckBox();
 	option.setAction(new ButtonAction(ButtonAction.Type.CHANGE_SETTINGS, prop));
-	option.setText(prop.getText());
+	option.setText(prop.getName());
 	option.setSelected(prop.getValue());
 	return option;
     }

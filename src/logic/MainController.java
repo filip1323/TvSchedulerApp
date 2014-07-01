@@ -34,8 +34,30 @@ public class MainController {
 	this.userInterface = ui;
     }
 
-    void assignShowController(ShowController showController) {
+    public void assignShowController(ShowController showController) {
 	this.showController = showController;
+    }
+
+    public void start() {
+
+	update();
+
+	userInterface.initComponents();
+
+	initialNotification();
+
+	if (showController.getStoredShows().size() == 0) {
+	    WebLabel header = new WebLabel("Dodaj swoje ulubione seriale.");
+	    // logo.setSize(new Dimension(32, 32));
+	    GroupPanel tipOne = new GroupPanel(new WebLabel("Aby dodać nowy serial kliknij "), new WebHotkeyLabel("PPM"), new WebLabel(" na ikonie programu"));
+	    GroupPanel tipTwo = new GroupPanel(new WebLabel("Następnie "), new WebHotkeyLabel("Zarządzaj serialami"), new WebLabel(" i "), new WebHotkeyLabel("Dodaj serial"));
+	    GroupPanel content = new GroupPanel(5, false, header, tipOne, tipTwo);
+	    ImageIcon logo = Resources.getImageIcon("logo.png");
+	    NotificationManager.showNotification((JWindow) userInterface.getWindow(), content, logo);
+	    NotificationManager.setLocation(NotificationManager.SOUTH_WEST);
+	}
+
+	reloadScheduler();
     }
 
     public void shutdown() {
@@ -111,29 +133,7 @@ public class MainController {
 	}
     }
 
-    public void start() {
-
-	update();
-
-	userInterface.initComponents();
-
-	initialNotification();
-
-	if (showController.getStoredShows().size() == 0) {
-	    WebLabel header = new WebLabel("Dodaj swoje ulubione seriale.");
-	    // logo.setSize(new Dimension(32, 32));
-	    GroupPanel tipOne = new GroupPanel(new WebLabel("Aby dodać nowy serial kliknij "), new WebHotkeyLabel("PPM"), new WebLabel(" na ikonie programu"));
-	    GroupPanel tipTwo = new GroupPanel(new WebLabel("Następnie "), new WebHotkeyLabel("Zarządzaj serialami"), new WebLabel(" i "), new WebHotkeyLabel("Dodaj serial"));
-	    GroupPanel content = new GroupPanel(5, false, header, tipOne, tipTwo);
-	    ImageIcon logo = Resources.getImageIcon("logo.png");
-	    NotificationManager.showNotification((JWindow) userInterface.getWindow(), content, logo);
-	    NotificationManager.setLocation(NotificationManager.SOUTH_WEST);
-	}
-
-	loadScheduler();
-    }
-
-    public void loadScheduler() {
+    public void reloadScheduler() {
 	userInterface.reloadScheduler();
 	for (Show show : showController.getStoredShows()) {
 	    userInterface.addShowTabToScheduler(show);

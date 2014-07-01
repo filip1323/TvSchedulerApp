@@ -23,7 +23,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import local_data.Resources;
 import show_components.show.Show;
-import user_interface.manager.ShowManagerFrame;
 import user_interface.scheduler.SchedulerPanel;
 import user_interface.scheduler.ShowPanelCreator;
 

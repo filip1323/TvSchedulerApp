@@ -27,7 +27,7 @@ import show_components.show.Show;
  */
 public class ShowLocalDataHUB {
 
-    private String getPathForShow(String title) {
+    static public String getPathForShow(String title) {
 	return "shows/" + title.replace(" ", "-") + ".ser";
     }
 
@@ -57,6 +57,28 @@ public class ShowLocalDataHUB {
 	    String thumbPath = getPathForThumb(show.getTitle());
 	    saveImage(show.getThumbUrl(), thumbPath);
 
+	} catch (IOException i) {
+	    i.printStackTrace();
+	}
+    }
+
+    public void update(Show show) {
+	try {
+
+	    //saving show
+	    String path = getPathForShow(show.getTitle());
+
+	    File file = new File(path);
+	    if (!file.exists()) {
+		file.createNewFile();
+	    }
+	    FileOutputStream fileOut
+		    = new FileOutputStream(path);
+
+	    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	    out.writeObject(show);
+	    out.close();
+	    fileOut.close();
 	} catch (IOException i) {
 	    i.printStackTrace();
 	}
@@ -128,28 +150,6 @@ public class ShowLocalDataHUB {
 	    ex.printStackTrace();
 	} catch (IOException ex) {
 	    ex.printStackTrace();
-	}
-    }
-
-    void update(Show show) {
-	try {
-
-	    //saving show
-	    String path = getPathForShow(show.getTitle());
-
-	    File file = new File(path);
-	    if (!file.exists()) {
-		file.createNewFile();
-	    }
-	    FileOutputStream fileOut
-		    = new FileOutputStream(path);
-
-	    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	    out.writeObject(show);
-	    out.close();
-	    fileOut.close();
-	} catch (IOException i) {
-	    i.printStackTrace();
 	}
     }
 }
