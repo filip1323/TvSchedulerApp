@@ -41,7 +41,7 @@ public class TvcomSeasonGuide {
     }
 
     private boolean isUrlCorrect(String url) {
-	return url.contains(Settings.getInstance().SHOW_TVCOM_URL) && !url.equals(Settings.getInstance().SHOW_TVCOM_URL) && (url.endsWith("/episodes/") || url.endsWith("/episodes") || url.contains("/season-"));
+	return url.contains(Settings.SHOW_TVCOM_URL) && !url.equals(Settings.SHOW_TVCOM_URL) && (url.endsWith("/episodes/") || url.endsWith("/episodes") || url.contains("/season-"));
     }
 
     public int getSeasonsNumber() {
@@ -107,7 +107,7 @@ public class TvcomSeasonGuide {
 
 	String title = titleElement.text();
 
-	String url = Utils.Web.normalizeUrl(Settings.getInstance().BASIC_TVCOM_URL + titleElement.attr("href"));
+	String url = Utils.Web.normalizeUrl(Settings.BASIC_TVCOM_URL + titleElement.attr("href"));
 
 	episodeInfo.put("seasonOrdinal", Integer.toString(seasonOrdinal));
 	episodeInfo.put("ordinal", Integer.toString(episodeOrdinal));

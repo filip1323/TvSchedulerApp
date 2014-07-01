@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package action_responders.actions;
+package actions;
 
 import external_websites.Ekino;
 import external_websites.Thepiratebay;

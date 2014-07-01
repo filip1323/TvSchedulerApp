@@ -5,11 +5,11 @@
  */
 package logic;
 
-import action_responders.ConfigActionResponder;
 import com.alee.laf.WebLookAndFeel;
 import external_websites.Ekino;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import portal.ClientController;
 import show_components.ShowController;
 import show_components.ShowLocalDataHUB;
 import user_exceptions.DataNotAssignedException;
@@ -61,11 +61,11 @@ public class TvSchedulerApp {
 	//traymenu
 	TrayMenu trayMenu = new TrayMenu();
 
-	//creating action responder
-	ConfigActionResponder responder = new ConfigActionResponder();
-
 	//creating hub
 	ShowLocalDataHUB showLocalDataHUB = new ShowLocalDataHUB();
+
+	//portal
+	ClientController portal = new ClientController();
 
 	//passing arguments------------------------------------------
 	mainController.assignUserInterface(ui);
@@ -82,12 +82,15 @@ public class TvSchedulerApp {
 	trayMenu.assignController(mainController);
 	trayMenu.assignUserInterface(ui);
 
-	configFrame.assignResponder(responder);
 	showManager.assignShowController(showController);
 	showManager.assignUserInterface(ui);
 
 	Ekino.assignUserInterface(ui);
 	Ekino.assignShowController(showController);
+
+	ExceptionReceiver.assignPortal(portal);
+
+	portal.assignUserInterface(ui);
 
 	//showing shieeet
 	mainController.start();

@@ -9,6 +9,7 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
 import java.awt.AWTException;
 import java.awt.Component;
@@ -133,6 +134,15 @@ public class UserInterface {
 	schedulerPanel = new SchedulerPanel();
 	schedulerPanel.initComponents();
 	window.addPanel(schedulerPanel);
+    }
+
+    public void suggestUpdate() {
+	WebNotificationPopup notification = new WebNotificationPopup();
+	notification.setContent("Chcesz zaktualizować program?");
+	notification.setIcon(Resources.getImageIcon("logo.png"));
+	notification.setOptions(NotificationOption.apply, NotificationOption.discard);
+	NotificationManager.setLocation(SwingConstants.SOUTH_WEST);
+	NotificationManager.showNotification(window, notification);
     }
 
     private void createTrayHandler() {

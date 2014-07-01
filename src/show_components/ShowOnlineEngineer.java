@@ -39,7 +39,7 @@ public class ShowOnlineEngineer {
 	if (title == null) {
 	    throw new DataNotAssignedException("title");
 	}
-	String searchListUrl = Settings.getInstance().SEARCH_TVCOM_URL + title;
+	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
 	try {
 	    TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
 	    return searchList.getResults();
@@ -208,7 +208,7 @@ public class ShowOnlineEngineer {
 	    throw new DataNotAssignedException("title");
 	}
 	//creating search list link
-	String searchListUrl = Settings.getInstance().SEARCH_TVCOM_URL + title;
+	String searchListUrl = Settings.SEARCH_TVCOM_URL + title;
 	TvcomSearchList searchList = new TvcomSearchList(searchListUrl);
 
 	//getting first result

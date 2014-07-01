@@ -5,8 +5,8 @@
  */
 package user_interface.scheduler;
 
-import action_responders.actions.ButtonAction;
-import action_responders.actions.ButtonAction.Type;
+import actions.ButtonAction;
+import actions.ButtonAction.Type;
 import com.alee.extended.image.WebDecoratedImage;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;

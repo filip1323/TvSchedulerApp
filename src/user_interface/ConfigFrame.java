@@ -5,8 +5,7 @@
  */
 package user_interface;
 
-import action_responders.ConfigActionResponder;
-import action_responders.actions.ButtonAction;
+import actions.ButtonAction;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.painter.TitledBorderPainter;
 import com.alee.extended.panel.GroupPanel;
@@ -35,11 +34,6 @@ public class ConfigFrame extends WebFrame {
     private WebTabbedPane tabGroupPane;
     private MainOptionsTab mainOptionsTab;
     private NotificationsOptionTab notificationsOptionTab;
-    private ConfigActionResponder responder;
-
-    public void assignResponder(ConfigActionResponder responder) {
-	this.responder = responder;
-    }
 
     public void initComponents() {
 	//setting frame
