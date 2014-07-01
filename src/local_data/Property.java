@@ -16,11 +16,11 @@ public class Property implements Serializable {
     private String text;
     private boolean state;
 
-    public void setText(String text) {
+    public void setName(String text) {
 	this.text = text;
     }
 
-    public String getText() {
+    public String getName() {
 	return this.text;
     }
 

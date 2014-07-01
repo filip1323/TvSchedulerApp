@@ -34,19 +34,19 @@ public class Properties implements Serializable {
     public Property OPTION_ALWAYS_ON_TOP = new Property();
 
     {
-	OPTION_AUTOSTART.setText("Włączaj przy starcie systemu windows.");
-	OPTION_AUTOREFRESH.setText("Automatycznie aktualizuj informacje o serialach.");
-	OPTION_ALWAYS_ON_TOP.setText("Zawsze na wierzchu.");
-	OPTION_DEBUG.setText("Pomóż rozwijać aplikację, przez wysyłanie danych o błędach.");
-	OPTION_MENU_LAST_EP.setText("Pokaż ostatnio wydany odcinek.");
-	OPTION_MENU_MARKED_EPISODE.setText("Pokaż wyróżniony odcinek.");
-	OPTION_CONNECT_PIRATEBAY.setText("Połącz z thepiratebay.");
-	OPTION_CONNECT_EKINO.setText("Połącz z ekinem.tv");
-	OPTION_INFO_NEXT_EP_COUNTER.setText("Pokazuj ile dni zostało do następnego epizodu.");
-	NOTIFICATION_NEXT_EP_ANNOUNCEMENT.setText("Powiadamiaj o zapowiedzi nowego odcinka.");
-	NOTIFICATION_NEXT_EP_RELEASED_TODAY.setText("Powiadamiaj o premierze nowego odcinka.");
-	NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT.setText("Powiadamiaj o zapowiedzi nowego sezonu.");
-	NOTIFICATION_UPDATE.setText("Powiadamiaj o dostępności nowej wersji programu.");
+	OPTION_AUTOSTART.setName("Włączaj przy starcie systemu windows.");
+	OPTION_AUTOREFRESH.setName("Automatycznie aktualizuj informacje o serialach.");
+	OPTION_ALWAYS_ON_TOP.setName("Zawsze na wierzchu.");
+	OPTION_DEBUG.setName("Pomóż rozwijać aplikację, przez wysyłanie danych o błędach.");
+	OPTION_MENU_LAST_EP.setName("Pokaż ostatnio wydany odcinek.");
+	OPTION_MENU_MARKED_EPISODE.setName("Pokaż wyróżniony odcinek.");
+	OPTION_CONNECT_PIRATEBAY.setName("Połącz z thepiratebay.");
+	OPTION_CONNECT_EKINO.setName("Połącz z ekinem.tv");
+	OPTION_INFO_NEXT_EP_COUNTER.setName("Pokazuj ile dni zostało do następnego epizodu.");
+	NOTIFICATION_NEXT_EP_ANNOUNCEMENT.setName("Powiadamiaj o zapowiedzi nowego odcinka.");
+	NOTIFICATION_NEXT_EP_RELEASED_TODAY.setName("Powiadamiaj o premierze nowego odcinka.");
+	NOTIFICATION_NEXT_SEASON_ANNOUNCEMENT.setName("Powiadamiaj o zapowiedzi nowego sezonu.");
+	NOTIFICATION_UPDATE.setName("Powiadamiaj o dostępności nowej wersji programu.");
 
 	//TODO auto hide when not selected
 	//TODO akordeon
