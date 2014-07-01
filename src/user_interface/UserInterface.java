@@ -9,6 +9,7 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.progressbar.WebProgressBar;
+import com.alee.managers.notification.NotificationListener;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
@@ -23,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import local_data.Resources;
+import logic.MainController;
 import show_components.show.Show;
 import user_interface.scheduler.SchedulerPanel;
 import user_interface.scheduler.ShowPanelCreator;
@@ -38,6 +40,11 @@ public class UserInterface {
     private TransparentWindow window;
     private SchedulerPanel schedulerPanel;
     private ConfigFrame configFrame;
+    private MainController mainController;
+
+    public void assignMainController(MainController mainController) {
+	this.mainController = mainController;
+    }
 
     public void assignConfigFrame(ConfigFrame configFrame) {
 	this.configFrame = configFrame;
@@ -158,9 +165,29 @@ public class UserInterface {
 	WebNotificationPopup notification = new WebNotificationPopup();
 	notification.setContent("Chcesz zaktualizować program?");
 	notification.setIcon(Resources.getImageIcon("logo.png"));
-	notification.setOptions(NotificationOption.apply, NotificationOption.discard);
+	notification.setOptions(NotificationOption.yes, NotificationOption.no);
 	NotificationManager.setLocation(SwingConstants.SOUTH_WEST);
 	NotificationManager.showNotification(window, notification);
+
+	notification.addNotificationListener(new NotificationListener() {
+
+	    @Override
+	    public void accepted() {
+		System.out.println("ACCEPT");
+	    }
+
+	    @Override
+	    public void closed() {
+		System.out.println("CLOSED");
+	    }
+
+	    @Override
+	    public void optionSelected(NotificationOption option) {
+		if (option.compareTo(option.yes) == 0) {
+		    mainController.updateApplication();
+		}
+	    }
+	});
     }
 
     private void createTrayHandler() {

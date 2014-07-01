@@ -5,20 +5,20 @@
  */
 package logic;
 
+import client.ClientController;
 import com.alee.laf.WebLookAndFeel;
 import external_websites.Ekino;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import client.ClientController;
 import show_components.ShowController;
 import show_components.ShowLocalDataHUB;
 import user_exceptions.DataNotAssignedException;
 import user_exceptions.TorrentNotFoundException;
 import user_exceptions.WrongUrlException;
 import user_interface.ConfigFrame;
+import user_interface.ShowManagerFrame;
 import user_interface.TrayMenu;
 import user_interface.UserInterface;
-import user_interface.ShowManagerFrame;
 import user_interface.scheduler.ShowPanelCreator;
 
 /**
@@ -78,6 +78,7 @@ public class TvSchedulerApp {
 	ui.assignConfigFrame(configFrame);
 	ui.assignShowManagerFrame(showManager);
 	ui.assignTrayMenu(trayMenu);
+	ui.assignMainController(mainController);
 
 	trayMenu.assignController(mainController);
 	trayMenu.assignUserInterface(ui);

@@ -66,6 +66,10 @@ public class MainController {
 	System.exit(0);
     }
 
+    public void updateApplication() {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private void update() {
 
 	for (Show show : showController.getStoredShows()) {
