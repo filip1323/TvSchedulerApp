@@ -36,6 +36,7 @@ public class Properties implements Serializable {
     {
 	OPTION_AUTOSTART.setName("Włączaj przy starcie systemu windows.");
 	OPTION_AUTOREFRESH.setName("Automatycznie aktualizuj informacje o serialach.");
+	OPTION_AUTOREFRESH.setValue(true);
 	OPTION_ALWAYS_ON_TOP.setName("Zawsze na wierzchu.");
 	OPTION_DEBUG.setName("Pomóż rozwijać aplikację, przez wysyłanie danych o błędach.");
 	OPTION_MENU_LAST_EP.setName("Pokaż ostatnio wydany odcinek.");

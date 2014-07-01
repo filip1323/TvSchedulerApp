@@ -8,6 +8,7 @@ package user_interface;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
@@ -60,10 +61,6 @@ public class UserInterface {
 
 	//main transparent container
 	window = new TransparentWindow();
-
-	//creating scheduler panel(raw)
-	schedulerPanel = new SchedulerPanel();
-	schedulerPanel.initComponents();
 
 	//creating configFrame
 	configFrame.initComponents();
@@ -133,6 +130,28 @@ public class UserInterface {
 	schedulerPanel = new SchedulerPanel();
 	schedulerPanel.initComponents();
 	window.addPanel(schedulerPanel);
+    }
+    WebNotificationPopup progressNotification;
+
+    public void showUpdateProgressBar(String title) {
+	if (progressNotification == null) {
+	    progressNotification = new WebNotificationPopup();
+	    progressNotification.setIcon(Resources.getImageIcon("logo.png"));
+	    NotificationManager.setLocation(SwingConstants.SOUTH_WEST);
+	    NotificationManager.showNotification(window, progressNotification);
+	}
+	WebProgressBar progressBar = new WebProgressBar();
+	progressBar.setSize(100, 30);
+	progressBar.setStringPainted(true);
+	progressBar.setString(title);
+	progressBar.setIndeterminate(true);
+	progressNotification.setContent(new GroupPanel(5, false, new WebLabel("Aktualizacja..."), progressBar));
+    }
+
+    public void hideUpdateProgressBar() {
+	if (progressNotification != null) {
+	    progressNotification.acceptAndHide();
+	}
     }
 
     public void suggestUpdate() {

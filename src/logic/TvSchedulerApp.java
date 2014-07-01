@@ -9,7 +9,7 @@ import com.alee.laf.WebLookAndFeel;
 import external_websites.Ekino;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import portal.ClientController;
+import client.ClientController;
 import show_components.ShowController;
 import show_components.ShowLocalDataHUB;
 import user_exceptions.DataNotAssignedException;

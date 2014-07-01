@@ -8,7 +8,7 @@ package logic;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import net.NetCourier;
-import portal.ClientController;
+import client.ClientController;
 
 /**
  *

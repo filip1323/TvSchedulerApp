@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package portal;
+package client;
 
+import local_data.Properties;
 import misc.Utils;
 import net.NetCourier;
 import user_interface.UserInterface;
@@ -40,9 +41,11 @@ public class ClientController {
 		}
 
 		//when connected
-		NetCourier courier = new NetCourier();
-		courier.initialize("clientHashcode", NetCourier.Type.request);
-		clientService.send(courier);
+		if (Properties.getInstance().NOTIFICATION_UPDATE.getValue()) {
+		    NetCourier courier = new NetCourier();
+		    courier.initialize("clientHashcode", NetCourier.Type.request);
+		    clientService.send(courier);
+		}
 	    }
 
 	}).start();
@@ -55,19 +58,22 @@ public class ClientController {
     void processReceivedObject(Object object) {
 	if (object instanceof NetCourier) {
 	    NetCourier courier = (NetCourier) object;
-	    if (courier.getType() == NetCourier.Type.respond) {
-		if ("clientHashcode".equals(courier.getHead())) { //check integrality
-		    try {
-			String clientHashcode = courier.getBody();
-			String thisHashcode = Utils.Files.getMD5Checksum("TvSchedulerApp.jar");
-
-			if (!clientHashcode.equals(thisHashcode)) {
-			    userInterface.suggestUpdate();
-			}
-		    } catch (Exception ex) {
-			ex.printStackTrace();
+	    switch (courier.getType()) {
+		case respond:
+		    switch (courier.getHead()) {
+			case "clientHashcode":
+			    try {
+				String clientHashcode = courier.getBody();
+				String thisHashcode = Utils.Files.getMD5Checksum("TvSchedulerApp.jar");
+				if (!clientHashcode.equals(thisHashcode)) {
+				    userInterface.suggestUpdate();
+				}
+			    } catch (Exception ex) {
+				ex.printStackTrace();
+			    }
+			    break;
 		    }
-		}
+		    break;
 	    }
 	}
 	//TODO

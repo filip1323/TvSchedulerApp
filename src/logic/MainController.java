@@ -39,10 +39,9 @@ public class MainController {
     }
 
     public void start() {
+	userInterface.initComponents();
 
 	update();
-
-	userInterface.initComponents();
 
 	initialNotification();
 
@@ -71,6 +70,7 @@ public class MainController {
 
 	for (Show show : showController.getStoredShows()) {
 	    if (show.getUpdateDayTime() != Utils.DateManager.getCurrentDayInMilis()) {
+		userInterface.showUpdateProgressBar(show.getTitle());
 		//update
 		ShowOnlineEngineer engie = new ShowOnlineEngineer();
 		Show showToCompare = engie.getBasicInfo(show);
@@ -83,8 +83,6 @@ public class MainController {
 			show.edit().setNextEpisodeAnnouncementAvailableState(true);
 			show.edit().setNextEpisodeOrdinal(showToCompare.getNextEpisodeOrdinal());
 			show.edit().setNextEpisodeSeasonOrdinal(showToCompare.getNextEpisodeSeasonOrdinal());
-			show.edit().setUpdateDayTime(Utils.DateManager.getCurrentDayInMilis());
-			showController.updateShow(show);
 		    } else if (show.getNextEpisodeOrdinal() != showToCompare.getNextEpisodeOrdinal()) {
 			//new episode announced
 			if (Properties.getInstance().NOTIFICATION_NEXT_EP_ANNOUNCEMENT.getValue()) {
@@ -93,8 +91,6 @@ public class MainController {
 			show.edit().setNextEpisodeAnnouncementAvailableState(true);
 			show.edit().setNextEpisodeOrdinal(showToCompare.getNextEpisodeOrdinal());
 			show.edit().setNextEpisodeSeasonOrdinal(showToCompare.getNextEpisodeSeasonOrdinal());
-			show.edit().setUpdateDayTime(Utils.DateManager.getCurrentDayInMilis());
-			showController.updateShow(show);
 		    }
 
 		    engie.loadLastSeason(showToCompare);
@@ -114,9 +110,12 @@ public class MainController {
 		    }
 
 		}
+		show.edit().setUpdateDayTime(Utils.DateManager.getCurrentDayInMilis());
+		showController.updateShow(show);
 
 	    }
 	}
+	userInterface.hideUpdateProgressBar();
     }
 
     private void initialNotification() {

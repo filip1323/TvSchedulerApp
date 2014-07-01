@@ -5,6 +5,7 @@
  */
 package external_websites;
 
+import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.laf.WebLookAndFeel;
@@ -144,12 +145,17 @@ public class Ekino implements ExternalSource {
 	ekinoDialog.setResizable(false);
 	//content
 	WebLabel header = new WebLabel("Wprowadź adres internetowy ");
-	WebLabel header2 = new WebLabel("strony głównej serialu na ekino.tv");
+	WebLabel header2 = new WebLabel("strony głównej serialu na ");
+	WebLinkLabel link = new WebLinkLabel();
+	link.setLink("http://www.ekino.tv/seriale-online.html");
+	link.setText("www.ekino.tv");
+	link.setIcon(null);
 	final WebTextField field = new WebTextField(30);
+	field.setInputPrompt("np. http://www.ekino.tv/serial,house-m-d-dr-house.html");
 	final WebButton button = new WebButton("Ok");
 
 	//content itselfs
-	GroupPanel content = new GroupPanel(GroupingType.none, 5, false, header, header2, field, button);
+	GroupPanel content = new GroupPanel(GroupingType.none, 5, false, header, new GroupPanel(header2, link), field, button);
 	content.setMargin(10);
 
 	//final dialog

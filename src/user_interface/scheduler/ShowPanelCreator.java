@@ -79,17 +79,22 @@ public class ShowPanelCreator {
 	panel.add(new WebSeparator());
 
 	//next ep counter
-	if (Properties.getInstance().OPTION_INFO_NEXT_EP_COUNTER.getValue() && show.isNextEpisodeAnnouncement()) {
-	    Episode announcenedEpisode = show.getAnnouncenedEpisode();
-	    long timeDiff = Utils.DateManager.getTimeDifferenceInDays(Utils.DateManager.getCurrentDayInMilis(), announcenedEpisode.getReleaseDate());
-	    WebLabel annLabel = new WebLabel(timeDiff + " dni do premiery");
-	    if (timeDiff == 0) {
-		annLabel.setText("Dzień premiery");
+	if (Properties.getInstance().OPTION_INFO_NEXT_EP_COUNTER.getValue()) {
+	    WebLabel annLabel = new WebLabel();
+	    if (show.isNextEpisodeAnnouncement()) {
+		Episode announcenedEpisode = show.getAnnouncenedEpisode();
+		long timeDiff = Utils.DateManager.getTimeDifferenceInDays(Utils.DateManager.getCurrentDayInMilis(), announcenedEpisode.getReleaseDate());
+		annLabel.setText(timeDiff + " dni do premiery");
+		if (timeDiff == 0) {
+		    annLabel.setText("Dzień premiery");
+		}
+		if (timeDiff == 1) {
+		    annLabel.setText("Jutro premiera");
+		}
+	    } else {
+		annLabel.setText("Brak zapowiedzi");
 	    }
-	    if (timeDiff == 1) {
-		annLabel.setText("Jutro premiera");
-	    }
-	    annLabel.setMargin(3);
+	    annLabel.setMargin(3, 6, 3, 0);
 	    annLabel.setIcon(Resources.getImageIcon("aperture-small.png"));
 	    panel.add(annLabel);
 	}

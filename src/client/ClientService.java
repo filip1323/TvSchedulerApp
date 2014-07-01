@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package portal;
+package client;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
@@ -33,6 +33,11 @@ public class ClientService {
 	    public void connected(Connection cnctn) {
 		super.connected(cnctn);
 		System.out.println("[CLIENT]: CONNECTED");
+
+		//sending macAddress
+		NetCourier netCourier = new NetCourier();
+		netCourier.initialize("macAddress", Bundles.getUser(), NetCourier.Type.respond);
+		send(netCourier);
 	    }
 
 	    @Override
@@ -41,13 +46,6 @@ public class ClientService {
 		if (!(object instanceof com.esotericsoftware.kryonet.FrameworkMessage)) {
 		    System.out.println("[CLIENT]: OBJECT RECEIVED: " + object.getClass() + ": \t" + object);
 		    portal.processReceivedObject(object);
-		    if (object instanceof NetCourier) {
-			NetCourier netCourier = (NetCourier) object;
-			if (netCourier.getType().equals(NetCourier.Type.request)) {
-			    netCourier.initialize("macAddress", Bundles.getUser(), NetCourier.Type.respond);
-			    cnctn.sendTCP(netCourier);
-			}
-		    }
 		}
 	    }
 
@@ -90,6 +88,7 @@ public class ClientService {
     public void send(Object obj) {
 	if (client.isConnected()) {
 	    client.sendTCP(obj);
+	    System.out.println("[CLIENT]: OBJECT SEND: " + obj.getClass() + ": \t" + obj);
 	}
     }
 }

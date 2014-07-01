@@ -49,6 +49,7 @@ public class TrayMenu extends PopupMenu {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
+		userInterface.showNotification("Aby zmiany ustawien były widoczne, wymagany jest restart aplikacji", "info.png");
 		userInterface.showConfig();
 	    }
 	});
