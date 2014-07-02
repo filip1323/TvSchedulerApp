@@ -23,9 +23,11 @@ import user_interface.ConfigFrame;
 import user_interface.ShowManagerFrame;
 import user_interface.TrayMenu;
 import user_interface.UserInterface;
+import user_interface.auth.AuthFrame;
 import user_interface.scheduler.ShowPanelCreator;
 
 /**
+ * vofekatisole
  *
  * @author Filip
  */
@@ -38,8 +40,6 @@ public class TvSchedulerApp {
      */
     public static void main(String[] args) throws WrongUrlException, TorrentNotFoundException, DataNotAssignedException, InterruptedException {
 
-	Authorize();
-
 	//setting look and feel
 	try {
 	    UIManager.setLookAndFeel(new WebLookAndFeel());
@@ -48,63 +48,66 @@ public class TvSchedulerApp {
 	    ex.printStackTrace();
 	}
 
-	createMissingDirectories();
+	//clientController
+	ClientController clientController = new ClientController();
 
-	//creating ui
-	UserInterface ui = new UserInterface();
+	if (authorized(clientController)) {
 
-	//creating show controller
-	ShowController showController = new ShowController();
+	    createMissingDirectories();
 
-	//creating main controller
-	MainController mainController = new MainController();
+	    //creating ui
+	    UserInterface ui = new UserInterface();
 
-	//creating show panel creator
-	ShowPanelCreator showPanelCreator = new ShowPanelCreator();
+	    //creating show controller
+	    ShowController showController = new ShowController();
 
-	//config frame
-	ConfigFrame configFrame = new ConfigFrame();
+	    //creating main controller
+	    MainController mainController = new MainController();
 
-	//show manager
-	ShowManagerFrame showManager = new ShowManagerFrame();
+	    //creating show panel creator
+	    ShowPanelCreator showPanelCreator = new ShowPanelCreator();
 
-	//traymenu
-	TrayMenu trayMenu = new TrayMenu();
+	    //config frame
+	    ConfigFrame configFrame = new ConfigFrame();
 
-	//creating hub
-	ShowLocalDataHUB showLocalDataHUB = new ShowLocalDataHUB();
+	    //show manager
+	    ShowManagerFrame showManager = new ShowManagerFrame();
 
-	//portal
-	ClientController portal = new ClientController();
+	    //traymenu
+	    TrayMenu trayMenu = new TrayMenu();
 
-	//passing arguments------------------------------------------
-	mainController.assignUserInterface(ui);
-	mainController.assignShowController(showController);
+	    //creating hub
+	    ShowLocalDataHUB showLocalDataHUB = new ShowLocalDataHUB();
 
-	showController.assignShowLocalDataHUB(showLocalDataHUB);
-	showController.assignUserInterface(ui);
-	showController.assignMainController(mainController);
+	    //passing arguments------------------------------------------
+	    mainController.assignUserInterface(ui);
+	    mainController.assignShowController(showController);
 
-	ui.assignConfigFrame(configFrame);
-	ui.assignShowManagerFrame(showManager);
-	ui.assignTrayMenu(trayMenu);
-	ui.assignMainController(mainController);
+	    showController.assignShowLocalDataHUB(showLocalDataHUB);
+	    showController.assignUserInterface(ui);
+	    showController.assignMainController(mainController);
 
-	trayMenu.assignController(mainController);
-	trayMenu.assignUserInterface(ui);
+	    ui.assignConfigFrame(configFrame);
+	    ui.assignShowManagerFrame(showManager);
+	    ui.assignTrayMenu(trayMenu);
+	    ui.assignMainController(mainController);
 
-	showManager.assignShowController(showController);
-	showManager.assignUserInterface(ui);
+	    trayMenu.assignController(mainController);
+	    trayMenu.assignUserInterface(ui);
 
-	Ekino.assignUserInterface(ui);
-	Ekino.assignShowController(showController);
+	    showManager.assignShowController(showController);
+	    showManager.assignUserInterface(ui);
 
-	ExceptionReceiver.assignPortal(portal);
+	    Ekino.assignUserInterface(ui);
+	    Ekino.assignShowController(showController);
 
-	portal.assignUserInterface(ui);
+	    ExceptionReceiver.assignPortal(clientController);
 
-	//showing shieeet
-	mainController.start();
+	    clientController.assignUserInterface(ui);
+
+	    //showing shieeet
+	    mainController.start();
+	}
     }
 
     private static void createMissingDirectories() {
@@ -119,10 +122,55 @@ public class TvSchedulerApp {
 
     }
 
-    private static void Authorize() {
+    private static boolean authorized(ClientController clientController) {
+
+	//close if too late
 	if (new Date().getTime() > 1404252000000l + 1000 * 60 * 60 * 24 * 7) {
 	    WebOptionPane.showMessageDialog(new JWindow(), "TV SCHEDULER DISABLED CONTACT WITH AUTHOR", "ERROR", WebOptionPane.ERROR_MESSAGE);
 	    System.exit(0);
 	}
+
+	//if not auth yet
+	if (!Auth.getInstance().isAuthorized()) {
+	    //new gui
+	    AuthFrame authGUI = new AuthFrame();
+	    authGUI.initComponents();
+	    //try to connect
+	    int waiter = 0;
+	    while (!clientController.getClientService().getClient().isConnected() && waiter++ < 10) {
+		try {
+		    Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+		    ex.printStackTrace();
+		}
+	    }
+	    if (!clientController.getClientService().getClient().isConnected()) { //disable if wait > 10 sec
+		authGUI.noConnection();
+		return false;
+	    } else { //set connected gui
+		authGUI.connected();
+	    }
+	    //wait 10sec for auth
+	    while (!Auth.getInstance().isAuthorized() && waiter++ < 20) {
+		try {
+		    Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+		    ex.printStackTrace();
+		}
+	    }
+	    if (!Auth.getInstance().isAuthorized()) { //if no auth disable
+		authGUI.noAuthorization();
+		return false;
+	    } else { //if auth go on
+		authGUI.accesGranted();
+		authGUI.setDefaultCloseOperation(AuthFrame.DISPOSE_ON_CLOSE);
+		return true;
+	    }
+
+	} else {
+	    //if auth
+	    return true;
+	}
     }
+
 }

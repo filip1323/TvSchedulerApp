@@ -23,6 +23,10 @@ public class ClientService {
     String IP = "89.239.83.107";
     Client client;
 
+    public Client getClient() {
+	return client;
+    }
+
     public ClientService(final ClientController portal) {
 	com.esotericsoftware.minlog.Log.set(com.esotericsoftware.minlog.Log.LEVEL_NONE);
 	client = new Client(16384, 16384);

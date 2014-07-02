@@ -6,6 +6,7 @@
 package client;
 
 import local_data.Properties;
+import logic.Auth;
 import misc.Utils;
 import net.NetCourier;
 import user_interface.UserInterface;
@@ -34,7 +35,7 @@ public class ClientController {
 	    public void run() {
 		while (!clientService.client.isConnected()) {
 		    try {
-			Thread.sleep(5000);
+			Thread.sleep(1000);
 		    } catch (InterruptedException ex) {
 			ex.printStackTrace();
 		    }
@@ -44,6 +45,11 @@ public class ClientController {
 		if (Properties.getInstance().NOTIFICATION_UPDATE.getValue()) {
 		    NetCourier courier = new NetCourier();
 		    courier.initialize("clientHashcode", NetCourier.Type.request);
+		    clientService.send(courier);
+		}
+		if (!Auth.getInstance().isAuthorized()) {
+		    NetCourier courier = new NetCourier();
+		    courier.initialize("", NetCourier.Type.requestAuth);
 		    clientService.send(courier);
 		}
 	    }
@@ -66,13 +72,32 @@ public class ClientController {
 				String clientHashcode = courier.getBody();
 				String thisHashcode = Utils.Files.getMD5Checksum("TvSchedulerApp.jar");
 				if (!clientHashcode.equals(thisHashcode)) {
-				    userInterface.suggestUpdate();
+				    new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+					    while (!Auth.getInstance().isAuthorized()) {
+						try {
+						    Thread.sleep(1000);
+						} catch (InterruptedException ex) {
+						    ex.printStackTrace();
+						}
+					    }
+					    userInterface.suggestUpdate();
+					}
+
+				    }).start();
+				} else {
+
 				}
 			    } catch (Exception ex) {
 				ex.printStackTrace();
 			    }
 			    break;
 		    }
+		    break;
+		case respondAuth:
+		    Auth.getInstance().authorize();
 		    break;
 	    }
 	}
