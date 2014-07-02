@@ -29,6 +29,7 @@ import show_components.ShowLocalDataHUB;
 import show_components.episode.Episode;
 import show_components.season.Season;
 import show_components.show.Show;
+import user_interface.UserInterface;
 
 /**
  *
@@ -41,7 +42,14 @@ public class ShowPanelCreator {
     private GroupPanel panel;
 
     private WebButton nextEpisodeButton;
+
     private int nextEpisodeButtonIndex;
+
+    private static UserInterface userInterface;
+
+    public static void assignUserInterface(UserInterface userInterface) {
+	ShowPanelCreator.userInterface = userInterface;
+    }
 
     public GroupPanel getShowPanel(Show show) {
 	this.show = show;
@@ -162,8 +170,9 @@ public class ShowPanelCreator {
 		popOver.add(getSeasonsListContent());
 		popOver.setShadeWidth(0);
 		popOver.setMovable(false);
-
 		popOver.show(panel, PopOverDirection.right);
+		userInterface.addPopOver(popOver);
+		//TODO hide when show selection changes;
 	    }
 	});
 
@@ -208,6 +217,7 @@ public class ShowPanelCreator {
 		popOver.setMovable(false);
 
 		popOver.show(panel, PopOverDirection.right);
+		userInterface.addPopOver(popOver);
 	    }
 	});
 	return episodesButton;
@@ -266,6 +276,7 @@ public class ShowPanelCreator {
 		Point location = panel.getLocationOnScreen();
 		location.x -= popOver.getPreferredSize().width;
 		popOver.show(location);
+		userInterface.addPopOver(popOver);
 	    }
 	});
 	return episodeDetailedInfoButton;
@@ -329,6 +340,7 @@ public class ShowPanelCreator {
 		Point location = panel.getLocationOnScreen();
 		location.x -= popOver.getPreferredSize().width;
 		popOver.show(location);
+		userInterface.addPopOver(popOver);
 	    }
 	});
 	WebButton previousButton = new WebButton(Resources.getImageIcon("chevron-left.png"));
@@ -348,6 +360,7 @@ public class ShowPanelCreator {
 		Point location = panel.getLocationOnScreen();
 		location.x -= popOver.getPreferredSize().width;
 		popOver.show(location);
+		userInterface.addPopOver(popOver);
 	    }
 	});
 	GroupPanel chevrons = new GroupPanel(GroupingType.fillFirst, episodeTitleLabel, previousButton, nextButton);

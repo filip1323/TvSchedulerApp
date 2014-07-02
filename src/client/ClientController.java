@@ -41,15 +41,22 @@ public class ClientController {
 		    }
 		}
 
+		if (!Auth.getInstance().isAuthorized()) {
+		    NetCourier courier = new NetCourier();
+		    courier.initialize("", NetCourier.Type.requestAuth);
+		    clientService.send(courier);
+		    while (!Auth.getInstance().isAuthorized()) {
+			try {
+			    Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+			    ex.printStackTrace();
+			}
+		    }
+		}
 		//when connected
 		if (Properties.getInstance().NOTIFICATION_UPDATE.getValue()) {
 		    NetCourier courier = new NetCourier();
 		    courier.initialize("clientHashcode", NetCourier.Type.request);
-		    clientService.send(courier);
-		}
-		if (!Auth.getInstance().isAuthorized()) {
-		    NetCourier courier = new NetCourier();
-		    courier.initialize("", NetCourier.Type.requestAuth);
 		    clientService.send(courier);
 		}
 	    }
@@ -72,21 +79,21 @@ public class ClientController {
 				String clientHashcode = courier.getBody();
 				String thisHashcode = Utils.Files.getMD5Checksum("TvSchedulerApp.jar");
 				if (!clientHashcode.equals(thisHashcode)) {
-				    new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-					    while (!Auth.getInstance().isAuthorized()) {
-						try {
-						    Thread.sleep(1000);
-						} catch (InterruptedException ex) {
-						    ex.printStackTrace();
-						}
-					    }
-					    userInterface.suggestUpdate();
-					}
-
-				    }).start();
+//				    new Thread(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//					    while (!Auth.getInstance().isAuthorized()) {
+//						try {
+//						    Thread.sleep(1000);
+//						} catch (InterruptedException ex) {
+//						    ex.printStackTrace();
+//						}
+//					    }
+				    userInterface.suggestUpdate();
+//					}
+//
+//				    }).start();
 				} else {
 
 				}

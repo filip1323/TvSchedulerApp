@@ -5,11 +5,13 @@
  */
 package user_interface.scheduler;
 
+import com.alee.extended.panel.AccordionListener;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
+import user_interface.UserInterface;
 
 /**
  *
@@ -20,6 +22,11 @@ public class SchedulerPanel extends WebPanel {
     private GroupPanel contentGroupPanel;
     private WebButton exitButton;
     private WebAccordion accordion;
+    private UserInterface userInterface;
+
+    public void assignUserInterface(UserInterface userInterface) {
+	this.userInterface = userInterface;
+    }
 
     public void initComponents() {
 	accordion = new WebAccordion();
@@ -27,7 +34,13 @@ public class SchedulerPanel extends WebPanel {
 	contentGroupPanel = new GroupPanel(4, accordion);
 	accordion.setOrientation(0);
 	add(contentGroupPanel);
-	//setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
+	accordion.addAccordionListener(new AccordionListener() {
+
+	    @Override
+	    public void selectionChanged() {
+		userInterface.hidePopOvers();
+	    }
+	});
     }
 
     public void addShowPanel(String title, GroupPanel content) {

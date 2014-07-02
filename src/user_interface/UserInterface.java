@@ -7,6 +7,7 @@ package user_interface;
 
 import com.alee.extended.label.WebHotkeyLabel;
 import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.progressbar.WebProgressBar;
@@ -20,6 +21,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
@@ -154,6 +156,7 @@ public class UserInterface {
 	    window.remove(schedulerPanel);
 	}
 	schedulerPanel = new SchedulerPanel();
+	schedulerPanel.assignUserInterface(this);
 	schedulerPanel.initComponents();
 	window.addPanel(schedulerPanel);
     }
@@ -289,6 +292,19 @@ public class UserInterface {
 
     public void showNotification(String content, String icoName) {
 	showNotification(new WebLabel(content), icoName);
+    }
+
+    ArrayList<WebPopOver> popOvers = new ArrayList<>();
+
+    public void addPopOver(WebPopOver pop) {
+	popOvers.add(pop);
+    }
+
+    public void hidePopOvers() {
+	for (WebPopOver pop : popOvers) {
+	    pop.dispose();
+	}
+	popOvers = new ArrayList<>();
     }
 
 }

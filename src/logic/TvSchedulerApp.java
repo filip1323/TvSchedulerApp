@@ -7,11 +7,8 @@ package logic;
 
 import client.ClientController;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.optionpane.WebOptionPane;
 import external_websites.ekino.Ekino;
 import java.io.File;
-import java.util.Date;
-import javax.swing.JWindow;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import show_components.ShowController;
@@ -32,9 +29,11 @@ import user_interface.scheduler.ShowPanelCreator;
  * @author Filip
  */
 public class TvSchedulerApp {
+    // http://speedy.sh/MM3x9/app.zip
     //TODO only one instance
     //TODO other externals
     //TODO edit externals
+    //TODO close on focus lost
     /**
      * @param args the command line arguments
      */
@@ -105,6 +104,8 @@ public class TvSchedulerApp {
 
 	    clientController.assignUserInterface(ui);
 
+	    ShowPanelCreator.assignUserInterface(ui);
+
 	    //showing shieeet
 	    mainController.start();
 	}
@@ -123,12 +124,6 @@ public class TvSchedulerApp {
     }
 
     private static boolean authorized(ClientController clientController) {
-
-	//close if too late
-	if (new Date().getTime() > 1404252000000l + 1000 * 60 * 60 * 24 * 7) {
-	    WebOptionPane.showMessageDialog(new JWindow(), "TV SCHEDULER DISABLED CONTACT WITH AUTHOR", "ERROR", WebOptionPane.ERROR_MESSAGE);
-	    System.exit(0);
-	}
 
 	//if not auth yet
 	if (!Auth.getInstance().isAuthorized()) {
@@ -151,7 +146,7 @@ public class TvSchedulerApp {
 		authGUI.connected();
 	    }
 	    //wait 10sec for auth
-	    while (!Auth.getInstance().isAuthorized() && waiter++ < 20) {
+	    while (!Auth.getInstance().isAuthorized() && waiter++ < 60) {
 		try {
 		    Thread.sleep(1000);
 		} catch (InterruptedException ex) {
