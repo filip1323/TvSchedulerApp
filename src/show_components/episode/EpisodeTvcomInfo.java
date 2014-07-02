@@ -7,6 +7,7 @@ package show_components.episode;
 
 import external_websites.tvcom.TvcomSeasonGuide;
 import java.util.HashMap;
+import user_exceptions.LackOfEpisodesContentException;
 
 /**
  *
@@ -17,7 +18,7 @@ public class EpisodeTvcomInfo implements InfoProvider {
     private TvcomSeasonGuide tvcomSeasonGuide;
     HashMap<String, String> episodeInfo;
 
-    public EpisodeTvcomInfo(TvcomSeasonGuide tvcomSeasonGuide, int ordinal) {
+    public EpisodeTvcomInfo(TvcomSeasonGuide tvcomSeasonGuide, int ordinal) throws LackOfEpisodesContentException {
 	this.tvcomSeasonGuide = tvcomSeasonGuide;
 	episodeInfo = tvcomSeasonGuide.getEpisodeInfo(ordinal);
     }

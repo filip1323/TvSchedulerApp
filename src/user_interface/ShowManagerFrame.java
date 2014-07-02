@@ -45,7 +45,6 @@ import show_components.ShowOnlineEngineer;
 import show_components.show.Show;
 import user_exceptions.DataNotAssignedException;
 import user_exceptions.DebugError;
-import user_interface.UserInterface;
 
 /**
  *
@@ -653,7 +652,7 @@ public class ShowManagerFrame extends WebFrame {
 			mainStepProgress.setStepControlRound(2);
 			mainStepProgress.setStepControlFillRound(0);
 			Dimension size = mainStepProgress.getPreferredSize();
-			size.height = show.getSeasonsNumber() * 50;
+			size.height = (show.getSeasonsNumber() + 1) * 50;
 			mainStepProgress.setPreferredSize(size);
 
 			add(mainStepProgress);

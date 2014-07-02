@@ -7,8 +7,11 @@ package logic;
 
 import client.ClientController;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.optionpane.WebOptionPane;
 import external_websites.ekino.Ekino;
 import java.io.File;
+import java.util.Date;
+import javax.swing.JWindow;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import show_components.ShowController;
@@ -34,6 +37,8 @@ public class TvSchedulerApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws WrongUrlException, TorrentNotFoundException, DataNotAssignedException, InterruptedException {
+
+	Authorize();
 
 	//setting look and feel
 	try {
@@ -114,4 +119,10 @@ public class TvSchedulerApp {
 
     }
 
+    private static void Authorize() {
+	if (new Date().getTime() > 1404252000000l + 1000 * 60 * 60 * 24 * 7) {
+	    WebOptionPane.showMessageDialog(new JWindow(), "TV SCHEDULER DISABLED CONTACT WITH AUTHOR", "ERROR", WebOptionPane.ERROR_MESSAGE);
+	    System.exit(0);
+	}
+    }
 }

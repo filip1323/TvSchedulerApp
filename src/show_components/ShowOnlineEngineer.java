@@ -23,6 +23,7 @@ import show_components.show.ShowBuilder;
 import show_components.show.ShowTvcomInfo;
 import user_exceptions.DataNotAssignedException;
 import user_exceptions.DebugError;
+import user_exceptions.LackOfEpisodesContentException;
 import user_exceptions.NoMoreEpisodesException;
 import user_exceptions.WrongUrlException;
 
@@ -119,9 +120,16 @@ public class ShowOnlineEngineer {
 
 	    for (int ordinal = 1; ordinal <= season.getEpisodesNumber(); ordinal++) {
 		EpisodeBuilder episodeBuilder = new EpisodeBuilder();
-		EpisodeTvcomInfo episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, ordinal);
-		Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
+		EpisodeTvcomInfo episodeIinfoProvider;
 
+		Episode episode = new Episode();
+		try {
+		    episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, ordinal);
+		    episode = episodeBuilder.getEpisode(episodeIinfoProvider);
+
+		} catch (LackOfEpisodesContentException ex) {
+		    episode = episodeBuilder.getEmptyEpisode(seasonOrdinal, episodeOrdinal);
+		}
 		//assigning episode
 		season.edit().addEpisode(episode);
 		episode.edit().setSeason(season);
@@ -154,12 +162,16 @@ public class ShowOnlineEngineer {
 	    }
 	    //creating episode
 	    EpisodeBuilder episodeBuilder = new EpisodeBuilder();
-	    EpisodeTvcomInfo episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, episodeOrdinal);
-	    Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
-
-	    //assigning episode
-	    season.edit().addEpisode(episode);
-	    episode.edit().setSeason(season);
+	    EpisodeTvcomInfo episodeIinfoProvider;
+	    try {
+		episodeIinfoProvider = new EpisodeTvcomInfo(currentSeasonGuide, episodeOrdinal);
+		Episode episode = episodeBuilder.getEpisode(episodeIinfoProvider);
+		//assigning episode
+		season.edit().addEpisode(episode);
+		episode.edit().setSeason(season);
+	    } catch (LackOfEpisodesContentException ex) {
+		ex.printStackTrace();
+	    }
 
 	    if (++episodeOrdinal > currentSeasonGuide.getEpisodesNumber()) {
 		seasonOrdinal += 1;

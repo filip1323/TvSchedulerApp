@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import user_exceptions.DebugError;
+import user_exceptions.LackOfEpisodesContentException;
 import user_exceptions.WrongUrlException;
 
 /**
@@ -58,7 +59,7 @@ public class TvcomSeasonGuide {
     }
 
     public int getEpisodesNumber() {
-	Elements epElements = document.select("ul.episodes._toggle_list > li.episode");
+	Elements epElements = document.select(" li.episode");
 	Elements labelElements = epElements.select("div.ep_info");
 	int maxEpOrdinalFound = 0;
 	for (Element labelElement : labelElements) {
@@ -76,9 +77,12 @@ public class TvcomSeasonGuide {
 
     }
 
-    public HashMap<String, String> getEpisodeInfo(final int ordinal) { //<season ordinal, episode ordinal, title, date, url>
+    public HashMap<String, String> getEpisodeInfo(final int ordinal) throws LackOfEpisodesContentException { //<season ordinal, episode ordinal, title, date, url>
+	if (getEpisodesNumber() == 0) {
+	    throw new LackOfEpisodesContentException(url);
+	}
 	if (getEpisodesNumber() < ordinal) {
-	    throw new DebugError("Ordinal cant be higher than episodes number");
+	    throw new DebugError("Ordinal cant be higher than episodes number" + ordinal + "/" + getEpisodesNumber());
 	}
 	Element selectedEpisodeElement = null;
 	Elements episodeElements = document.select("ul.episodes._toggle_list > li.episode");
