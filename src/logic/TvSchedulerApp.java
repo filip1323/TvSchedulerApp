@@ -34,6 +34,7 @@ public class TvSchedulerApp {
     //TODO other externals
     //TODO edit externals
     //TODO close on focus lost
+    //TODO improve list loading, maybe runtime loading shows
     /**
      * @param args the command line arguments
      */
